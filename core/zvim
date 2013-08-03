@@ -1,0 +1,26 @@
+#!/usr/bin/env zsh
+
+zsh_vimrc_text() {
+    cat << EOF
+exe "source " fnameescape("${HOME}/.vimrc")
+autocmd BufNewFile *
+    \ setfiletype zsh |
+    \ 0put = '#!/bin/zsh' |
+    \ 1put = '' |
+    \ normal G
+EOF
+}
+
+if [[ -n ${DISPLAY} || ${zsh_parent_process} == "sshd" ]]; then
+    echo -ne '\e[1 q'
+else
+    echo -ne '\e[?6c'
+fi
+vim -u <(zsh_vimrc_text) "$@"
+
+optionRegex='^-.*$'
+for arg in $@; do
+    if [[ ! ${arg} =~ ${optionRegex} && -e ${arg} && ! -x ${arg} ]]; then
+        chmod +x ${arg}
+    fi
+done

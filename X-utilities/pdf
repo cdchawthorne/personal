@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+evince $@ 2> /dev/null &|

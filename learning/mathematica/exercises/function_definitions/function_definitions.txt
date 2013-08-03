@@ -1,0 +1,27 @@
+g[x_,0,0]:=0
+g[0,y_,0]:=0
+g[0,0,z_]:=0
+g[_, _, _]:=1
+
+f[x_ /; x!=0, y_ /; y!=0, z_ /; z!=0] := 1
+f[_, _, _] := 0
+
+pointLoc[{0, _}] := 0
+pointLoc[{_, 0}] := 0
+pointLoc[{x_,y_}] := 5 - pointLoc[{x, -y}] /; y < 0
+pointLoc[{x_,y_}] := 3/2 - Sign[x]/2 /; y > 0
+
+h[x_Integer,y_] := x - y
+h[{x_Integer,___}, y_] := x + y
+
+g[_,xs__Integer] := 1 /; Length[{xs}] == 4 && Count[{xs}, 1] == 3
+g[1,xs__Integer] := 1 /; Length[{xs}] == 4 && Count[{xs}, 1] == 2
+g[__] := 0
+
+findTriplet[___, x_, ___, y_, ___, z_, ___] := {x,y,z} /; x+y+z == 100
+findTriplet[___] := "Impossible"
+
+f[xs_List,n_Integer] := Table[xs[[Random[Integer, {1, Length[xs]}]]], {n}]
+
+g[xs_List,0] := {}
+g[xs_List, n_Integer] := Module[{num = Random[Integer, {1, Length[xs]}]}, Prepend[g[Delete[xs, num], n-1], xs[[n]]]]

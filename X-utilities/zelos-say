@@ -1,0 +1,23 @@
+#!/usr/bin/env zsh
+
+function kill-zelos {
+    if [[ -n ${zelos} ]]; then
+        kill ${zelos}
+        sleep 1
+    fi
+}
+
+function TRAPEXIT {
+    echo 'Exit trapped'
+    kill-zelos
+}
+
+function TRAPINT {
+    echo 'Int trapped'
+    kill-zelos
+    return $((128 + $1))
+}
+
+osd_cat -l 75 -d 0 -c red -p middle -i 500 -f '-*-Fixed-Bold-R-Normal-*-5-*-*-*-*-*-*-*' ${HOME}/pictures/zelos.txt &
+zelos=$!
+cowsay -f ${HOME}/pictures/empty.cow | osd_cat -l 10 -d 30 -c red -p top -i 500 -o 150 -f '-*-Fixed-Bold-R-Normal-*-15-*-*-*-*-*-*-*'

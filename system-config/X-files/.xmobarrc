@@ -1,0 +1,13 @@
+Config { font = "-*-Fixed-Bold-R-Normal-*-13-*-*-*-*-*-*-*"
+       , bgColor = "black"
+       , fgColor = "grey"
+       , position = Static { xpos = 0, ypos = 0, width = 1280, height = 18 }
+       , commands = [ Run Date "%_d %B %Y" "date" 10
+                    , Run Date "%R" "time" 10
+                    , Run StdinReader
+                    , Run Battery ["-t","Batt: <left>"] 600
+                    ]
+       , sepChar = "%"
+       , alignSep = "}{"
+       , template = "%StdinReader% }<fc=#FFFFFF>%time%</fc>{ %battery% | <fc=#FFFFFF>%date%</fc> "
+       }

@@ -1,0 +1,51 @@
+"change-volume toggleMute"
+    m:0x40 + c:31
+    Mod4 + i
+"change-volume raise 1"
+    m:0x40 + c:32
+    Mod4 + o
+"change-volume lower 1"
+    m:0x40 + c:30
+    Mod4 + u
+"change-volume raise 5"
+    m:0x41 + c:32
+    Shift+Mod4 + o
+"change-volume lower 5"
+    m:0x41 + c:30
+    Shift+Mod4 + u
+"sudo poweroff"
+    m:0x41 + c:26
+    Shift+Mod4 + e
+"sudo reboot"
+    m:0x41 + c:27
+    Shift+Mod4 + r
+"sudo pm-hibernate"
+    m:0x41 + c:28
+    Shift+Mod4 + t
+"sudo pm-suspend"
+    m:0x41 + c:39
+    Shift+Mod4 + s
+"xscreensaver-command -lock"
+    m:0x41 + c:52
+    Shift+Mod4 + z
+"chromium --password-store=basic"
+    m:0x41 + c:43
+    Shift+Mod4 + h
+"firefox"
+    m:0x41 + c:58
+    Shift+Mod4 + m
+"scrot -e "mv \$f ${SCREENSHOTS_DIR}""
+    m:0x0 + c:107
+    Print
+"scrot -s -e "mv \$f ${SCREENSHOTS_DIR}""
+    m:0x4 + c:107
+    Control + Print
+"pkill xcowsay"
+    m:0x41 + c:53
+    Shift+Mod4 + x
+"set-random-background"
+    m:0x41 + c:56
+    Shift+Mod4 + b
+"xterm -e zsh -c "exec tmux -f ${HOME}/.tmux_nobar.conf new-session""
+    m:0x41 + c:45
+    Shift+Mod4 + k

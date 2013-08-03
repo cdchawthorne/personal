@@ -1,0 +1,1 @@
+cmd_/home/cdchawthorne/programming/kernel/hello-1/hello-1.ko := ld -r -m elf_x86_64 -T /home/cdchawthorne/programming/kernel/linux-stable/scripts/module-common.lds --build-id  -o /home/cdchawthorne/programming/kernel/hello-1/hello-1.ko /home/cdchawthorne/programming/kernel/hello-1/hello-1.o /home/cdchawthorne/programming/kernel/hello-1/hello-1.mod.o

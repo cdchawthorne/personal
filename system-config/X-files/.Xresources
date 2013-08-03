@@ -1,0 +1,12 @@
+!
+! Comments begin with a "!" character.
+!
+
+XTerm*background:       black
+XTerm*foreground:       white
+XTerm*cursorColor:      white
+XTerm*font:             -*-Fixed-medium-R-Normal-*-20-*-*-*-*-*-*-*
+XTerm*faceName:         default
+
+XTerm*eightBitInput:    false
+XTerm*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)

@@ -1,0 +1,13 @@
+set editing-mode vi
+
+set keymap vi-command
+
+# arrow keys auto-complete currently typed command
+#(i.e. if you type "foo" then press up it will search history for previous commands that began with foo)
+"k":history-search-backward
+"j":history-search-forward
+
+set keymap vi-insert
+
+"fj":vi-movement-mode
+"\C-l":clear-screen

@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+
+if [[ $# -eq 0 ]]; then
+    1=lines_array
+fi
+eval "$1=()"
+local "$1_line"
+while builtin read "$1_line"; do
+    eval "$1=(\${$1} \${$1_line})"
+done

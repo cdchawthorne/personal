@@ -1,0 +1,105 @@
+# cdchawthorne
+
+alias ls='ls --color=auto --group-directories-first'
+
+alias grep='grep --colour=auto'
+alias fgrep='fgrep --colour=auto'
+alias egrep='egrep --colour=auto'
+
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+alias lr='ls -lrt'
+alias liesl='ls'
+alias s='ls'
+alias sl='ls'
+
+alias freedom!=free
+
+function cd {
+    builtin cd $@ && ls
+}
+alias scd='cd'
+alias d='cd'
+alias cd..='cd ..'
+alias c='cd'
+alias dc='cd'
+alias dcd='cd'
+
+alias v='vim'
+alias xp='chmod +x'
+alias ff='find . -name'
+alias fr='find . -regex'
+alias rlwrap='rlwrap -s 1000000'
+# Dangerous, disables ^G for interrupt
+#alias erl='rlwrap -ca erl'
+alias python='python-with-readline'
+alias math='rlwrap math'
+alias racket='rlwrap racket'
+alias mount='mount -o gid=users,fmask=113,dmask=002'
+alias sudo='sudo '
+alias xargs='xargs '
+alias startx='builtin cd; command startx &> "${HOME}/.xsession-errors"'
+
+alias tim='vim -t'
+alias vv='vim -c ''e $MYVIMRC'''
+alias vz='vim ~/.zsh_aliases'
+alias sz='source ~/.zsh_aliases'
+function fim {
+    vim -c "cs f f $1"
+}
+
+alias rh='rehash'
+
+function pa {
+    if [[ $# -eq 0 ]]; then
+        num=1
+    else
+        num=$1
+    fi
+
+    dest=.
+    for i in $(seq ${num}); do
+        dest=${dest}/..
+    done
+    cd ${dest}
+}
+
+function find-grep {
+    find . -regex $1 | xargs egrep --colour=auto $2 |
+            sed -re 's_^([^:]*):.*$_\1_g' | uniq
+}
+
+function to {
+    cd "$(dirname $1)"
+}
+
+function pdf {
+    for pdfFile in $@; do
+        zathura --fork "$(realpath ${pdfFile})" &> /dev/null
+    done
+}
+
+function rr {
+    if [[ $# -ne 1 ]]; then
+        echo "usage: rr SRC_DIR" 1>&2
+        return 1
+    fi
+
+    src="$(realpath $1)"
+    dest=cdchawth@linux.student.cs.uwaterloo.ca:
+    dest+=/u8/cdchawthorne/utilities/rsync_backups
+
+    rsync -avz --delete ${src} ${dest}
+}
+
+function x {
+    if ! pgrep X &> /dev/null; then
+        builtin cd
+        command startx &> "${HOME}/.xsession-errors"
+    fi
+}
+
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'

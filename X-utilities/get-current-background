@@ -1,0 +1,3 @@
+#!/usr/bin/env zsh
+
+sed -re 's_^feh[[:blank:]]+(--image-bg[[:blank:]]+[^[:blank:]]+[[:blank:]]+)?(--bg-[^[:blank:]]+[[:blank:]]+)?''([^'']*)''[[:blank:]]*$_\3_g' < ${HOME}/.fehbg

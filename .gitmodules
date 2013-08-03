@@ -1,0 +1,21 @@
+[submodule "system-config/cli-files/.vim/bundle/vim-surround"]
+	path = system-config/cli-files/.vim/bundle/vim-surround
+	url = git://github.com/tpope/vim-surround.git
+[submodule "system-config/cli-files/.vim/bundle/gundo"]
+	path = system-config/cli-files/.vim/bundle/gundo
+	url = git://github.com/sjl/gundo.vim.git
+[submodule "system-config/cli-files/.vim/bundle/nerdtree"]
+	path = system-config/cli-files/.vim/bundle/nerdtree
+	url = git://github.com/scrooloose/nerdtree.git
+[submodule "system-config/cli-files/.vim/bundle/nerdcommenter"]
+	path = system-config/cli-files/.vim/bundle/nerdcommenter
+	url = git://github.com/scrooloose/nerdcommenter.git
+[submodule "system-config/cli-files/.vim/bundle/tagbar"]
+	path = system-config/cli-files/.vim/bundle/tagbar
+	url = git://github.com/majutsushi/tagbar.git
+[submodule "submodules/vim-pathogen"]
+	path = submodules/vim-pathogen
+	url = git://github.com/tpope/vim-pathogen.git/
+[submodule "system-config/cli-files/.vim/bundle/inkpot"]
+	path = system-config/cli-files/.vim/bundle/inkpot
+	url = git://github.com/ciaranm/inkpot.git

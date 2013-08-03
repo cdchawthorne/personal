@@ -1,0 +1,17 @@
+#!/usr/bin/env zsh
+# Links the executables in bin-linked.txt in $1 or ${HOME}/bin
+
+if [[ $# -gt 0 ]]; then
+    bin_dir=$1
+else
+    bin_dir=${HOME}/bin
+fi
+
+repo_core=$(dirname "$(realpath $0)")
+repo=$(realpath ${repo_core}/..)
+
+rm ${bin_dir}/* 2> /dev/null
+
+while builtin read file; do
+    ln -s ${repo}/${file} ${bin_dir}
+done < ${repo_core}/bin-linked.txt

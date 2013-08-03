@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+
+export INPUTRC=${HOME}/.pyinputrc
+command python $@

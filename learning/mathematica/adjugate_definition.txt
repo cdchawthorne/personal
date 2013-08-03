@@ -1,0 +1,1 @@
+adj[m_]:= Map[Reverse, Minors[Transpose[m], Length[m] - 1], {0, 1}] * Table[(-1)^(i+j), {i, Length[m]}, {j, Length[m]}]

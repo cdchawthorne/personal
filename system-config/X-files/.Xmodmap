@@ -1,0 +1,37 @@
+! Chris Hawthorne's keyboard mod file
+! Updated 22 Dec 2011
+
+! Make the caps lock key be Mode_switch
+remove mod5 = Mode_switch
+add mod3 = Mode_switch
+keycode 66 = Mode_switch Caps_Lock
+!keycode 66 = Mode_switch
+
+! Swap left alt key and left super (Windows) key
+remove mod4 = Super_L
+remove mod1 = Alt_L
+keycode 133 = Alt_L Meta_L
+keycode 64 = Super_L
+add mod4 = Super_L
+add mod1 = Alt_L
+
+! Make that silly left backslash key left control
+!remove control = Control_L
+!keycode 94 = Control_L
+!add control = Control_L
+keycode 94 = Shift_L
+
+keycode 44 = j J Left Left
+keycode 45 = k K Down Down
+keycode 46 = l L Right Right
+keycode 30 = u U Home Home
+keycode 31 = i I Up Up
+keycode 32 = o O End End
+keycode 61 = slash question BackSpace BackSpace
+keycode 43 = h H Left Left
+keycode 47 = semicolon colon Right Right
+keycode 48 = apostrophe quotedbl BackSpace BackSpace
+keycode 34 = bracketleft braceleft Delete Delete
+keycode 33 = p P Prior Prior
+keycode 57 = n N Next Next
+keycode 58 = m M Escape Escape

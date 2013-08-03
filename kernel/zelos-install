@@ -1,0 +1,17 @@
+#!/bin/zsh
+
+function usage {
+    echo "usage: $(basename $0) kernel_base_directory" 1>&2
+    echo "Must be run as root user" 1>&2
+}
+
+if [[ $(whoami) != "root" || $# -ne 1 ]]; then
+    usage
+    exit 1
+fi
+
+cd $1
+make INSTALL_MOD_STRIP=1 modules_install
+cp arch/x86_64/boot/bzImage /boot/vmlinuz-ZelOS
+cp System.map "/boot/System.map-$(make kernelversion)"
+mkinitcpio -k /boot/vmlinuz-ZelOS -g /boot/initramfs-ZelOS.img

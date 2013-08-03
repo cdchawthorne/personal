@@ -1,0 +1,3 @@
+#!/bin/bash
+
+mplayer "${HOME}/media/music/irene_adler_moan_ringtone.mp3"

@@ -1,0 +1,271 @@
+\documentclass{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[canadian]{babel}
+
+\usepackage{amsmath, amssymb, microtype, tikz-cd, centernot, mathtools,
+            csquotes}
+\usepackage[backend=biber, bibstyle=authoryear, citestyle=authoryear_bcite,
+            backref=true]{biblatex}
+\usepackage[log-declarations=false]{xparse}
+\usepackage[nottoc]{tocbibind}
+\usepackage[shortlabels]{enumitem}
+
+% Apparently order matters here
+\usepackage{hyperref}
+\usepackage{amsthm}
+\usepackage[nameinlink]{cleveref}
+\usepackage[retainorgcmds]{IEEEtrantools}
+
+\hypersetup{
+  colorlinks,
+  linktoc=section,
+  linkcolor=blue,
+  citecolor=blue,
+  urlcolor=blue,
+}
+
+% Better proof environment
+% Suffers from the annoying flaw that the second parameter gets evaluated on
+% exiting the environment, not entering; use an \edef before entering the
+% environment to get around this.
+\NewDocumentEnvironment{pf}{O{\proofname} o}{
+  \begin{proof}[#1]
+}{
+    \let \oldqedsymbol \qedsymbol
+    \RenewDocumentCommand{\qedsymbol}{}{
+      \oldqedsymbol \IfValueTF{#2}{\, #2}{}
+    }
+  \end{proof}
+  \RenewDocumentCommand{\qedsymbol}{}{\oldqedsymbol}
+}
+
+% \newtheorem replacement that internally labels all theorems and tracks the
+% last theorem
+\newcounter{smarttheoremcounter}
+\NewDocumentCommand{\newsmarttheorem}{m m}{
+  \newtheorem{hidden#1}[smarttheoremcounter]{#2}
+  \NewDocumentEnvironment{#1}{o}{
+    \IfNoValueTF{##1}{
+      \begin{hidden#1}
+    }{
+      \begin{hidden#1}[##1]
+    }
+        \label{smarttheorem:\arabic{smarttheoremcounter}}
+  }{
+      \end{hidden#1}
+  }
+}
+
+% Reference proof: tags the proof using Cref on either the label provided or
+% the last smarttheorem
+\NewDocumentEnvironment{rpf}{s O{smarttheorem:\arabic{smarttheoremcounter}}}{
+  \edef \theoremref {#2}
+  \begin{pf}[\IfBooleanTF{#1}{Proof of \Cref{\theoremref}}{\proofname}]%
+    [\Cref{\theoremref}]
+}{
+  \end{pf}
+}
+
+% Convenience environments
+\NewDocumentEnvironment{dpf}{O{\proofname} o}{
+  \begin{pf}[#1][#2]
+    \mbox{}
+    \begin{description}
+}{
+    \end{description}
+  \end{pf}
+}
+
+\NewDocumentEnvironment{drpf}{s o}{
+  \IfBooleanTF{#1}{
+    \IfValueTF{#2}{
+      \begin{rpf}*[#2]
+    }{
+      \begin{rpf}*
+    }
+  }{
+    \IfValueTF{#2}{
+      \begin{rpf}[#2]
+    }{
+      \begin{rpf}
+    }
+  }
+    \mbox{}
+    \begin{description}
+}{
+    \end{description}
+  \end{rpf}
+}
+
+\NewDocumentCommand{\lr}{}{\item[\((\implies)\)]}
+\NewDocumentCommand{\rl}{}{\item[\((\impliedby)\)]}
+
+\NewDocumentEnvironment{ea}{O{rCl}}{
+  \begin{IEEEeqnarray*}{#1}
+}{
+  \end{IEEEeqnarray*}
+}
+
+\NewDocumentEnvironment{tcd}{s}{
+  \IfBooleanTF{#1}{\begin{equation}}{\[}
+    \begin{tikzcd}
+}{
+    \end{tikzcd}
+  \IfBooleanTF{#1}{\end{equation}}{\]}
+}
+
+\newtheorem{case}{Case}
+\newtheorem{subcase}{Case}
+\numberwithin{subcase}{case}
+
+\NewDocumentEnvironment{caselist}{}{
+  \setcounter{case}{0}
+}
+
+% Theorems
+\theoremstyle{plain}
+\newsmarttheorem{theorem}{Theorem}
+\newsmarttheorem{lemma}{Lemma}
+\newsmarttheorem{proposition}{Proposition}
+\newsmarttheorem{claim}{Claim}
+\newsmarttheorem{corollary}{Corollary}
+\newsmarttheorem{fact}{Fact}
+\newsmarttheorem{todo}{TODO}
+
+\theoremstyle{definition}
+\newsmarttheorem{definition}{Definition}
+\newsmarttheorem{notation}{Notation}
+
+\theoremstyle{remark}
+\newsmarttheorem{question}{Question}
+\newsmarttheorem{remark}{Remark}
+\newsmarttheorem{note}{Note}
+\newsmarttheorem{conjecture}{Conjecture}
+\newsmarttheorem{exercise}{Exercise}
+\newsmarttheorem{example}{Example}
+\newsmarttheorem{counterexample}{Counterexample}
+\NewDocumentEnvironment{pconjecture}{m}{
+  \begin{conjecture}[Proven: see \Cref{#1}]
+}{
+  \end{conjecture}
+}
+\NewDocumentEnvironment{dconjecture}{m}{
+  \begin{conjecture}[Disproven: see \Cref{#1}]
+}{
+  \end{conjecture}
+}
+
+% Blackboard bold
+\NewDocumentCommand{\bA}{}{\mathbb{A}}
+\NewDocumentCommand{\bC}{}{\mathbb{C}}
+\NewDocumentCommand{\bD}{}{\mathbb{D}}
+\NewDocumentCommand{\bN}{}{\mathbb{N}}
+\NewDocumentCommand{\bQ}{}{\mathbb{Q}}
+\NewDocumentCommand{\bR}{}{\mathbb{R}}
+\NewDocumentCommand{\bT}{}{\mathbb{T}}
+\NewDocumentCommand{\bZ}{}{\mathbb{Z}}
+
+% Math Calligraphy
+\NewDocumentCommand{\cA}{}{\mathcal{A}}
+\NewDocumentCommand{\cB}{}{\mathcal{B}}
+\NewDocumentCommand{\cC}{}{\mathcal{C}}
+\NewDocumentCommand{\cD}{}{\mathcal{D}}
+\NewDocumentCommand{\cE}{}{\mathcal{E}}
+\NewDocumentCommand{\cF}{}{\mathcal{F}}
+\NewDocumentCommand{\cG}{}{\mathcal{G}}
+\NewDocumentCommand{\cH}{}{\mathcal{H}}
+\NewDocumentCommand{\cI}{}{\mathcal{I}}
+\NewDocumentCommand{\cJ}{}{\mathcal{J}}
+\NewDocumentCommand{\cK}{}{\mathcal{K}}
+\NewDocumentCommand{\cL}{}{\mathcal{L}}
+\NewDocumentCommand{\cM}{}{\mathcal{M}}
+\NewDocumentCommand{\cN}{}{\mathcal{N}}
+\NewDocumentCommand{\cO}{}{\mathcal{O}}
+\NewDocumentCommand{\cP}{}{\mathcal{P}}
+\NewDocumentCommand{\cQ}{}{\mathcal{Q}}
+\NewDocumentCommand{\cR}{}{\mathcal{R}}
+\NewDocumentCommand{\cS}{}{\mathcal{S}}
+\NewDocumentCommand{\cT}{}{\mathcal{T}}
+\NewDocumentCommand{\cU}{}{\mathcal{U}}
+\NewDocumentCommand{\cV}{}{\mathcal{V}}
+\NewDocumentCommand{\cW}{}{\mathcal{W}}
+\NewDocumentCommand{\cX}{}{\mathcal{X}}
+\NewDocumentCommand{\cY}{}{\mathcal{Y}}
+\NewDocumentCommand{\cZ}{}{\mathcal{Z}}
+
+% Aliases
+\let \weirdepsilon \epsilon
+\let \weirdphi \phi
+
+\let \epsilon \varepsilon
+\let \phi \varphi
+
+\let \gangnamstyle \displaystyle
+\let \ol \overline
+
+\let \ss \subseteq
+\let \ssne \subsetneqq
+\let \sps \supseteq
+\let \spsne \supsetneqq
+\let \es \emptyset
+\NewDocumentCommand{\fss}{}{\subseteq_{\operatorname{fin}}}
+
+\let \ra \rightarrow
+\let \hra \hookrightarrow
+\let \la \leftarrow
+\let \hla \hookleftarrow
+
+\let \cnot \centernot
+\NewDocumentCommand{\fin}{}{{\operatorname{fin}}}
+\let \co \colon
+
+% Delimiters
+\DeclarePairedDelimiter{\angs}{\langle}{\rangle}
+\DeclarePairedDelimiterX{\set}[1]{\{}{\}}{\, #1 \,}
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\card}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\bars}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\pars}{(}{)}
+
+% Parametrized macros
+\NewDocumentCommand{\seq}{s m m}{
+  {\IfBooleanTF{#1}{\pars*}{\pars}{#2 : #3 < \omega}}
+}
+\NewDocumentCommand{\idx}{m m}{{#1_0, \dots, #1_{#2}}}
+
+% Non-simple operators
+\DeclareMathOperator{\ch}{char}
+\DeclareMathOperator{\im}{Im}
+\DeclareMathOperator{\lspan}{span}
+
+% Simple operators
+\DeclareMathOperator{\Th}{Th}
+\DeclareMathOperator{\tp}{tp}
+\DeclareMathOperator{\dcl}{dcl}
+\DeclareMathOperator{\acl}{acl}
+\DeclareMathOperator{\alg}{alg}
+\DeclareMathOperator{\cl}{cl}
+\DeclareMathOperator{\Cl}{Cl}
+\DeclareMathOperator{\RM}{RM}
+\DeclareMathOperator{\dM}{dM}
+\DeclareMathOperator{\eq}{eq}
+\DeclareMathOperator{\age}{age}
+\DeclareMathOperator{\qftp}{qftp}
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\Ind}{Ind}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\ob}{ob}
+\DeclareMathOperator{\id}{id}
+
+\title{}
+\author{Christopher Hawthorne}
+\date{20387811}
+
+\begin{document}
+  \maketitle
+\end{document}

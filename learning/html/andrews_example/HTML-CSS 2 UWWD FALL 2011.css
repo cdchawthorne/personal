@@ -1,0 +1,147 @@
+﻿/* LeftColFullNavFloat.css */
+
+/* Block all default margins and padding */
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    /* Required to center wrapper in old browsers */
+    text-align: center; 
+    /* The rest is optional, style to taste */
+    background-color: #B0C4DE;
+    font-family: Verdana, Geneva, Sans-Serif;
+}
+
+/* Wrapper sizes the layout */
+#wrapper {
+    /* Sets width of fixed or elastic layout */
+    width: 60em; 
+    /* Centers the layout (newer browsers) */
+    margin: 0 auto;
+    /* The rest is optional, style to taste */
+    background-color: #E2E6E0;
+}
+
+/* ---------------------- Start layout division styles ---------------------- */
+/* Branding division */
+#branding {
+    /* Style to taste */
+    height: 7em; 
+    background-color: #0000CD;
+}
+
+/* Left column */
+#leftcolumn {
+    float: left; 
+    /* Style to taste */
+    width: 15em;
+height: 50em;
+background-color: #FFA500;
+}
+
+
+
+#navbar {
+    /* Style to taste */
+    height: 2em;
+    background-color: #f4dabc;
+ 	/* Set to any width */
+         width:100%;
+         /* Use any background color/image you like */
+         background-color:#000; /* black */  
+         /* Use any fonts you like */
+         font-family: Verdana, Geneva, Arial, Helvitica, Sans-Serif;
+         color:#fff; /* white */ 
+         /* Use any height you like, but match to link height */
+         height:2em;
+
+/* Navbar division */
+}
+
+#navbar ul{
+        list-style-type:none;
+}
+
+/* Make list horizontal */
+#navbar li{
+        float:left;
+}
+
+#navbar li a,
+    #navbar li a:link,
+    #navbar li a:visited{
+       text-decoration:none;
+       background-color:#000;  /* black */
+       color:#fff; /* Text color of link */
+       display:block; /* required to set width and height */
+       text-align:center;
+       height:2em; /* Match to navbar height */
+       line-height:2em; /* Match to navbar height */
+       width:8em;
+       border-right:solid 1px #ccc;
+       /* Remove dotted border from Firefox */
+       outline-style:none;
+    }
+    /* Hover and active links */
+    #navbar li a:hover,
+    #navbar li a:active{
+        /* Use any colors you like */
+        background-color:#ddd;
+        color:#00b; /* Dark blue */
+}
+
+/* Content division */
+#content {
+    /* Leave room for leftcolumn */
+    margin-left: 15em; 
+    /* Optional, style to taste */
+    text-align:left;
+    padding-bottom: 0.5em;
+    background-color: #fff;
+    color: #000;
+}
+
+/* Footer division */
+#footer {
+    /* Clear floated column */
+    clear:left; 
+    /* Optional, style to taste */
+    background-color: #4169E1;
+    color: #000;
+    border-top: solid 1px #B0C4D0;
+    min-height: 2em;
+}
+/* ---------------------- End layout division styles ---------------------- */
+
+/* ---------------------- Start Content division styles ------------------- */
+/* Heading 1 tags in content division */
+#content h1 {
+    margin-left: 10px;
+    font-size: 1.5em;
+}
+
+/* Paragraphs in content division */
+#content p {
+    font-size: 0.85em;
+    line-height: 1.5em;
+    margin: 1em 12px;
+}
+
+
+
+/* Bulleted lists in content division */
+#content ul {
+    font-size: 0.85em;
+    margin: 1em 20px 1em 40px;
+}
+
+#content ul li {
+    margin-bottom: 0.5em;
+}
+
+/* ---------------------- End Content division styles ------------------- */
+
+
+

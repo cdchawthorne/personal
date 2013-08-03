@@ -1,0 +1,19 @@
+#!/usr/bin/env zsh
+
+if [[ -z ${BACKGROUNDS_FILE} ]]; then
+    BACKGROUNDS_FILE=${HOME}/.backgrounds
+fi
+
+for file in $@; do
+    if [[ ! -e "$(realpath ${file})" ]]; then
+        echo "ERROR: passed non-existent file: $(realpath ${file})" 1>&2
+        echo "No changes have been made. Exiting..." 1>&2
+        exit 1
+    fi
+done
+
+for file in $@; do
+    if ! fgrep -x "$(realpath ${file})" ${BACKGROUNDS_FILE} &> /dev/null; then
+        realpath ${file} >> ${BACKGROUNDS_FILE}
+    fi
+done

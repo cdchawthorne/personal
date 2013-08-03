@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+
+cd ${HOME}/downloads
+zathura --fork "$(realpath "$(ls -rt | tail -1)")" &> /dev/null
