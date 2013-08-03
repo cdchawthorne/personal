@@ -1,2 +1,7 @@
 All things cdchawthorne that aren't too personal for a public repo.
 Mostly system configuration and programming stuff.
+
+Things that might be of interest:
+system-config/cli-files/.vimrc
+system-config/cli-files/.vim/skeleton.tex
+system-config/dev/texmf/tex/latex/biblatex/cbx/authoryear_bcite.cbx
