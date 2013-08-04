@@ -8,11 +8,6 @@ core/line
 core/lines
 core/python-with-readline
 kernel/zelos-install
-X-utilities/add-backgrounds
-X-utilities/check-backgrounds
 X-utilities/change-volume
 X-utilities/dl
-X-utilities/get-current-background
 X-utilities/pdf
-X-utilities/remove-backgrounds
-X-utilities/set-random-background

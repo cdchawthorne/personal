@@ -79,11 +79,6 @@ bindkey -M viins "^K" kill-whole-line
 bindkey -M viins "^R" history-incremental-search-backward
 bindkey -M viins '^[[3~' vi-delete-char
 
-function _insert_backslash { LBUFFER+=\\ }
-zle -N insert-backslash _insert_backslash
-
-bindkey -M viins "kd" insert-backslash
-
 bindkey -M vicmd "k" history-beginning-search-backward
 bindkey -M vicmd "j" history-beginning-search-forward
 bindkey -M vicmd '^[[3~' vi-delete-char
