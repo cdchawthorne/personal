@@ -1,12 +1,5 @@
-binaries/pad
-core/backup
-core/restore
-core/timestamp
-core/xvim
-core/zvim
 core/line
 core/lines
-core/python-with-readline
 kernel/zelos-install
 X-utilities/change-volume
 X-utilities/dl

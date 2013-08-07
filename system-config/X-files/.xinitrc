@@ -29,7 +29,7 @@ fi
 
 # Set background or draw attention to the error
 
-set-random-background || feh --bg-max ${HOME}/media/pictures/backgrounds/error.jpg
+pere random
 xscreensaver -no-splash &
 
 chromium &

@@ -43,7 +43,7 @@
 "pkill xcowsay"
     m:0x41 + c:53
     Shift+Mod4 + x
-"set-random-background"
+"pere random"
     m:0x41 + c:56
     Shift+Mod4 + b
 "xterm -e zsh -c "exec tmux -f ${HOME}/.tmux_nobar.conf new-session""

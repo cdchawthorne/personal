@@ -11,4 +11,4 @@ applyPad :: Int -> L.ByteString -> L.ByteString
 applyPad seed = L.pack . zipWith xor (makePad seed) . L.unpack
 
 main :: IO ()
-main = getArgs >>= return . head >>= L.interact . applyPad . read
+main = getArgs >>= L.interact . applyPad . read . head

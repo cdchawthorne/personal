@@ -30,9 +30,6 @@ alias xp='chmod +x'
 alias ff='find . -name'
 alias fr='find . -regex'
 alias rlwrap='rlwrap -s 1000000'
-# Dangerous, disables ^G for interrupt
-#alias erl='rlwrap -ca erl'
-alias python='python-with-readline'
 alias math='rlwrap math'
 alias racket='rlwrap racket'
 alias mount='mount -o gid=users,fmask=113,dmask=002'
@@ -98,6 +95,52 @@ function x {
         builtin cd
         command startx &> "${HOME}/.xsession-errors"
     fi
+}
+
+function xvim {
+    if [[ -n ${DISPLAY} || ${zsh_parent_process} == sshd ]]; then
+        echo -ne '\e[1 q'
+    else
+        echo -ne '\e[?6c'
+    fi
+    vim $@
+
+    optionRegex='^-.*$'
+    for arg in $@; do
+        if [[ ! ${arg} =~ ${optionRegex} && -e ${arg} && ! -x ${arg} ]]; then
+            chmod +x ${arg}
+        fi
+    done
+}
+
+function zvim {
+    if [[ -n ${DISPLAY} || ${zsh_parent_process} == "sshd" ]]; then
+        echo -ne '\e[1 q'
+    else
+        echo -ne '\e[?6c'
+    fi
+    vim -u <(cat << EOF
+exe "source " fnameescape("${HOME}/.vimrc")
+autocmd BufNewFile *
+    \ setfiletype zsh |
+    \ 0put = '#!/usr/bin/env zsh' |
+    \ 1put = '' |
+    \ normal G
+EOF) $@
+
+    optionRegex='^-.*$'
+    for arg in $@; do
+        if [[ ! ${arg} =~ ${optionRegex} && -e ${arg} && ! -x ${arg} ]]; then
+            chmod +x ${arg}
+        fi
+    done
+}
+
+function python {
+    (
+        export INPUTRC=${HOME}/.pyinputrc
+        command python $@
+    )
 }
 
 # Add an "alert" alias for long running commands.  Use like so:
