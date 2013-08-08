@@ -265,14 +265,14 @@ function! LaTeXEndEnvironment()
     let endColumn = col(".")
 
     call EscapeIndent("up")
-    while getline(".") !~# '\v^ *\\begin\{[[:alpha:]]+\*?\}$' &&
+    while getline(".") !~# '\v^ *\\begin\{[[:alpha:]]+\*?\}' &&
                 \ col(".") != 1 && line(".") != 1
         call EscapeIndent("up")
     endwhile
 
-    let beginEnv = getline(".")
+    let beginEnv = matchstr(getline("."), '\v^ *\\begin\{[[:alpha:]]+\*?\}')
 
-    if beginEnv =~# '\v^ *\\begin\{[[:alpha:]]+\*?\}$'
+    if beginEnv !=# ''
         if deleteOld
             call cursor(oldLine, oldColumn)
             normal dd
@@ -341,16 +341,14 @@ inoremap <silent> Jf <C-]><Esc>
 inoremap <silent> jF <C-]><Esc>
 inoremap <silent> JF <C-]><Esc>
 
-inoremap <silent> kd \
-
-inoremap <silent> pdm <C-g>u<Esc>viwUgi
-inoremap <silent> pdk <C-k>
-inoremap <silent> pdu <C-g>u<C-u>
-inoremap <silent> pdn <C-n>
-inoremap <silent> pdp <C-p>
-inoremap <silent> pds <C-g>u<Esc>gqgqA
-inoremap <silent> pdw <C-w>
-inoremap <silent> pdx <NOP>
+inoremap <silent> jdm <C-g>u<Esc>viwUgi
+inoremap <silent> jdk <C-k>
+inoremap <silent> jdu <C-g>u<C-u>
+inoremap <silent> jdn <C-n>
+inoremap <silent> jdp <C-p>
+inoremap <silent> jds <C-g>u<Esc>gqgqA
+inoremap <silent> jdw <C-w>
+inoremap <silent> jdx <NOP>
 
 " Leader mappings
 let mapleader = "s"

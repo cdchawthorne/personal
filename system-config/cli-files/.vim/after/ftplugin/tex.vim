@@ -20,10 +20,12 @@ nnoremap <buffer> <LocalLeader>s :Lce
 nnoremap <silent> <buffer> <LocalLeader>d
             \ :call search('^\\begin{document}$', 'ws')<CR>
 
-inoremap <buffer> pdb <C-]><Esc>:Lbe 
-inoremap <silent> <buffer> pdl <C-]><Esc>:Lee<CR>A
-inoremap <buffer> pde <C-]><Esc>:Lea 
-inoremap <buffer> pdE <C-]><Esc>:Leb 
+inoremap <silent> <buffer> kd \
+
+inoremap <buffer> jdb <C-]><Esc>:Lbe 
+inoremap <silent> <buffer> jdl <C-]><Esc>:Lee<CR>A
+inoremap <buffer> jde <C-]><Esc>:Lea 
+inoremap <buffer> jdE <C-]><Esc>:Leb 
 
 iabbrev <buffer> == &=&
 iabbrev tfdc tfdc{}

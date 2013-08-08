@@ -18,12 +18,11 @@ setopt HIST_IGNORE_DUPS HIST_IGNORE_SPACE HIST_NO_STORE
 setopt NO_BEEP
 
 if [[ $(uname -n) == "computer-of-destiny" ]]; then
-    host='CoD'
+    PROMPT='%~%# '
 else
-    host='%m'
+    PROMPT='%m:%~%# '
 fi
 
-PROMPT="%n@${host}:%~%# "
 PROMPT2='> '
 KEYTIMEOUT=20
 

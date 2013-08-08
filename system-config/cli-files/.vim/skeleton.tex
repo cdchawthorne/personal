@@ -6,11 +6,10 @@
 \usepackage[canadian]{babel}
 
 \usepackage{amsmath, amssymb, microtype, tikz-cd, centernot, mathtools,
-            csquotes}
+            csquotes, etoolbox}
 \usepackage[backend=biber, bibstyle=authoryear, citestyle=authoryear_bcite,
             backref=true]{biblatex}
 \usepackage[log-declarations=false]{xparse}
-\usepackage[nottoc]{tocbibind}
 \usepackage[shortlabels]{enumitem}
 
 % Apparently order matters here
@@ -31,29 +30,32 @@
 % Suffers from the annoying flaw that the second parameter gets evaluated on
 % exiting the environment, not entering; use an \edef before entering the
 % environment to get around this.
-\NewDocumentEnvironment{pf}{O{\proofname} o}{
-  \begin{proof}[#1]
+\NewDocumentEnvironment{pf}{o o}{
+  \IfValueTF{#1}{\begin{proof}[#1]}{\begin{proof}}
 }{
     \let \oldqedsymbol \qedsymbol
-    \RenewDocumentCommand{\qedsymbol}{}{
-      \oldqedsymbol \IfValueTF{#2}{\, #2}{}
-    }
+    \IfValueTF{#2}{
+      \RenewDocumentCommand{\qedsymbol}{}{\oldqedsymbol \, #2}
+    }{}
   \end{proof}
   \RenewDocumentCommand{\qedsymbol}{}{\oldqedsymbol}
 }
 
 % \newtheorem replacement that internally labels all theorems and tracks the
 % last theorem
-\newcounter{smarttheoremcounter}
-\NewDocumentCommand{\newsmarttheorem}{m m}{
-  \newtheorem{hidden#1}[smarttheoremcounter]{#2}
+\newcounter{smarttheorem:smarttheoremcounter}
+\def \smarttheoremlabel {%
+  smarttheorem:\arabic{smarttheorem:smarttheoremcounter}%
+}
+
+\NewDocumentCommand{\newsmarttheorem}{m o m}{
+  \IfNoValueTF{#2}{\newcounter{#1}}{}
+  \newtheorem{hidden#1}[\IfValueTF{#2}{#2}{#1}]{#3}
+
   \NewDocumentEnvironment{#1}{o}{
-    \IfNoValueTF{##1}{
-      \begin{hidden#1}
-    }{
-      \begin{hidden#1}[##1]
-    }
-        \label{smarttheorem:\arabic{smarttheoremcounter}}
+    \IfNoValueTF{##1}{\begin{hidden#1}}{\begin{hidden#1}[{##1}]}
+      \stepcounter{smarttheorem:smarttheoremcounter}
+      \label{\smarttheoremlabel}
   }{
       \end{hidden#1}
   }
@@ -61,10 +63,9 @@
 
 % Reference proof: tags the proof using Cref on either the label provided or
 % the last smarttheorem
-\NewDocumentEnvironment{rpf}{s O{smarttheorem:\arabic{smarttheoremcounter}}}{
-  \edef \theoremref {#2}
-  \begin{pf}[\IfBooleanTF{#1}{Proof of \Cref{\theoremref}}{\proofname}]%
-    [\Cref{\theoremref}]
+\NewDocumentEnvironment{rpf}{O{\proofname} O{\smarttheoremlabel}}{
+  \edef \smarttheoremsavedlabel {#2}
+  \begin{pf}[\IfValueTF{#1}{#1}{\proofname}][\Cref{\smarttheoremsavedlabel}]
 }{
   \end{pf}
 }
@@ -79,19 +80,11 @@
   \end{pf}
 }
 
-\NewDocumentEnvironment{drpf}{s o}{
-  \IfBooleanTF{#1}{
+\NewDocumentEnvironment{drpf}{O{\proofname} o}{
     \IfValueTF{#2}{
-      \begin{rpf}*[#2]
+    \begin{rpf}[#1][#2]
     }{
-      \begin{rpf}*
-    }
-  }{
-    \IfValueTF{#2}{
-      \begin{rpf}[#2]
-    }{
-      \begin{rpf}
-    }
+    \begin{rpf}[#1]
   }
     \mbox{}
     \begin{description}
@@ -126,27 +119,27 @@
 }
 
 % Theorems
+\newcounter{theoremcounter}
 \theoremstyle{plain}
-\newsmarttheorem{theorem}{Theorem}
-\newsmarttheorem{lemma}{Lemma}
-\newsmarttheorem{proposition}{Proposition}
-\newsmarttheorem{claim}{Claim}
-\newsmarttheorem{corollary}{Corollary}
-\newsmarttheorem{fact}{Fact}
+\newsmarttheorem{theorem}[theoremcounter]{Theorem}
+\newsmarttheorem{lemma}[theoremcounter]{Lemma}
+\newsmarttheorem{proposition}[theoremcounter]{Proposition}
+\newsmarttheorem{claim}[theoremcounter]{Claim}
+\newsmarttheorem{corollary}[theoremcounter]{Corollary}
+\newsmarttheorem{fact}[theoremcounter]{Fact}
 \newsmarttheorem{todo}{TODO}
 
 \theoremstyle{definition}
-\newsmarttheorem{definition}{Definition}
-\newsmarttheorem{notation}{Notation}
+\newsmarttheorem{definition}[theoremcounter]{Definition}
+\newsmarttheorem{notation}[theoremcounter]{Notation}
 
 \theoremstyle{remark}
-\newsmarttheorem{question}{Question}
-\newsmarttheorem{remark}{Remark}
-\newsmarttheorem{note}{Note}
-\newsmarttheorem{conjecture}{Conjecture}
-\newsmarttheorem{exercise}{Exercise}
-\newsmarttheorem{example}{Example}
-\newsmarttheorem{counterexample}{Counterexample}
+\newsmarttheorem{question}[theoremcounter]{Question}
+\newsmarttheorem{remark}[theoremcounter]{Remark}
+\newsmarttheorem{conjecture}[theoremcounter]{Conjecture}
+\newsmarttheorem{exercise}[theoremcounter]{Exercise}
+\newsmarttheorem{example}[theoremcounter]{Example}
+\newsmarttheorem{counterexample}[theoremcounter]{Counterexample}
 \NewDocumentEnvironment{pconjecture}{m}{
   \begin{conjecture}[Proven: see \Cref{#1}]
 }{
