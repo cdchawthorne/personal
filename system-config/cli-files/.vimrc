@@ -316,7 +316,6 @@ nnoremap ? ?\v
 nnoremap <silent> <Tab> %
 nnoremap <silent> S m
 nnoremap <silent> m <C-b>
-nnoremap <silent> K <C-b>
 nnoremap <silent> <Space> <C-f>
 
 vnoremap <silent> Q gq
@@ -324,12 +323,10 @@ vnoremap / /\v
 vnoremap ? ?\v
 vnoremap <silent> <Tab> %
 vnoremap <silent> m <C-b>
-vnoremap <silent> K <C-b>
 vnoremap <silent> <Space> <C-f>
 
 onoremap <silent> <Tab> %
 onoremap <silent> m <C-b>
-onoremap <silent> K <C-b>
 onoremap <silent> <Space> <C-f>
 
 inoremap <silent> fj <C-]><Esc>
@@ -341,14 +338,14 @@ inoremap <silent> Jf <C-]><Esc>
 inoremap <silent> jF <C-]><Esc>
 inoremap <silent> JF <C-]><Esc>
 
-inoremap <silent> jdm <C-g>u<Esc>viwUgi
-inoremap <silent> jdk <C-k>
-inoremap <silent> jdu <C-g>u<C-u>
-inoremap <silent> jdn <C-n>
-inoremap <silent> jdp <C-p>
-inoremap <silent> jds <C-g>u<Esc>gqgqA
-inoremap <silent> jdw <C-w>
-inoremap <silent> jdx <NOP>
+inoremap <silent> ldm <C-g>u<Esc>viwUgi
+inoremap <silent> ldk <C-k>
+inoremap <silent> ldu <C-g>u<C-u>
+inoremap <silent> ldn <C-n>
+inoremap <silent> ldp <C-p>
+inoremap <silent> lds <C-g>u<Esc>gqgqA
+inoremap <silent> ldw <C-w>
+inoremap <silent> ldx <NOP>
 
 " Leader mappings
 let mapleader = "s"
