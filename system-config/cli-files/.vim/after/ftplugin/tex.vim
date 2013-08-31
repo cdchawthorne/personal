@@ -22,10 +22,10 @@ nnoremap <silent> <buffer> <LocalLeader>d
 
 inoremap <silent> <buffer> kd \
 
-inoremap <buffer> jdb <C-]><Esc>:Lbe 
-inoremap <silent> <buffer> jdl <C-]><Esc>:Lee<CR>A
-inoremap <buffer> jde <C-]><Esc>:Lea 
-inoremap <buffer> jdE <C-]><Esc>:Leb 
+inoremap <buffer> ldb <C-]><Esc>:Lbe 
+inoremap <silent> <buffer> ldl <C-]><Esc>:Lee<CR>A
+inoremap <buffer> lde <C-]><Esc>:Lea 
+inoremap <buffer> ldE <C-]><Esc>:Leb 
 
 iabbrev <buffer> == &=&
 iabbrev tfdc tfdc{}
@@ -38,9 +38,10 @@ iabbrev Tfdsc Tfdsc{}
 iabbrev Tfdsc: Tfdsc{}:
 
 nnoremap <silent> <buffer> <LocalLeader>c
-            \ :call VimLaTeXCompile() \| call PdfView()<CR>
+            \ :call LaTeXCompile() \| call PdfView()<CR>
 nnoremap <silent> <buffer> <LocalLeader>v :call PdfView()<CR>
 nnoremap <silent> <buffer> <LocalLeader>t :call LatexBox_TOC()<CR>
+nnoremap <silent> <buffer> <LocalLeader>r :call LaTeXClean()<CR>
 
 nmap <buffer> % <Plug>LatexBox_JumpToMatch
 vmap <buffer> % <Plug>LatexBox_JumpToMatch

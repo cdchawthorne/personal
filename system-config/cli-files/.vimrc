@@ -190,13 +190,18 @@ function! SelectedLines()
     return join(getline(line("'<"), line("'>")), "\n")
 endfunction
 
-function! VimLaTeXCompile()
+function! LaTeXCompile()
     write
     silent !latexmk -pdf %
     redraw!
     if v:shell_error != 0
         !
     endif
+endfunction
+
+function! LaTeXClean()
+    silent !latexmk -C
+    redraw!
 endfunction
 
 function! PdfView()
