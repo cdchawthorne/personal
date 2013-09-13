@@ -50,7 +50,19 @@ set undofile
 set undodir=${HOME}/utilities/vim_undo
 
 " Colour and cursor trickery
-if $DISPLAY !~ '^$' || $zsh_parent_process ==# 'sshd'
+if $STY !=# ''
+    let &t_SI = "\<Esc>P\<Esc>[3 q\<Esc>\\"
+    let &t_EI = "\<Esc>P\<Esc>[1 q\<Esc>\\"
+
+    let &t_Co = 256
+
+    let g:inkpot_black_background=1
+    colorscheme inkpot
+
+    highlight ColorColumn ctermbg=60
+    set cursorline
+
+elseif $DISPLAY !=# '' || $zsh_parent_process ==# 'sshd'
     let &t_SI = "\<Esc>[3 q"
     let &t_EI = "\<Esc>[1 q"
 
