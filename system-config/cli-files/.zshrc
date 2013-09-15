@@ -27,7 +27,22 @@ PROMPT2='> '
 KEYTIMEOUT=20
 
 export zsh_parent_process="$(ps --no-headers -o comm $(ps --no-headers -o ppid | head -n 1))"
-if [[ -n ${DISPLAY} || ${zsh_parent_process} == "sshd" ]]; then
+if [[ -n ${STY} ]]; then
+    function zle-keymap-select {
+        if [[ ${KEYMAP} == "vicmd" ]]; then
+            echo -ne '\eP\e[1 q\e\'
+        elif [[ ${KEYMAP} == "main" ]]; then
+            echo -ne '\eP\e[3 q\e\'
+        fi
+    }
+    function zle-line-init { 
+        echo -ne '\eP\e[3 q\e\'
+    }
+    zle -N zle-keymap-select
+    zle -N zle-line-init
+    alias vim='echo -ne ''\eP\e[1 q\e\''; vim'
+    alias svim='echo -ne ''\eP\e[1 q\e\''; sudoedit'
+elif [[ -n ${DISPLAY} || ${zsh_parent_process} == "sshd" ]]; then
     function zle-keymap-select {
         if [[ ${KEYMAP} == "vicmd" ]]; then
             echo -ne '\e[1 q'

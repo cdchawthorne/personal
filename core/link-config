@@ -15,7 +15,7 @@ dev_src=${config_src}/dev
 function link-cli {
     link_from_home=(.emacs .haskeline .inputrc .pyinputrc .tmux.conf .vimrc
                     .zprofile .zsh_aliases .zsh_autoload .zshenv .zshrc .ghci
-                    .vim .zsh .rtorrent.rc .latexmkrc .irbrc)
+                    .vim .zsh .rtorrent.rc .latexmkrc .irbrc .screenrc)
 
     builtin cd
     rm ${link_from_home} 2> /dev/null
