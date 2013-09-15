@@ -343,14 +343,14 @@ inoremap <silent> Jf <C-]><Esc>
 inoremap <silent> jF <C-]><Esc>
 inoremap <silent> JF <C-]><Esc>
 
-inoremap <silent> ldm <C-g>u<Esc>viwUgi
-inoremap <silent> ldk <C-k>
-inoremap <silent> ldu <C-g>u<C-u>
-inoremap <silent> ldn <C-n>
-inoremap <silent> ldp <C-p>
-inoremap <silent> lds <C-g>u<Esc>gqgqA
-inoremap <silent> ldw <C-w>
-inoremap <silent> ldx <NOP>
+inoremap <silent> fdm <C-g>u<Esc>viwUgi
+inoremap <silent> fdk <C-k>
+inoremap <silent> fdu <C-g>u<C-u>
+inoremap <silent> fdn <C-n>
+inoremap <silent> fdp <C-p>
+inoremap <silent> fds <C-g>u<Esc>gqgqA
+inoremap <silent> fdw <C-w>
+inoremap <silent> fdx <NOP>
 
 " Leader mappings
 let mapleader = "s"

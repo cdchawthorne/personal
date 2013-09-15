@@ -116,7 +116,10 @@ function! GetPythonIndent(lnum)
             if closing_paren
                 return indent(parlnum)
             else
-                return indent(parlnum) + &shiftwidth
+                " cdchawthorne
+                " By PEP-8, this should be &shiftwidth * 2
+                " (Was originally just &shiftwidth)
+                return indent(parlnum) + &shiftwidth * 2
             endif
         else
             if closing_paren

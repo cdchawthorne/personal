@@ -22,10 +22,10 @@ nnoremap <silent> <buffer> <LocalLeader>d
 
 inoremap <silent> <buffer> kd \
 
-inoremap <buffer> ldb <C-]><Esc>:Lbe 
-inoremap <silent> <buffer> ldl <C-]><Esc>:Lee<CR>A
-inoremap <buffer> lde <C-]><Esc>:Lea 
-inoremap <buffer> ldE <C-]><Esc>:Leb 
+inoremap <buffer> fdb <C-]><Esc>:Lbe
+inoremap <silent> <buffer> fdl <C-]><Esc>:Lee<CR>A
+inoremap <buffer> fde <C-]><Esc>:Lea
+inoremap <buffer> fdE <C-]><Esc>:Leb
 
 iabbrev <buffer> == &=&
 iabbrev tfdc tfdc{}
