@@ -22,7 +22,7 @@ main = do
         , focusFollowsMouse = False
         , modMask = mainModMask
         , terminal =
-            "/usr/bin/xterm -e zsh -c \"exec tmux new-session\""
+            "/usr/bin/xterm -e zsh -c \"exec screen\""
         }
 
 myManageHook = composeAll

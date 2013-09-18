@@ -312,8 +312,8 @@ function! LaTeXEnvironmentComplete(ArgLead, CmdLine, CursorPos)
                 \ "corollary", "fact", "todo", "definition", "notation",
                 \ "question", "remark", "note", "conjecture", "dconjecture",
                 \ "pconjecture", "exercise", "example", "counterexample",
-                \ "enumerate", "itemize", "description", "proof", "tikzcd"
-                \ ]
+                \ "enumerate", "itemize", "description", "proof", "tikzcd",
+                \ "pmatrix"]
     call sort(envs)
 
     return filter(envs, 'v:val =~# "^' . a:ArgLead . '"')
@@ -334,6 +334,7 @@ nnoremap <silent> <Tab> %
 nnoremap <silent> S m
 nnoremap <silent> m <C-b>
 nnoremap <silent> <Space> <C-f>
+nnoremap <silent> fj a<Esc>fj
 
 vnoremap <silent> Q gq
 vnoremap / /\v

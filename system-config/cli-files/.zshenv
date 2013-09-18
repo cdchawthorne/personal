@@ -7,5 +7,4 @@ VISUAL=vim
 CSCOPE_DB=${HOME}/utilities/databases/cscope.out
 TERM=xterm-256color
 TEXMFHOME=${HOME}/.dev/texmf
-VIMRUNTIME=${HOME}/builds/vim/runtime
-export EDITOR VISUAL CSCOPE_DB TERM TEXMFHOME VIMRUNTIME
+export EDITOR VISUAL CSCOPE_DB TERM TEXMFHOME

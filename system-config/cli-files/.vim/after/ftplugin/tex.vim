@@ -22,20 +22,22 @@ nnoremap <silent> <buffer> <LocalLeader>d
 
 inoremap <silent> <buffer> kd \
 
-inoremap <buffer> fdb <C-]><Esc>:Lbe
+inoremap <buffer> fdb <C-]><Esc>:Lbe 
 inoremap <silent> <buffer> fdl <C-]><Esc>:Lee<CR>A
-inoremap <buffer> fde <C-]><Esc>:Lea
-inoremap <buffer> fdE <C-]><Esc>:Leb
+inoremap <buffer> fde <C-]><Esc>:Lea 
+inoremap <buffer> fdE <C-]><Esc>:Leb 
 
+iabbrev <buffer> group grape
+iabbrev <buffer> Group Grape
 iabbrev <buffer> == &=&
-iabbrev tfdc tfdc{}
-iabbrev tfdc: tfdc{}:
-iabbrev Tfdc Tfdc{}
-iabbrev Tfdc: Tfdc{}:
-iabbrev tfdsc tfdsc{}
-iabbrev tfdsc: tfdsc{}:
-iabbrev Tfdsc Tfdsc{}
-iabbrev Tfdsc: Tfdsc{}:
+iabbrev <buffer> tfdc tfdc{}
+iabbrev <buffer> tfdc: tfdc{}:
+iabbrev <buffer> Tfdc Tfdc{}
+iabbrev <buffer> Tfdc: Tfdc{}:
+iabbrev <buffer> tfdsc tfdsc{}
+iabbrev <buffer> tfdsc: tfdsc{}:
+iabbrev <buffer> Tfdsc Tfdsc{}
+iabbrev <buffer> Tfdsc: Tfdsc{}:
 
 nnoremap <silent> <buffer> <LocalLeader>c
             \ :call LaTeXCompile() \| call PdfView()<CR>
