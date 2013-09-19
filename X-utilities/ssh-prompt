@@ -1,0 +1,23 @@
+#!/usr/bin/env zsh
+
+destinations=(cdchawth@linux.student.cs.uwaterloo.ca
+              cdchawth@csclub.uwaterloo.ca
+              cdchawthorne@peterm.tk)
+
+echo -ne '\e[3 q'
+echo "Choose a destination:"
+for i in $(seq ${#destinations}); do
+    echo "($i) ${destinations[i]}"
+done
+echo "($((${#destinations}+1))) Other"
+
+read dst_id
+
+if [[ ${dst_id} -ge 1 && ${dst_id} -le ${#destinations} ]]; then
+    exec ssh ${destinations[${dst_id}]}
+elif [[ ${dst_id} == $((${#destinations}+1)) ]]; then
+    read 'dst?Enter a destinatin: '
+    exec ssh ${dst}
+else
+    exit 1
+fi

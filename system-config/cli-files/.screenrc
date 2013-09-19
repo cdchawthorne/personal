@@ -10,3 +10,8 @@ bind 0 select 10
 screen 1
 altscreen on
 bind ^j clear
+bind z lockscreen
+bind x eval "kill" "remove"
+bind - eval "split" "focus" "screen 1"
+bind k focus
+bind j focus

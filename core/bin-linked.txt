@@ -4,3 +4,4 @@ kernel/zelos-install
 X-utilities/change-volume
 X-utilities/dl
 X-utilities/pdf
+X-utilities/ssh-prompt
