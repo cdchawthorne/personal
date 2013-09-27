@@ -49,3 +49,6 @@
 "xterm -e 'ssh-prompt'"
     m:0x41 + c:45
     Shift+Mod4 + k
+"xterm -class pwsafe -e 'get-pass'"
+    m:0x41 + c:44
+    Shift+Mod4 + j

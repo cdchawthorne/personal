@@ -10,3 +10,11 @@ XTerm*faceName:         default
 
 XTerm*eightBitInput:    false
 XTerm*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
+
+pwsafe*background:       black
+pwsafe*foreground:       white
+pwsafe*cursorColor:      white
+pwsafe*font:             -*-Fixed-medium-R-Normal-*-20-*-*-*-*-*-*-*
+pwsafe*faceName:         default
+pwsafe*eightBitInput:    false
+pwsafe*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)

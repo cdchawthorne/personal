@@ -2,7 +2,8 @@
 
 destinations=(cdchawth@linux.student.cs.uwaterloo.ca
               cdchawth@csclub.uwaterloo.ca
-              cdchawthorne@peterm.tk)
+              cdchawthorne@peterm.tk
+              cdchawth@ugster18.student.cs.uwaterloo.ca)
 
 echo -ne '\e[3 q'
 echo "Choose a destination:"
@@ -14,10 +15,10 @@ echo "($((${#destinations}+1))) Other"
 read dst_id
 
 if [[ ${dst_id} -ge 1 && ${dst_id} -le ${#destinations} ]]; then
-    exec ssh ${destinations[${dst_id}]}
+    exec ssh -t ${destinations[${dst_id}]} screen
 elif [[ ${dst_id} == $((${#destinations}+1)) ]]; then
     read 'dst?Enter a destinatin: '
-    exec ssh ${dst}
+    exec ssh -t ${dst} screen
 else
     exit 1
 fi

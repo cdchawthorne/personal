@@ -263,12 +263,17 @@ function! LaTeXEnvironment(env, beforeOrAfter)
     startinsert!
 endfunction
 
-function! LaTeXBeginEnvironment(env)
-    execute "normal! o\\begin{\<Esc>\"=a:env\<CR>pa}\<CR> \<BS>"
+function! LaTeXBeginEnvironment(env, beforeOrAfter)
+    if a:beforeOrAfter ==# "before"
+        let key = "O"
+    else
+        let key = "o"
+    endif
+    execute "normal! ". key . "\\begin{\<Esc>\"=a:env\<CR>pa}\<CR> \<BS>"
     startinsert!
 endfunction
 
-function! LaTeXEndEnvironment()
+function! LaTeXEndEnvironment(beforeOrAfter)
     let oldLine = line(".")
     let oldColumn = col(".")
 
@@ -299,7 +304,12 @@ function! LaTeXEndEnvironment()
 
         " Without the g flag, it only gets the first match
         let endEnv = substitute(beginEnv, "begin", "end", "")
-        exe "normal! o\<C-u>\<Esc>\"=endEnv\<CR>p"
+        if a:beforeOrAfter ==# "before"
+            let key = "O"
+        else
+            let key = "o"
+        endif
+        exe "normal! " . key . "\<C-u>\<Esc>\"=endEnv\<CR>p"
     else
         call cursor(oldLine, oldColumn)
     endif

@@ -27,6 +27,7 @@ main = do
 
 myManageHook = composeAll
     [ className =? "Mathematica" --> doFloat
+    , className =? "pwsafe" --> doFloat
     , manageDocks
     ]
 

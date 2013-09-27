@@ -76,8 +76,10 @@ fi
 
 autoload up-line-or-beginning-search
 autoload down-line-or-beginning-search
+autoload -U tetris
 zle -N up-line-or-beginning-search 
 zle -N down-line-or-beginning-search
+zle -N tetris
 zstyle ':zle:*-line-or-beginning-search' leave-cursor True
 
 bindkey -M viins "fj" vi-cmd-mode
@@ -96,6 +98,7 @@ bindkey -M viins '^[[3~' vi-delete-char
 bindkey -M vicmd "k" history-beginning-search-backward
 bindkey -M vicmd "j" history-beginning-search-forward
 bindkey -M vicmd '^[[3~' vi-delete-char
+bindkey -M vicmd 'skt' tetris
 
 zle -A .backward-kill-word vi-backward-kill-word
 zle -A .backward-delete-char vi-backward-delete-char

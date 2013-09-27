@@ -7,8 +7,6 @@
 
 \usepackage{amsmath, amssymb, microtype, tikz-cd, centernot, mathtools,
             csquotes, etoolbox}
-\usepackage[backend=biber, bibstyle=authoryear, citestyle=authoryear_bcite,
-            backref=true]{biblatex}
 \usepackage[log-declarations=false]{xparse}
 \usepackage[shortlabels]{enumitem}
 
@@ -71,8 +69,19 @@
 }
 
 % Convenience environments
+
+\NewDocumentEnvironment{lrpf}{O{\smarttheoremlabel}}{
+  \begin{rpf}[Proof of \Cref{#1}][#1]
+}{
+  \end{rpf}
+}
+
 \NewDocumentEnvironment{dpf}{O{\proofname} o}{
+  \IfValueTF{#2}{
   \begin{pf}[#1][#2]
+  }{
+    \begin{pf}[#1]
+  }
     \mbox{}
     \begin{description}
 }{
@@ -91,6 +100,19 @@
 }{
     \end{description}
   \end{rpf}
+}
+
+\NewDocumentEnvironment{dlrpf}{o}{
+  \IfValueTF{#1}{
+    \begin{lrpf}[#1]
+  }{
+    \begin{lrpf}
+  }
+    \mbox{}
+    \begin{description}
+}{
+    \end{description}
+  \end{lrpf}
 }
 
 \NewDocumentCommand{\lr}{}{\item[\((\implies)\)]}
@@ -142,6 +164,7 @@
 \newsmarttheorem{exercise}[theoremcounter]{Exercise}
 \newsmarttheorem{example}[theoremcounter]{Example}
 \newsmarttheorem{counterexample}[theoremcounter]{Counterexample}
+\newsmarttheorem{property}[theoremcounter]{Property}
 \NewDocumentEnvironment{pconjecture}{m}{
   \begin{conjecture}[Proven: see \Cref{#1}]
 }{
@@ -225,6 +248,8 @@
 \DeclarePairedDelimiter{\bars}{\lVert}{\rVert}
 \DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
 \DeclarePairedDelimiter{\pars}{(}{)}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ceiling}{\lceil}{\rceil}
 
 % Parametrized macros
 \NewDocumentCommand{\seq}{s m m}{

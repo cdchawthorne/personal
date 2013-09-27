@@ -7,13 +7,18 @@ command! -buffer -nargs=1 -complete=customlist,LaTeXEnvironmentComplete
 command! -buffer -nargs=1 -complete=customlist,LaTeXEnvironmentComplete
             \ Leb call LaTeXEnvironment("<args>", "before")
 command! -buffer -nargs=1 -complete=customlist,LaTeXEnvironmentComplete
-            \ Lbe call LaTeXBeginEnvironment("<args>")
-command! -buffer -nargs=0 Lee call LaTeXEndEnvironment()
+            \ Lba call LaTeXBeginEnvironment("<args>", "after")
+command! -buffer -nargs=1 -complete=customlist,LaTeXEnvironmentComplete
+            \ Lbb call LaTeXBeginEnvironment("<args>", "before")
+command! -buffer -nargs=0 Lla call LaTeXEndEnvironment("after")
+command! -buffer -nargs=0 Llb call LaTeXEndEnvironment("before")
 command! -buffer -nargs=1 -complete=customlist,LaTeXEnvironmentComplete
             \ Lce execute "normal \<Plug>LatexChangeEnv<args>\<CR>"
 
-nnoremap <buffer> <LocalLeader>b :Lbe 
-nnoremap <silent> <buffer> <LocalLeader>l :Lee<CR>
+nnoremap <buffer> <LocalLeader>b :Lba 
+nnoremap <buffer> <LocalLeader>B :Lbb 
+nnoremap <silent> <buffer> <LocalLeader>l :Lla<CR>
+nnoremap <silent> <buffer> <LocalLeader>L :Lla<CR>
 nnoremap <buffer> <LocalLeader>e :Lea 
 nnoremap <buffer> <LocalLeader>E :Leb 
 nnoremap <buffer> <LocalLeader>s :Lce 
@@ -22,8 +27,10 @@ nnoremap <silent> <buffer> <LocalLeader>d
 
 inoremap <silent> <buffer> kd \
 
-inoremap <buffer> fdb <C-]><Esc>:Lbe 
-inoremap <silent> <buffer> fdl <C-]><Esc>:Lee<CR>A
+inoremap <buffer> fdb <C-]><Esc>:Lba 
+inoremap <buffer> fdB <C-]><Esc>:Lbe 
+inoremap <silent> <buffer> fdl <C-]><Esc>:Lle<CR>A
+inoremap <silent> <buffer> fdL <C-]><Esc>:LLe<CR>A
 inoremap <buffer> fde <C-]><Esc>:Lea 
 inoremap <buffer> fdE <C-]><Esc>:Leb 
 

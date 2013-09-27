@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+
+read 'account?Account: ' || exit 1
+read -rs 'pass?Database password: ' || exit 1
+
+# Backgrounding the nohup leads to a race condition (that we typically lose)
+# where xterm exits before nohup finishes making itself immune to hangups, and
+# nohup dies
+# Thus we nohup the backgrounding instead.
+export account pass
+nohup zsh -c 'pwsafe -px ${account} &> /dev/null <<< ${pass} &|'

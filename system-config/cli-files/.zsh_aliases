@@ -37,6 +37,7 @@ alias sudo='sudo '
 alias xargs='xargs '
 alias startx='builtin cd; command startx &> "${HOME}/.xsession-errors"'
 alias p='cd ${HOME}/repos/personal'
+alias k='pwsafe -p'
 
 alias tim='vim -t'
 alias vv='vim -c ''e $MYVIMRC'''
