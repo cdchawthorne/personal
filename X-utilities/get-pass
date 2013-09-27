@@ -8,4 +8,4 @@ read -rs 'pass?Database password: ' || exit 1
 # nohup dies
 # Thus we nohup the backgrounding instead.
 export account pass
-nohup zsh -c 'pwsafe -px ${account} &> /dev/null <<< ${pass} &|'
+nohup zsh -c 'pwsafe -px ${account} &> /dev/null <<< ${pass} &|' &> /dev/null
