@@ -11,7 +11,7 @@ mainModMask :: KeyMask
 mainModMask = mod4Mask
 
 main = do
-    xmproc <- spawnPipe "/usr/bin/xmobar /home/cdchawthorne/.xmobarrc"
+    xmproc <- spawnPipe "/usr/bin/xmobar"
     xmonad $ defaultConfig
         { manageHook = myManageHook <+> manageHook defaultConfig
         , layoutHook = avoidStruts  $  layoutHook defaultConfig

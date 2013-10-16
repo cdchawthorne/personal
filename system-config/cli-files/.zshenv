@@ -7,4 +7,11 @@ VISUAL=vim
 CSCOPE_DB=${HOME}/utilities/databases/cscope.out
 TERM=xterm-256color
 TEXMFHOME=${HOME}/.dev/texmf
-export EDITOR VISUAL CSCOPE_DB TERM TEXMFHOME
+
+if [[ $(uname -n) != computer-of-destiny ]]; then
+    LC_ALL=en_CA.UTF-8
+    LANG=en_CA.UTF-8
+    LANGUAGE=en_CA.UTF-8
+fi
+
+export EDITOR VISUAL CSCOPE_DB TERM TEXMFHOME LC_ALL LANG LANGUAGE
