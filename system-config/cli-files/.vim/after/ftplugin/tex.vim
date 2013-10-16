@@ -35,7 +35,9 @@ inoremap <buffer> fde <C-]><Esc>:Lea
 inoremap <buffer> fdE <C-]><Esc>:Leb 
 
 iabbrev <buffer> group grape
+iabbrev <buffer> groups grapes
 iabbrev <buffer> Group Grape
+iabbrev <buffer> Groups Grapes
 iabbrev <buffer> == &=&
 iabbrev <buffer> tfdc tfdc{}
 iabbrev <buffer> tfdc: tfdc{}:

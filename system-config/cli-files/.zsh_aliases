@@ -49,6 +49,10 @@ function fim {
 
 alias rh='rehash'
 
+function timestamp {
+    date +'%Y-%m-%d__%H-%M-%S'
+}
+
 function pa {
     if [[ $# -eq 0 ]]; then
         num=1
@@ -78,17 +82,53 @@ function pdf {
     done
 }
 
-function rr {
+function tt {
     if [[ $# -ne 1 ]]; then
-        echo "usage: rr SRC_DIR" 1>&2
+        echo "usage: tt DST_DIR" 1>&2
         return 1
     fi
 
-    src="$(realpath $1)"
-    dest=cdchawth@linux.student.cs.uwaterloo.ca:
-    dest+=/u8/cdchawthorne/utilities/rsync_backups
+    targets=(${HOME}/documents ${HOME}/media/pictures ${HOME}/utilities
+             ${HOME}/.cdchawthorne_jade_db ${HOME}/.gnupg ${HOME}/.pere
+             ${HOME}/.ssh)
+    find /etc -readable -type f | read-lines-array etc_files
+    targets=(${targets} ${etc_files})
+    tar -czf "$1/$(hostname)_$(timestamp).tar.gz" ${targets}
+}
 
-    rsync -avz --delete ${src} ${dest}
+function rr {
+    if [[ $# -lt 1 ]]; then
+        echo "usage: rr SRC_DIRS" 1>&2
+        return 1
+    fi
+
+    srcs=()
+    for src in $@; do
+        srcs=(${srcs} "$(realpath ${src})")
+    done
+    dest=cdchawth@csclub.uwaterloo.ca:/users/cdchawth/utilities/rsync_backups
+
+    rsync -avzF --delete ${srcs} ${dest}
+}
+
+function to_ssh {
+    if [[ $# -lt 1 ]]; then
+        echo "usage: to_ssh SRCS" 1>&2
+        return 1
+    fi
+
+    dest=cdchawth@linux.student.cs.uwaterloo.ca:/u8/cdchawthorne/scratch
+    scp $@ ${dest}
+}
+
+function to_share {
+    if [[ $# -lt 1 ]]; then
+        echo "usage: to_share SRCS" 1>&2
+        return 1
+    fi
+
+    dest=cdchawth@ugster18.student.cs.uwaterloo.ca:/home/cdchawth/uml/share
+    scp $@ ${dest}
 }
 
 function x {
@@ -144,6 +184,4 @@ function python {
     )
 }
 
-# Add an "alert" alias for long running commands.  Use like so:
-#   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'

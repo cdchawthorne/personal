@@ -170,11 +170,6 @@ augroup skeleton_files
       \ normal Gdd6k$
 augroup END
 
-augroup set_filetype
-    autocmd!
-    autocmd BufNewFile,BufRead *.txt set filetype=text
-augroup END
-
 augroup restore_cursor_pos
     autocmd!
 
@@ -323,7 +318,7 @@ function! LaTeXEnvironmentComplete(ArgLead, CmdLine, CursorPos)
                 \ "question", "remark", "note", "conjecture", "dconjecture",
                 \ "pconjecture", "exercise", "example", "counterexample",
                 \ "enumerate", "itemize", "description", "proof", "tikzcd",
-                \ "pmatrix"]
+                \ "pmatrix", "verbatim"]
     call sort(envs)
 
     return filter(envs, 'v:val =~# "^' . a:ArgLead . '"')
