@@ -31,29 +31,12 @@ local function freqs_product(freqs1, freqs2)
 end
 
 local function freqs_power(freqs, n)
-  local function big_endian_rep(k)
-    if k == 0 then
-      return {}
-    else
-      rep = big_endian_rep((k-(k%2))/2)
-      table.insert(rep, k%2)
-      return rep
-    end
+  ret = {[1] = 1}
+  for i = 0,n-1 do
+    print(i)
+    ret = freqs_product(ret, freqs)
   end
-  local function freqs_power_acc(freqs, bits, acc)
-    if #bits == 0 then
-      return acc
-    end
-
-    acc = freqs_product(acc, acc)
-    if bits[1] == 1 then
-      acc = freqs_product(acc, freqs)
-    end
-    table.remove(bits, 1)
-    return freqs_power_acc(freqs, bits, acc)
-  end
-
-  return freqs_power_acc(freqs, big_endian_rep(n), {[1] = 1})
+  return ret
 end
 
 function pw_compression.freqs(n, compress, dictionary)

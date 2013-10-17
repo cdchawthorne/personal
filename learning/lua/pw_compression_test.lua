@@ -9,3 +9,4 @@ end
 local dictionary = '/usr/share/dict/cracklib-small'
 local freqs = pw_compression.freqs(4, compress, dictionary)
 crack_cdf = cdf.crack_time_cdf(freqs)
+print(crack_cdf(10^12*3600*365))
