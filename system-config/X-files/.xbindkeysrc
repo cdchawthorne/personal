@@ -52,3 +52,6 @@
 "xterm -class pwsafe -e 'get-pass'"
     m:0x41 + c:44
     Shift+Mod4 + j
+"xterm -e 'ssh -t cdchawth@taurine.csclub.uwaterloo.ca screen -dr'"
+    m:0x41 + c:31
+    Shift+Mod4 + i

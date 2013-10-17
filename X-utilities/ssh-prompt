@@ -3,6 +3,7 @@
 destinations=(cdchawth@linux.student.cs.uwaterloo.ca
               cdchawth@csclub.uwaterloo.ca
               cdchawth@nullsleep.csclub.uwaterloo.ca
+              cdchawth@taurine.csclub.uwaterloo.ca
               cdchawthorne@peterm.tk
               cdchawth@ugster18.student.cs.uwaterloo.ca)
 
@@ -18,7 +19,7 @@ read dst_id
 if [[ ${dst_id} -ge 1 && ${dst_id} -le ${#destinations} ]]; then
     exec ssh -t ${destinations[${dst_id}]} screen
 elif [[ ${dst_id} == $((${#destinations}+1)) ]]; then
-    read 'dst?Enter a destinatin: '
+    read 'dst?Enter a destination: '
     exec ssh -t ${dst} screen
 else
     exit 1
