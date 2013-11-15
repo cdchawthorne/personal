@@ -44,4 +44,12 @@ function pw_compression.freqs(n, compress, dictionary)
   return freqs_power(base_freqs, n)
 end
 
+function pw_compression.dump(freqs, filename)
+  file = io.open(filename, 'w')
+  for k,v in pairs(freqs) do
+    file:write(k,' ',v,'\n')
+  end
+  io.close(file)
+end
+
 return pw_compression

@@ -32,10 +32,10 @@ fi
 pere random
 xscreensaver -no-splash &
 
-chromium &
-
 # Get rid of those thrice-damnèd beeps
 xset b off
 
 exec xmonad
-#exec i3
+# exec i3
+# exec awesome
+# exec spectrwm

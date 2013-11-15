@@ -19,21 +19,12 @@
 "sudo reboot"
     m:0x41 + c:27
     Shift+Mod4 + r
-"sudo pm-hibernate"
-    m:0x41 + c:28
-    Shift+Mod4 + t
-"sudo pm-suspend"
-    m:0x41 + c:39
-    Shift+Mod4 + s
 "xscreensaver-command -lock"
-    m:0x41 + c:52
-    Shift+Mod4 + z
+    m:0x40 + c:52
+    Mod4 + z
 "chromium --password-store=basic"
-    m:0x41 + c:43
-    Shift+Mod4 + h
-"firefox"
-    m:0x41 + c:58
-    Shift+Mod4 + m
+    m:0x40 + c:43
+    Mod4 + h
 "scrot -e "mv \$f ${SCREENSHOTS_DIR}""
     m:0x0 + c:107
     Print
@@ -46,12 +37,36 @@
 "pere random"
     m:0x41 + c:56
     Shift+Mod4 + b
-"xterm -e 'ssh-prompt'"
-    m:0x41 + c:45
-    Shift+Mod4 + k
-"xterm -class pwsafe -e 'get-pass'"
-    m:0x41 + c:44
-    Shift+Mod4 + j
-"xterm -e 'ssh -t cdchawth@taurine.csclub.uwaterloo.ca screen -dr'"
-    m:0x41 + c:31
-    Shift+Mod4 + i
+"xterm -class pwsafe get-username-pass"
+    m:0x41 + c:46
+    Shift+Mod4 + l
+"xterm -class pwsafe get-pass"
+    m:0x40 + c:46
+    Mod4 + l
+"xterm ssh-prompt"
+    m:0x40 + c:39
+    Mod4 + s
+"xterm -class ncmpcpp ncmpcpp"
+    m:0x40 + c:57
+    Mod4 + n
+"xterm -class ncmpcpp -e 'ssh -t cdchawth@nullsleep.csclub.uwaterloo.ca ncmpcpp'"
+    m:0x41 + c:57
+    Shift+Mod4 + n
+"tor-browser-en"
+    m:0x40 + c:47
+    Mod4 + ;
+"xterm"
+    m:0x40 + c:53
+    Mod4 + x
+"gmrun"
+    m:0x40 + c:33
+    Mod4 + p
+
+# zsh knows how to do the right thing with respect to colour, so we launch tmux
+# from within zsh
+"xterm -T xterm-tmux -class terminal -e zsh -c tmux"
+    m:0x40 + c:40
+    Mod4 + d
+"pidgin"
+    m:0x40 + c:41
+    Mod4 + f

@@ -38,6 +38,10 @@ iabbrev <buffer> group grape
 iabbrev <buffer> groups grapes
 iabbrev <buffer> Group Grape
 iabbrev <buffer> Groups Grapes
+iabbrev <buffer> generator venerator
+iabbrev <buffer> generators venerators
+iabbrev <buffer> Generator Venerator
+iabbrev <buffer> Generators Venerators
 iabbrev <buffer> == &=&
 iabbrev <buffer> tfdc tfdc{}
 iabbrev <buffer> tfdc: tfdc{}:

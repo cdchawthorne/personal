@@ -1,0 +1,21 @@
+V "GNAT Lib v4.8"
+M P W=b
+P ZX
+
+RN
+
+U main%b		main.adb		cd28d2dd NE OO SU IL
+W heaps%s		heaps.adb		heaps.ali
+
+D heaps.ads		20131103191736 9394c865
+D main.adb		20131103191619 5ebc1ab8
+D system.ads		20120723080122 90249111
+X 1 heaps.ads
+1K9*heaps 8e10 2|1w6 4r12 4r29 6r5
+2I10*MaxHeap 2|4r18
+4U15*put 2|6s11
+5V14*empty_heap{2I10} 2|4s35
+X 2 main.adb
+3U11*main 3b11 7l5 7t9
+4i5 heap{1|2I10} 6r15
+

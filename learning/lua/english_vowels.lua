@@ -4,7 +4,7 @@ local function test_compression(chars)
   local reducts = setmetatable({}, reducts_meta)
   local total_length = 0
   local n = 0
-  for word in io.lines("/usr/share/dict/british-english") do
+  for word in io.lines("/usr/share/dict/cracklib-small") do
     local reduct = word:gsub(to_null, "")
     reducts[reduct] = reducts[reduct] + 1
     total_length = total_length + #reduct
@@ -26,7 +26,7 @@ local function expected_cracking_time(chars)
   local reducts_meta = {__index=function() return 0 end}
   local reducts = setmetatable({}, reducts_meta)
   local n = 0
-  for word in io.lines("/usr/share/dict/british-english") do
+  for word in io.lines("/usr/share/dict/cracklib-small") do
     reduct = word:gsub(to_null, "")
     reducts[reduct] = reducts[reduct] + 1
     n = n+1
@@ -45,9 +45,9 @@ local function expected_cracking_time(chars)
   return expected_time
 end
 
--- print("Base:")
--- print(test_compression("-"))
--- print("")
+print("Base:")
+print(test_compression("-"))
+print("")
 
 -- print("Vowels")
 -- print(test_compression("a"))
@@ -79,6 +79,6 @@ print("Compression")
 print(test_compression("etaoinu"))
 print("")
 
-print("Expected crack time")
-print(expected_cracking_time("etaoinu"))
-print("")
+-- print("Expected crack time")
+-- print(expected_cracking_time("etaoinu"))
+-- print("")

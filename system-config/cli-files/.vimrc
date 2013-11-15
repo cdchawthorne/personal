@@ -443,6 +443,7 @@ nnoremap <silent> <Leader>kE :qa!<CR>
 nnoremap <silent> <Leader>ka :wqa<CR>
 nnoremap <silent> <Leader>kn :n<CR>
 nnoremap <silent> <Leader>kp :N<CR>
+nnoremap <silent> <Leader>kb :!<CR>
 
 " Window mapping
 nnoremap <silent> <Leader>d <C-w>

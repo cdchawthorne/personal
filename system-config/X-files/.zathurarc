@@ -1,0 +1,10 @@
+map r navigate next
+map e navigate previous
+map <PageUp> scroll full-up
+map <PageDown> scroll full-down
+set incremental-search true
+set recolor-keephue true
+set scroll-full-overlap 0.1
+set window-title-basename true
+set statusbar-basename true
+set show-scrollbars false

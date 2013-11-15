@@ -18,3 +18,27 @@ pwsafe*font:             -*-Fixed-medium-R-Normal-*-20-*-*-*-*-*-*-*
 pwsafe*faceName:         default
 pwsafe*eightBitInput:    false
 pwsafe*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
+
+ncmpcpp*background:       black
+ncmpcpp*foreground:       white
+ncmpcpp*cursorColor:      white
+ncmpcpp*font:             -*-Fixed-medium-R-Normal-*-20-*-*-*-*-*-*-*
+ncmpcpp*faceName:         default
+ncmpcpp*eightBitInput:    false
+ncmpcpp*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
+
+terminal*background:       black
+terminal*foreground:       white
+terminal*cursorColor:      white
+terminal*font:             -*-Fixed-medium-R-Normal-*-20-*-*-*-*-*-*-*
+terminal*faceName:         default
+terminal*eightBitInput:    false
+terminal*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
+
+chat*background:       black
+chat*foreground:       white
+chat*cursorColor:      white
+chat*font:             -*-Fixed-medium-R-Normal-*-20-*-*-*-*-*-*-*
+chat*faceName:         default
+chat*eightBitInput:    false
+chat*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)

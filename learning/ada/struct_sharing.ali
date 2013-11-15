@@ -1,0 +1,65 @@
+V "GNAT Lib v4.8"
+M P W=b
+P ZX
+
+RN
+RV NO_ALLOCATORS
+RV NO_LOCAL_ALLOCATORS
+RV NO_STANDARD_STORAGE_POOLS
+RV SPARK
+
+U struct_sharing%b	struct_sharing.adb	90479609 NE OO SU IL
+W ada%s			ada.ads			ada.ali
+W ada.integer_text_io%s	a-inteio.ads		a-inteio.ali
+W ada.tags%s		a-tags.adb		a-tags.ali
+
+D ada.ads		20070406091342 3ffc8e18
+D a-except.ads		20120716125141 10fcae55
+D a-finali.ads		20111121113555 52ecdc1b
+D a-inteio.ads		20070406091342 f64b89a4
+D a-ioexce.ads		20091130110856 8b9de6cd
+D a-stream.ads		20090409150019 2ca4ee37
+D a-tags.ads		20111212115430 6c0509d0
+D a-textio.ads		20130104124955 386df5d4
+D a-tiinio.ads		20090409150019 aa04e5d6
+D a-unccon.ads		20070406091342 f9eb8f06
+D interfac.ads		20110906094621 129923ea
+D i-cstrea.ads		20130102105938 3286f6aa
+D struct_sharing.adb	20131026001610 660c1fad
+D system.ads		20120723080122 90249111
+D s-crtl.ads		20130102105938 1ea48bce
+D s-exctab.ads		20090417131547 66e51330
+D s-ficobl.ads		20120709130952 55a71d43
+D s-finmas.ads		20111024091915 b95bb341
+D s-finroo.ads		20120426095924 4ff27390
+D s-parame.ads		20110830140625 b6e20cc0
+D s-pooglo.ads		20110804083314 542f33d0
+D s-soflin.ads		20120515094619 24c8153c
+D s-stache.ads		20090417130712 596fc1b4
+D s-stalib.ads		20130104124955 f78bcf95
+D s-stoele.ads		20090417130712 facd7d98
+D s-stoele.adb		20100617152355 afc5dc80
+D s-stopoo.ads		20111013103733 7b8fbeee
+D s-traent.ads		20090417130712 5221ee41
+D s-unstyp.ads		20090409150019 6ae15c76
+D s-wchcon.ads		20090417130712 bfeb2e3d
+X 1 ada.ads
+16K9*Ada 19e8 13|1r6 1r31
+X 4 a-inteio.ads
+18K13*Integer_Text_IO[9|45] 13|1w10 1r35
+X 9 a-tiinio.ads
+65U14*Put 13|25s5[4|18] 26s5[4|18] 27s5[4|18]
+X 13 struct_sharing.adb
+3U11*struct_sharing 3b11 28l5 28t19
+4R10 Date 9e19 11r32 19r36
+6i13 day{integer} 24m17 25r19
+7i13 month{integer} 26r19
+8i13 year{integer} 27r19
+11P10 access_date(4R10) 16r24 19r17
+13R10 Person 17e19 20r10 21r13
+15i13 identifier{integer}
+16p13 birthday{11P10} 24r8
+19p5 fiber_day{11P10} 20r25 21r29 23r5 25r9 26r9 27r9
+20r5 me{13R10} 24m5 24r5
+21r5 fiber{13R10}
+
