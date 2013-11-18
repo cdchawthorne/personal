@@ -90,7 +90,7 @@ function tt {
 
     targets=(${HOME}/documents ${HOME}/media/pictures ${HOME}/utilities
              ${HOME}/.cdchawthorne_jade_db ${HOME}/.gnupg ${HOME}/.pere
-             ${HOME}/.ssh)
+             ${HOME}/.ssh ${HOME}/.config)
     find /etc -readable -type f | read-lines-array etc_files
     targets=(${targets} ${etc_files})
     tar -czf "$1/$(hostname)_$(timestamp).tar.gz" ${targets}

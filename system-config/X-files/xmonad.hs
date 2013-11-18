@@ -47,7 +47,7 @@ myManageHook = composeAll $ concat $
       , [className =? name --> doF (W.shift "Tor") | name <- torClassNames]
       , [className =? name --> doF (W.shift "Chromium") |
          name <- chromiumClassNames]
-      , [className =? name --> doF (W.shift "Chat") | name <- chatClassNames]
+      , [className =? name --> viewShift "Chat" | name <- chatClassNames]
       , [className =? name --> viewShift "Music" | name <- musicClassNames]
       , [className =? name --> viewShift "Terminal" |
          name <- terminalClassNames]
@@ -60,23 +60,15 @@ myManageHook = composeAll $ concat $
         torClassNames = ["Firefox", "Vidalia"]
         chromiumClassNames = ["Chromium"]
         musicClassNames = ["ncmpcpp"]
-        chatClassNames = ["Pidgin"]
+        chatClassNames = ["irssi"]
         terminalClassNames = ["terminal"]
 
-defaultLayouts = noBorders Full ||| tiled ||| Mirror tiled
+myLayouts = noBorders Full ||| tiled ||| Mirror tiled
     where
         tiled = Tall nmaster delta ratio
         nmaster = 1
         delta = 3/100
         ratio = 1/2
-
-chatLayout = Tall nmaster delta ratio
-    where
-        nmaster = 1
-        delta = 3/100
-        ratio = 33/100
-
-myLayouts = onWorkspace "Chat" chatLayout defaultLayouts
 
 keysToAdd x =
     [
@@ -120,7 +112,4 @@ strippedKeys x = foldr M.delete (keys defaultConfig x) (keysToRemove x)
 -- Compose all my new key combinations.
 myKeys x = M.union (strippedKeys x) (M.fromList (keysToAdd x))
 
-myStartupHook =
-    spawn "tor-browser-en" >>
-    spawn "chromium" >>
-    spawn "pidgin"
+myStartupHook = spawn "tor-browser-en" >> spawn "chromium"

@@ -35,10 +35,10 @@ terminal*faceName:         default
 terminal*eightBitInput:    false
 terminal*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
 
-chat*background:       black
-chat*foreground:       white
-chat*cursorColor:      white
-chat*font:             -*-Fixed-medium-R-Normal-*-20-*-*-*-*-*-*-*
-chat*faceName:         default
-chat*eightBitInput:    false
-chat*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
+irssi*background:       black
+irssi*foreground:       white
+irssi*cursorColor:      white
+irssi*font:             -*-Fixed-medium-R-Normal-*-20-*-*-*-*-*-*-*
+irssi*faceName:         default
+irssi*eightBitInput:    false
+irssi*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
