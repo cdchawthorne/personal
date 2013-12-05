@@ -46,10 +46,10 @@
 "xterm ssh-prompt"
     m:0x40 + c:39
     Mod4 + s
-"xterm -class ncmpcpp ncmpcpp"
+"xterm -class music pms"
     m:0x40 + c:57
     Mod4 + n
-"xterm -class ncmpcpp -e 'ssh -t cdchawth@nullsleep.csclub.uwaterloo.ca ncmpcpp'"
+"xterm -class music -e 'ssh -t cdchawth@nullsleep.csclub.uwaterloo.ca pms'"
     m:0x41 + c:57
     Shift+Mod4 + n
 "tor-browser-en"
@@ -70,3 +70,6 @@
 "xterm -class irssi irssi"
     m:0x40 + c:41
     Mod4 + f
+"pkill xbindkeys; xbindkeys"
+    m:0x41 + c:39
+    Shift+Mod4 + s

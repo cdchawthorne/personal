@@ -19,13 +19,13 @@ pwsafe*faceName:         default
 pwsafe*eightBitInput:    false
 pwsafe*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
 
-ncmpcpp*background:       black
-ncmpcpp*foreground:       white
-ncmpcpp*cursorColor:      white
-ncmpcpp*font:             -*-Fixed-medium-R-Normal-*-20-*-*-*-*-*-*-*
-ncmpcpp*faceName:         default
-ncmpcpp*eightBitInput:    false
-ncmpcpp*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
+music*background:       black
+music*foreground:       white
+music*cursorColor:      white
+music*font:             -*-Fixed-medium-R-Normal-*-20-*-*-*-*-*-*-*
+music*faceName:         default
+music*eightBitInput:    false
+music*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
 
 terminal*background:       black
 terminal*foreground:       white
@@ -42,3 +42,19 @@ irssi*font:             -*-Fixed-medium-R-Normal-*-20-*-*-*-*-*-*-*
 irssi*faceName:         default
 irssi*eightBitInput:    false
 irssi*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
+
+urxvt*background:       black
+urxvt*foreground:       white
+urxvt*cursorColor:      white
+urxvt*font:             -*-Fixed-medium-R-Normal-*-20-*-*-*-*-*-*-*
+urxvt*faceName:         default
+urxvt*eightBitInput:    false
+urxvt*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
+
+test*background:       black
+test*foreground:       white
+test*cursorColor:      white
+test*font:             -*-fixed-*-*-*-*-*-*-*-*-*-*-*-*
+test*faceName:         default
+test*eightBitInput:    false
+test*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
