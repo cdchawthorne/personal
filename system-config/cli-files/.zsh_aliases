@@ -48,7 +48,7 @@ function fim {
 }
 
 alias rh='rehash'
-alias u='sudo aura -Syu; sudo aura -Akua'
+alias u='sudo zsh -c ''aura -Syu; aura -Akua; ntpd -q; hwclock -w'''
 
 function timestamp {
     date +'%Y-%m-%d__%H-%M-%S'
@@ -182,7 +182,7 @@ function get-album {
         return 1
     fi
 
-    target_dir="${HOME}/media/music/albums/$(echo $2 | sed -r 's/ /_/g')"
+    target_dir="${HOME}/media/music/albums/purchases/$(echo $2 | sed -r 's/ /_/g')"
     mkdir -p ${target_dir}
 
     echo_sql $2 | sqlite3 $1/iTunes_Control/iTunes/MediaLibrary.sqlitedb |
@@ -201,4 +201,20 @@ function get-album {
         fi
         i=$((i+2))
     done
+}
+
+function usb-backup {
+    if [[ $# -ne 1 ]]; then
+        echo "USAGE: usb-backup target" 1>&2
+        return 1
+    fi
+
+    targets=(${HOME}/documents ${HOME}/media ${HOME}/utilities
+             ${HOME}/.gnupg ${HOME}/.pere ${HOME}/.ssh ${HOME}/.config
+             ${HOME}/scratch ${HOME}/.pwsafe.dat)
+
+    if ! rsync -avz --delete ${targets} $1; then
+        echo "rsync failed; trying as sudo" 1>&2
+        sudo rsync -avz --delete ${targets} $1
+    fi
 }

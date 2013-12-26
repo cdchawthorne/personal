@@ -6,7 +6,7 @@ my $moan = 0;
 sub notify {
     my ($summary, $body) = @_;
     if ($moan) {
-        my $notify_sound = "/home/cdchawthorne/media/music/irene_adler_moan_ringtone.mp3";
+        my $notify_sound = "/home/cdchawthorne/media/sounds/irene_adler_moan_ringtone.mp3";
         system("mplayer " . $notify_sound . " -af volume=15 &> /dev/null &");
     }
     system("notify-send", "-t", "5000", $summary, $body);

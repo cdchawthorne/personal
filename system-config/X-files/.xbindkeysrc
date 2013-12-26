@@ -46,10 +46,10 @@
 "xterm ssh-prompt"
     m:0x40 + c:39
     Mod4 + s
-"xterm -class music pms"
+"xterm -class music ncmpcpp"
     m:0x40 + c:57
     Mod4 + n
-"xterm -class music -e 'ssh -t cdchawth@nullsleep.csclub.uwaterloo.ca pms'"
+"xterm -class music -e 'ssh -t cdchawth@nullsleep.csclub.uwaterloo.ca screen'"
     m:0x41 + c:57
     Shift+Mod4 + n
 "tor-browser-en"
