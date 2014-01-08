@@ -48,6 +48,7 @@ function fim {
 }
 
 alias rh='rehash'
+alias u='sudo zsh -c ''aura -Syu; aura -Akua; ntpd -q; hwclock -w'''
 
 function timestamp {
     date +'%Y-%m-%d__%H-%M-%S'
@@ -82,53 +83,32 @@ function pdf {
     done
 }
 
-function tt {
-    if [[ $# -ne 1 ]]; then
-        echo "usage: tt DST_DIR" 1>&2
-        return 1
-    fi
-
+function backup {
+    backup_dir=${HOME}/.backup
     targets=(${HOME}/documents ${HOME}/media/pictures ${HOME}/utilities
              ${HOME}/.cdchawthorne_jade_db ${HOME}/.gnupg ${HOME}/.pere
-             ${HOME}/.ssh ${HOME}/.config)
-    find /etc -readable -type f | read-lines-array etc_files
-    targets=(${targets} ${etc_files})
-    tar -czf "$1/$(hostname)_$(timestamp).tar.gz" ${targets}
-}
+             ${HOME}/.ssh ${HOME}/.config ${HOME}/scratch)
+    backup="${backup_dir}/$(hostname)_$(timestamp).tar.gz"
+    encrypted_backup=${backup}.gpg
+    remote_machine=cdchawth@linux.student.cs.uwaterloo.ca
+    remote_backup_dir='~/utilities/remote_backups'
+    pwsafe_db=${HOME}/.pwsafe.dat
 
-function rr {
-    if [[ $# -lt 1 ]]; then
-        echo "usage: rr SRC_DIRS" 1>&2
-        return 1
+    echo "Compressing backup..."
+    tar -czf ${backup} ${targets}
+    echo "Encrypting backup..."
+    xcowsay "Encrypting backup..."
+    gpg -c --force-mdc --cipher-algo AES256 ${backup}
+    echo "Transfer backup?"
+    xcowsay "Ready to transfer backup"
+    read -q transfer
+    if [[ ${transfer} == y ]]; then
+        echo "Transferring..."
+        ssh ${remote_machine} rm "${remote_backup_dir}/$(hostname)_*.tar.gz.gpg"
+
+        scp ${encrypted_backup} ${pwsafe_db} ${remote_machine}:${remote_backup_dir}
     fi
-
-    srcs=()
-    for src in $@; do
-        srcs=(${srcs} "$(realpath ${src})")
-    done
-    dest=cdchawth@csclub.uwaterloo.ca:/users/cdchawth/utilities/rsync_backups
-
-    rsync -avzF --delete ${srcs} ${dest}
-}
-
-function to_ssh {
-    if [[ $# -lt 1 ]]; then
-        echo "usage: to_ssh SRCS" 1>&2
-        return 1
-    fi
-
-    dest=cdchawth@linux.student.cs.uwaterloo.ca:/u8/cdchawthorne/scratch
-    scp $@ ${dest}
-}
-
-function to_share {
-    if [[ $# -lt 1 ]]; then
-        echo "usage: to_share SRCS" 1>&2
-        return 1
-    fi
-
-    dest=cdchawth@ugster18.student.cs.uwaterloo.ca:/home/cdchawth/uml/share
-    scp $@ ${dest}
+    rm -f ${backup} ${encrypted_backup}
 }
 
 function x {
@@ -186,6 +166,7 @@ function python {
 
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
+<<<<<<< HEAD
 function perms {
     target_dir=/music/cdchawth
     find ${target_dir} -type f | read-lines-array files
@@ -200,4 +181,57 @@ function perms {
     done
     setfacl -b ${target_dir}/README
     chmod a+r ${target_dir}/README
+}
+
+function get-album {
+    function echo_sql {
+        echo "SELECT base_location.path || '/' || item_extra.location || " \
+             "X'0A' || item_extra.title"
+        echo "FROM album, item_extra, item, base_location"
+        echo "WHERE item_extra.item_pid = item.item_pid AND"
+        echo "      album.album_pid = item.album_pid AND"
+        echo "      album.album = '$1' AND"
+        echo "      base_location.base_location_id = item.base_location_id;"
+    }
+
+    if [[ $# -ne 2 ]]; then
+        echo "USAGE: get-album IPHONE_MOUNT ALBUM_NAME" 1>&2
+        return 1
+    fi
+
+    target_dir="${HOME}/media/music/albums/purchases/$(echo $2 | sed -r 's/ /_/g')"
+    mkdir -p ${target_dir}
+
+    echo_sql $2 | sqlite3 $1/iTunes_Control/iTunes/MediaLibrary.sqlitedb |
+        read-lines-array songs
+
+    i=1
+    while [[ $i -lt ${#songs} ]]; do
+        location=${songs[i]}
+        title_base="$(echo ${songs[$((i+1))]} | sed -re 's/ /_/g' -e 's/\//_slash_/g')"
+        title_extension="$(echo ${location} | sed -re 's/^.*\.([^.]*)/\1/g')"
+        if [[ ${title_extension} == ${location} ]]; then
+            echo "Unable to extract extension: ${title_base} at ${location}" 1>&2
+            cp $1/${location} ${target_dir}/${title_base}.UNKNOWN_EXTENSION
+        else
+            cp $1/${location} ${target_dir}/${title_base}.${title_extension}
+        fi
+        i=$((i+2))
+    done
+}
+
+function usb-backup {
+    if [[ $# -ne 1 ]]; then
+        echo "USAGE: usb-backup target" 1>&2
+        return 1
+    fi
+
+    targets=(${HOME}/documents ${HOME}/media ${HOME}/utilities
+             ${HOME}/.gnupg ${HOME}/.pere ${HOME}/.ssh ${HOME}/.config
+             ${HOME}/scratch ${HOME}/.pwsafe.dat)
+
+    if ! rsync -avz --delete ${targets} $1; then
+        echo "rsync failed; trying as sudo" 1>&2
+        sudo rsync -avz --delete ${targets} $1
+    fi
 }

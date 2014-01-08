@@ -59,7 +59,7 @@ myManageHook = composeAll $ concat $
         -- dicey
         torClassNames = ["Firefox", "Vidalia"]
         chromiumClassNames = ["Chromium"]
-        musicClassNames = ["ncmpcpp"]
+        musicClassNames = ["music"]
         chatClassNames = ["irssi"]
         terminalClassNames = ["terminal"]
 
@@ -77,12 +77,6 @@ keysToAdd x =
         , ((modMask x, xK_Right), nextWS)
         , (((modMask x .|. shiftMask), xK_Left), shiftToPrev)
         , (((modMask x .|. shiftMask), xK_Right), shiftToNext)
-        , ((modMask x, xK_p), spawn "mpc toggle")
-        , ((modMask x, xK_Up), spawn "mpc prev")
-        , ((modMask x, xK_Down), spawn "mpc next")
-        , ((modMask x, xK_p), spawn "mpc toggle")
-        , ((modMask x, xK_Up), spawn "mpc prev")
-        , ((modMask x, xK_Down), spawn "mpc next")
         , ((modMask x, xK_bracketleft), sendMessage Shrink)
         , ((modMask x, xK_bracketright), sendMessage Expand)
         , ((modMask x .|. shiftMask, xK_bracketleft),

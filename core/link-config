@@ -9,19 +9,28 @@ function usage {
 repo_core=$(dirname "$(realpath $0)")
 config_src=$(realpath ${repo_core}/../system-config)
 cli_src=${config_src}/cli-files
+cli_dot_config_src=${cli_src}/.config
 X_src=${config_src}/X-files
 dev_src=${config_src}/dev
 
 function link-cli {
     link_from_home=(.emacs .haskeline .inputrc .pyinputrc .tmux.conf .vimrc
                     .zprofile .zsh_aliases .zsh_autoload .zshenv .zshrc .ghci
-                    .vim .zsh .rtorrent.rc .latexmkrc .irbrc .screenrc)
+                    .vim .zsh .rtorrent.rc .latexmkrc .irbrc .screenrc
+                    .ncmpcpp)
+    link_from_dot_config=(pms)
 
     builtin cd
     rm ${link_from_home} 2> /dev/null
 
     for file in ${link_from_home}; do
         ln -s ${cli_src}/${file}
+    done
+
+    builtin cd .config
+    rm ${link_from_dot_config}
+    for dir in ${link_from_dot_config}; do
+        ln -s ${cli_dot_config_src}/${dir}
     done
 }
 

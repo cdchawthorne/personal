@@ -1,0 +1,46 @@
+set host=/var/run/mpd/socket
+#set sort=track album artist
+set sort=track album
+set columns=title artist album
+set topbar3.left=Q: %livequeuesize%
+set topbar3.right=%listsize%
+set topbar5.left=%ifcursong%[%progressbar%%endif%
+set topbar5.right=%ifcursong%]%endif%
+set notopbarspace
+
+colour borders green
+
+bind space move-pgdn
+bind m move-pgup
+bind d remove
+bind M playmode
+bind p toggle-play
+bind H seek -5
+bind L seek 5
+bind u volume -1
+bind o volume +1
+bind U volume -5
+bind O volume +5
+bind c clear-filters
+bind C clear
+bind s toggle-select
+bind r goto-random
+bind R repeat
+bind Z shuffle
+bind S update
+bind . rehash
+bind e add-album
+bind E play-album
+bind w next-of album
+bind b prev-of album
+bind W next-of artist
+bind B prev-of artist
+bind i change-window windowlist
+bind I info
+bind V version
+bind v move-home
+bind , last-window
+bind G move-end
+bind y !/music/bin/mpd_youtube "$(cat)"
+bind Y !/music/bin/mpd_bandcamp "$(cat)"
+bind f filter
