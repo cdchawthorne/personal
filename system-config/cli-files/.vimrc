@@ -20,6 +20,7 @@ set backspace=indent,eol,start
 set backup
 set backupdir=${HOME}/utilities/vim_backups
 set colorcolumn=80
+set cryptmethod=blowfish
 set expandtab
 set gdefault
 set hidden
