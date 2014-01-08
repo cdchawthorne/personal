@@ -185,3 +185,19 @@ function python {
 }
 
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+function perms {
+    target_dir=/music/cdchawth
+    find ${target_dir} -type f | read-lines-array files
+    for file in ${files}; do
+        chmod 640 ${file}
+        setfacl -m u:mpd:r ${file}
+    done
+    find ${target_dir} -type d | read-lines-array dirs
+    for dir in ${dirs}; do
+        chmod 750 ${dir}
+        setfacl -m u:mpd:rx ${dir}
+    done
+    setfacl -b ${target_dir}/README
+    chmod a+r ${target_dir}/README
+}

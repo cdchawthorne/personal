@@ -115,3 +115,5 @@ fi
 if [[ -r ${HOME}/.zsh_autoload ]]; then
     . ${HOME}/.zsh_autoload
 fi
+
+umask 027
