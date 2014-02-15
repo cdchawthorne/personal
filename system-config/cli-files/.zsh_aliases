@@ -234,3 +234,12 @@ function usb-backup {
         sudo rsync -avz --delete ${targets} $1
     fi
 }
+
+function a {
+    cd ~/documents/uw/courses/$1
+}
+
+function ruw {
+    target='cdchawth@taurine.csclub.uwaterloo.ca:~/utilities/rsync_backups'
+    rsync -avz --delete ~/documents/uw/courses ${target}
+}

@@ -35,6 +35,14 @@ terminal*faceName:         default
 terminal*eightBitInput:    false
 terminal*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
 
+news*background:       black
+news*foreground:       white
+news*cursorColor:      white
+news*font:             -*-Fixed-medium-R-Normal-*-20-*-*-*-*-*-*-*
+news*faceName:         default
+news*eightBitInput:    false
+news*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
+
 irssi*background:       black
 irssi*foreground:       white
 irssi*cursorColor:      white
@@ -42,14 +50,6 @@ irssi*font:             -*-Fixed-medium-R-Normal-*-20-*-*-*-*-*-*-*
 irssi*faceName:         default
 irssi*eightBitInput:    false
 irssi*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
-
-urxvt*background:       black
-urxvt*foreground:       white
-urxvt*cursorColor:      white
-urxvt*font:             -*-Fixed-medium-R-Normal-*-20-*-*-*-*-*-*-*
-urxvt*faceName:         default
-urxvt*eightBitInput:    false
-urxvt*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
 
 test*background:       black
 test*foreground:       white

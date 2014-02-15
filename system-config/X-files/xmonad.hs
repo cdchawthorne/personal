@@ -22,7 +22,7 @@ mainModMask :: KeyMask
 mainModMask = mod4Mask
 
 myWorkspaces :: [String]
-myWorkspaces = ["Tor", "Chromium", "Terminal", "4", "5", "6", "7", "Chat",
+myWorkspaces = ["Tor", "Chromium", "Terminal", "4", "5", "6", "News", "Chat",
                 "Music"]
 
 main = do
@@ -47,6 +47,7 @@ myManageHook = composeAll $ concat $
       , [className =? name --> doF (W.shift "Tor") | name <- torClassNames]
       , [className =? name --> doF (W.shift "Chromium") |
          name <- chromiumClassNames]
+      , [className =? name --> viewShift "News" | name <- newsClassNames]
       , [className =? name --> viewShift "Chat" | name <- chatClassNames]
       , [className =? name --> viewShift "Music" | name <- musicClassNames]
       , [className =? name --> viewShift "Terminal" |
@@ -62,6 +63,7 @@ myManageHook = composeAll $ concat $
         musicClassNames = ["music"]
         chatClassNames = ["irssi"]
         terminalClassNames = ["terminal"]
+        newsClassNames = ["news"]
 
 myLayouts = noBorders Full ||| tiled ||| Mirror tiled
     where

@@ -361,6 +361,7 @@ inoremap <silent> jf <C-]><Esc>
 inoremap <silent> Jf <C-]><Esc>
 inoremap <silent> jF <C-]><Esc>
 inoremap <silent> JF <C-]><Esc>
+inoremap <silent> <C-u> <C-g>u<C-u>
 
 inoremap <silent> fdm <C-g>u<Esc>viwUgi
 inoremap <silent> fdk <C-k>
