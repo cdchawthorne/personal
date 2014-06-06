@@ -37,7 +37,7 @@ alias sudo='sudo '
 alias xargs='xargs '
 alias startx='builtin cd; command startx &> "${HOME}/.xsession-errors"'
 alias p='cd ${HOME}/repos/personal'
-alias k='pwsafe -p'
+alias f='cd ${HOME}/documents/research/usra_2014'
 
 alias tim='vim -t'
 alias vv='vim -c ''e $MYVIMRC'''
@@ -96,17 +96,24 @@ function backup {
 
     echo "Compressing backup..."
     tar -czf ${backup} ${targets}
-    echo "Encrypting backup..."
-    xcowsay "Encrypting backup..."
-    gpg -c --force-mdc --cipher-algo AES256 ${backup}
-    echo "Transfer backup?"
-    xcowsay "Ready to transfer backup"
-    read -q transfer
-    if [[ ${transfer} == y ]]; then
-        echo "Transferring..."
-        ssh ${remote_machine} rm "${remote_backup_dir}/$(hostname)_*.tar.gz.gpg"
+    echo "Encrypt backup?"
+    xcowsay "Ready to encrypt backup"
+    read -q encrypt
+    if [[ ${encrypt} == y ]]; then
+        echo "Encrypting backup..."
+        gpg -c --force-mdc --cipher-algo AES256 ${backup}
 
-        scp ${encrypted_backup} ${pwsafe_db} ${remote_machine}:${remote_backup_dir}
+        echo "Transfer backup?"
+        xcowsay "Ready to transfer backup"
+        read -q transfer
+        if [[ ${transfer} == y ]]; then
+            echo "Transferring..."
+            ssh ${remote_machine} rm \
+                "${remote_backup_dir}/$(hostname)_*.tar.gz.gpg"
+
+            scp ${pwsafe_db} ${encrypted_backup} \
+                ${remote_machine}:${remote_backup_dir}
+        fi
     fi
     rm -f ${backup} ${encrypted_backup}
 }
@@ -242,4 +249,9 @@ function a {
 function ruw {
     target='cdchawth@taurine.csclub.uwaterloo.ca:~/utilities/rsync_backups'
     rsync -avz --delete ~/documents/uw/courses ${target}
+}
+
+function rr {
+    target='cdchawth@taurine.csclub.uwaterloo.ca:~/utilities/rsync_backups'
+    rsync -avz --delete ~/documents/research ${target}
 }

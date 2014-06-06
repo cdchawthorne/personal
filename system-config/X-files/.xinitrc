@@ -35,9 +35,9 @@ xscreensaver -no-splash &
 # Get rid of those thrice-damnèd beeps
 xset b off
 
-export GTK_IM_MODULE='uim'
-export QT_IM_MODULE='uim'
-uim-xim &
-export XMODIFIERS='@im=uim'
+export GTK_IM_MODULE='scim'
+export QT_IM_MODULE='scim'
+scim -d
+export XMODIFIERS='@im=SCIM'
 
 exec xmonad

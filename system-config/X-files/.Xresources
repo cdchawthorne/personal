@@ -5,56 +5,41 @@
 XTerm*background:       black
 XTerm*foreground:       white
 XTerm*cursorColor:      white
-XTerm*font:             -*-Fixed-medium-R-Normal-*-20-*-*-*-*-*-*-*
-XTerm*faceName:         default
-
+XTerm*faceName:         M+ 1m,M+ 1m bold:style=bold
 XTerm*eightBitInput:    false
 XTerm*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
 
 pwsafe*background:       black
 pwsafe*foreground:       white
 pwsafe*cursorColor:      white
-pwsafe*font:             -*-Fixed-medium-R-Normal-*-20-*-*-*-*-*-*-*
-pwsafe*faceName:         default
+pwsafe*faceName:         M+ 1m,M+ 1m bold:style=bold
 pwsafe*eightBitInput:    false
 pwsafe*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
 
 music*background:       black
 music*foreground:       white
 music*cursorColor:      white
-music*font:             -*-Fixed-medium-R-Normal-*-20-*-*-*-*-*-*-*
-music*faceName:         default
+music*faceName:         M+ 1m,M+ 1m bold:style=bold
 music*eightBitInput:    false
 music*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
 
 terminal*background:       black
 terminal*foreground:       white
 terminal*cursorColor:      white
-terminal*font:             -*-Fixed-medium-R-Normal-*-20-*-*-*-*-*-*-*
-terminal*faceName:         default
+terminal*faceName:         M+ 1m,M+ 1m bold:style=bold
 terminal*eightBitInput:    false
 terminal*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
 
 news*background:       black
 news*foreground:       white
 news*cursorColor:      white
-news*font:             -*-Fixed-medium-R-Normal-*-20-*-*-*-*-*-*-*
-news*faceName:         default
+news*faceName:         M+ 1m,M+ 1m bold:style=bold
 news*eightBitInput:    false
 news*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
 
 irssi*background:       black
 irssi*foreground:       white
 irssi*cursorColor:      white
-irssi*font:             -*-Fixed-medium-R-Normal-*-20-*-*-*-*-*-*-*
-irssi*faceName:         default
+irssi*faceName:         M+ 1m,M+ 1m bold:style=bold
 irssi*eightBitInput:    false
 irssi*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
-
-test*background:       black
-test*foreground:       white
-test*cursorColor:      white
-test*font:             -*-fixed-*-*-*-*-*-*-*-*-*-*-*-*
-test*faceName:         default
-test*eightBitInput:    false
-test*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)

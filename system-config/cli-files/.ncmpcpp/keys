@@ -126,7 +126,7 @@ key_prev_found_position = 'N'
 #
 #key_toggle_find_mode = 'w'
 #
-#key_edit_tags = 'e'
+key_edit_tags = 'T'
 #
 #key_go_to_position = 'g'
 #
@@ -144,9 +144,9 @@ key_select_album = 'E'
 #
 #key_add_selected_items = 'A'
 #
-key_clear = 'C'
+key_clear = 'c'
 #
-key_crop = 'c'
+key_crop = 'C'
 #
 key_move_song_up = 'K'
 #

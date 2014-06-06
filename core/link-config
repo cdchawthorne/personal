@@ -36,7 +36,7 @@ function link-cli {
 
 function link-X {
     link_from_home=(.xbindkeysrc .xinitrc .xmobarrc .Xmodmap .xprofile
-                    .Xresources)
+                    .Xresources .zathurarc)
 
     builtin cd
     rm ${link_from_home} 2> /dev/null

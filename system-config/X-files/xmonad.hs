@@ -21,9 +21,9 @@ import XMonad.Prompt.Workspace
 mainModMask :: KeyMask
 mainModMask = mod4Mask
 
-myWorkspaces :: [String]
-myWorkspaces = ["Tor", "Chromium", "Terminal", "4", "5", "6", "News", "Chat",
-                "Music"]
+-- myWorkspaces :: [String]
+-- myWorkspaces = ["Tor", "Chromium", "Terminal", "4", "5", "6", "News", "Chat",
+--                 "Music"]
 
 main = do
     xmproc <- spawnPipe "/usr/bin/xmobar"
@@ -36,7 +36,7 @@ main = do
                          }
         , focusFollowsMouse = False
         , modMask = mainModMask
-        , workspaces = myWorkspaces
+--      , workspaces = myWorkspaces
         , keys = myKeys
         , startupHook = myStartupHook
         }
@@ -44,21 +44,19 @@ main = do
 myManageHook = composeAll $ concat $
     [
         [className =? name --> doFloat | name <- floatedClassNames]
-      , [className =? name --> doF (W.shift "Tor") | name <- torClassNames]
-      , [className =? name --> doF (W.shift "Chromium") |
-         name <- chromiumClassNames]
-      , [className =? name --> viewShift "News" | name <- newsClassNames]
-      , [className =? name --> viewShift "Chat" | name <- chatClassNames]
-      , [className =? name --> viewShift "Music" | name <- musicClassNames]
-      , [className =? name --> viewShift "Terminal" |
-         name <- terminalClassNames]
+      , [className =? name --> doF (W.shift "1") | name <- torClassNames]
+      , [className =? name --> doF (W.shift "2") | name <- chromiumClassNames]
+      , [className =? name --> viewShift "7" | name <- newsClassNames]
+      , [className =? name --> viewShift "8" | name <- chatClassNames]
+      , [className =? name --> viewShift "9" | name <- musicClassNames]
+      , [className =? name --> viewShift "3" | name <- terminalClassNames]
     ]
     where
         viewShift = doF . liftM2 (.) W.greedyView W.shift
         floatedClassNames = ["Mathematica", "pwsafe"]
         -- It seems the difference between classes and resources is a little
         -- dicey
-        torClassNames = ["Firefox", "Vidalia"]
+        torClassNames = ["Tor-Browser"]
         chromiumClassNames = ["Chromium"]
         musicClassNames = ["music"]
         chatClassNames = ["irssi"]
