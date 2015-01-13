@@ -2,9 +2,7 @@
 
 alias ls='ls --color=auto --group-directories-first'
 
-alias grep='grep --colour=auto'
-alias fgrep='fgrep --colour=auto'
-alias egrep='egrep --colour=auto'
+alias grep='grep --colour=always'
 
 alias ll='ls -alF'
 alias la='ls -A'
@@ -87,7 +85,7 @@ function backup {
     backup_dir=${HOME}/.backup
     targets=(${HOME}/documents ${HOME}/media/pictures ${HOME}/utilities
              ${HOME}/.cdchawthorne_jade_db ${HOME}/.gnupg ${HOME}/.pere
-             ${HOME}/.ssh ${HOME}/.config ${HOME}/scratch)
+             ${HOME}/.ssh ${HOME}/.config ${HOME}/scratch $@)
     backup="${backup_dir}/$(hostname)_$(timestamp).tar.gz"
     encrypted_backup=${backup}.gpg
     remote_machine=cdchawth@linux.student.cs.uwaterloo.ca
@@ -121,7 +119,7 @@ function backup {
 function x {
     if ! pgrep X &> /dev/null; then
         builtin cd
-        command startx &> "${HOME}/.xsession-errors"
+        command startx -- -keeptty &> "${HOME}/.xsession-errors"
     fi
 }
 
@@ -254,4 +252,22 @@ function ruw {
 function rr {
     target='cdchawth@taurine.csclub.uwaterloo.ca:~/utilities/rsync_backups'
     rsync -avz --delete ~/documents/research ${target}
+}
+
+function song {
+    song_info=$(mpc -h ~/.mpd/socket | head -n 1)
+    fgrep ${song_info} ${HOME}/ocr_songs.txt &> /dev/null || \
+        echo ${song_info} >> ${HOME}/ocr_songs.txt
+}
+
+function vocal {
+    song_info=$(mpc -h ~/.mpd/socket | head -n 1)
+    fgrep ${song_info} ${HOME}/ocr_vocal.txt &> /dev/null || \
+        echo ${song_info} >> ${HOME}/ocr_vocal.txt
+}
+
+function piano {
+    song_info=$(mpc -h ~/.mpd/socket | head -n 1)
+    fgrep ${song_info} ${HOME}/ocr_piano.txt &> /dev/null || \
+        echo ${song_info} >> ${HOME}/ocr_piano.txt
 }

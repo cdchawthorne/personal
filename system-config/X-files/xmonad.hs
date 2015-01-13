@@ -56,7 +56,7 @@ myManageHook = composeAll $ concat $
         floatedClassNames = ["Mathematica", "pwsafe"]
         -- It seems the difference between classes and resources is a little
         -- dicey
-        torClassNames = ["Tor-Browser"]
+        torClassNames = ["Tor Browser"]
         chromiumClassNames = ["Chromium"]
         musicClassNames = ["music"]
         chatClassNames = ["irssi"]
@@ -106,4 +106,5 @@ strippedKeys x = foldr M.delete (keys defaultConfig x) (keysToRemove x)
 -- Compose all my new key combinations.
 myKeys x = M.union (strippedKeys x) (M.fromList (keysToAdd x))
 
-myStartupHook = spawn "tor-browser-en" >> spawn "chromium"
+{- myStartupHook = spawn "tor-browser-en" >> spawn "chromium" -}
+myStartupHook = spawn "chromium"

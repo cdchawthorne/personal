@@ -25,3 +25,6 @@
 [submodule "system-config/cli-files/.vim/bundle/vimbufsync"]
 	path = system-config/cli-files/.vim/bundle/vimbufsync
 	url = https://github.com/def-lkb/vimbufsync.git
+[submodule "system-config/cli-files/.vim/bundle/vim-racket"]
+	path = system-config/cli-files/.vim/bundle/vim-racket
+	url = https://github.com/wlangstroth/vim-racket

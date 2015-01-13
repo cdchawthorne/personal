@@ -5,7 +5,8 @@ destinations=(cdchawth@linux.student.cs.uwaterloo.ca
               cdchawth@nullsleep.csclub.uwaterloo.ca
               cdchawth@taurine.csclub.uwaterloo.ca
               cdchawthorne@peterm.tk
-              cdchawth@ugster18.student.cs.uwaterloo.ca)
+              cdchawth@ugster18.student.cs.uwaterloo.ca
+              cdchawth@hfcs.csclub.uwaterloo.ca)
 
 echo -ne '\e[3 q'
 echo "Choose a destination:"

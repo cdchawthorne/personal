@@ -14,7 +14,9 @@ sub notify {
 
 sub priv_msg {
     my ($server,$msg,$nick,$address) = @_;
-    notify($nick, $msg);
+    if ($nick !~ /^\*/) {
+        notify($nick, $msg);
+    }
 }
 
 sub public_msg {
