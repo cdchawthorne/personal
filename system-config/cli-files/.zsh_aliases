@@ -32,7 +32,6 @@ alias fr='find . -regex'
 alias rlwrap='rlwrap -s 1000000'
 alias math='rlwrap math'
 alias racket='rlwrap racket'
-alias mount='mount -o gid=users,fmask=113,dmask=002'
 alias sudo='sudo '
 alias xargs='xargs '
 alias startx='builtin cd; command startx &> "${HOME}/.xsession-errors"'
@@ -236,7 +235,7 @@ function usb-backup {
 }
 
 function a {
-    cd ~/documents/uw/courses/$1
+    cd ~/documents/education/undergrad/courses/$1
 }
 
 function ruw {

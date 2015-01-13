@@ -18,19 +18,12 @@ function link-cli {
                     .zprofile .zsh_aliases .zsh_autoload .zshenv .zshrc .ghci
                     .vim .zsh .rtorrent.rc .latexmkrc .irbrc .screenrc
                     .ncmpcpp)
-    link_from_dot_config=(pms)
 
     builtin cd
     rm ${link_from_home} 2> /dev/null
 
     for file in ${link_from_home}; do
         ln -s ${cli_src}/${file}
-    done
-
-    builtin cd .config
-    rm ${link_from_dot_config}
-    for dir in ${link_from_dot_config}; do
-        ln -s ${cli_dot_config_src}/${dir}
     done
 }
 
@@ -57,6 +50,14 @@ function link-X {
     rm xmonad.hs 2> /dev/null
 
     ln -s ${X_src}/xmonad.hs
+
+    if [[ ! -e ${HOME}/.config/zathura ]]; then
+        mkdir -p ${HOME}/.config/zathura
+    fi
+    builtin cd ${HOME}/.config/zathura
+    rm zathurarc 2> /dev/null
+
+    ln -s ${X_src}/zathurarc
 }
 
 function link-dev {

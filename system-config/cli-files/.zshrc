@@ -17,7 +17,7 @@ setopt EXTENDED_HISTORY INC_APPEND_HISTORY
 setopt HIST_IGNORE_DUPS HIST_IGNORE_SPACE HIST_NO_STORE
 setopt NO_BEEP
 
-if [[ $(hostname) == "computer-of-destiny" ]]; then
+if [[ $(hostname) == "subterfuge" ]]; then
     PROMPT='%~%# '
 else
     PROMPT='%m:%~%# '
