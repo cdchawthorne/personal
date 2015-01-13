@@ -19,3 +19,12 @@
 [submodule "system-config/cli-files/.vim/bundle/inkpot"]
 	path = system-config/cli-files/.vim/bundle/inkpot
 	url = git://github.com/ciaranm/inkpot.git
+[submodule "system-config/cli-files/.vim/bundle/coquille"]
+	path = system-config/cli-files/.vim/bundle/coquille
+	url = https://github.com/the-lambda-church/coquille.git
+[submodule "system-config/cli-files/.vim/bundle/vimbufsync"]
+	path = system-config/cli-files/.vim/bundle/vimbufsync
+	url = https://github.com/def-lkb/vimbufsync.git
+[submodule "system-config/cli-files/.vim/bundle/vim-racket"]
+	path = system-config/cli-files/.vim/bundle/vim-racket
+	url = https://github.com/wlangstroth/vim-racket

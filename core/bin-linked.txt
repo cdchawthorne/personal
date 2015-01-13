@@ -7,3 +7,4 @@ X-utilities/pdf
 X-utilities/ssh-prompt
 X-utilities/get-pass
 X-utilities/get-username-pass
+X-utilities/toggle-xscreensaver

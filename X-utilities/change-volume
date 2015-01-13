@@ -23,4 +23,4 @@ case $1 in
         percentage=$(amixer set Master playback ${2}- | tail -n 1 | sed -re ${volExp})
         safe_osd_cat -d 2 -c cyan -A center -o 3 -b percentage -P ${percentage}
         ;;
-}
+esac

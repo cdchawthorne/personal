@@ -2,6 +2,7 @@ map r navigate next
 map e navigate previous
 map <PageUp> scroll full-up
 map <PageDown> scroll full-down
+map u rotate
 set incremental-search true
 set recolor-keephue true
 set scroll-full-overlap 0.1

@@ -28,8 +28,10 @@ if [ -r "${HOME}/.xbindkeysrc" ]; then
 fi
 
 # Set background or draw attention to the error
-
 pere random
+
+# Turn on xscreensaver
+sed -ri -e 's/^(mode:[[:blank:]]*)off$/\1blank/g' .xscreensaver
 xscreensaver -no-splash &
 
 # Get rid of those thrice-damnèd beeps

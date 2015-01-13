@@ -1,3 +1,6 @@
+"toggle-xscreensaver"
+    m:0x40 + c:53
+    Mod4 + x
 "change-volume toggleMute"
     m:0x40 + c:31
     Mod4 + i
@@ -56,8 +59,8 @@
     m:0x40 + c:47
     Mod4 + ;
 "xterm"
-    m:0x40 + c:53
-    Mod4 + x
+    m:0x40 + c:55
+    Mod4 + v
 "gmrun"
     m:0x40 + c:33
     Mod4 + p
@@ -67,9 +70,18 @@
 "xterm -T xterm-tmux -class terminal -e zsh -c tmux"
     m:0x40 + c:40
     Mod4 + d
-"xterm -class irssi -e mosh cdchawth@taurine.csclub.uwaterloo.ca -- dtach -A .irssi_socket irssi"
+"xterm -T irssi -class irssi -e mosh cdchawth@taurine.csclub.uwaterloo.ca -- dtach -A .irssi_socket irssi"
     m:0x40 + c:41
     Mod4 + f
 "pkill xbindkeys; xbindkeys"
     m:0x41 + c:39
     Shift+Mod4 + s
+"cruxis status | grep eduroam && echo nerd | nc -c nullsleep.csclub.uwaterloo.ca 30023"
+    m:0x40 + c:48
+    Mod4 + '
+"cruxis status | grep eduroam && echo jam | nc -c nullsleep.csclub.uwaterloo.ca 30024"
+    m:0x41 + c:48
+    Shift+Mod4 + '
+"cruxis status | grep eduroam && echo gangsta | nc -c nullsleep.csclub.uwaterloo.ca 8978"
+    m:0x40 + c:51
+    Mod4 + \

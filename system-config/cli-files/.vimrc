@@ -22,7 +22,6 @@ set backupdir=${HOME}/utilities/vim_backups
 set colorcolumn=80
 set cryptmethod=blowfish
 set expandtab
-set gdefault
 set hidden
 set history=10000
 set hlsearch
@@ -103,6 +102,10 @@ set statusline+=\ Column
 set statusline+=\ %c
 set statusline+=\ Buffer
 set statusline+=\ %n
+
+" Coquille options
+let g:coquille_coqtop_executable = "/home/cdchawthorne/documents/uw/courses/"
+let g:coquille_coqtop_executable .= "pmath911/assignments/HoTT/hoqtop"
 
 " Gundo options
 let g:gundo_right = 1
@@ -187,10 +190,12 @@ augroup END
 
 
 function! ToggleNumber()
-    if (&number == 1)
-        set relativenumber
+    if (&number == 1 || &relativenumber == 1)
+        set nonumber
+        set norelativenumber
     else
         set number
+        set relativenumber
     endif
 endfunction
 
@@ -201,6 +206,15 @@ endfunction
 function! LaTeXCompile()
     write
     silent !latexmk -pdf %
+    redraw!
+    if v:shell_error != 0
+        !
+    endif
+endfunction
+
+function! LilyPondCompile()
+    write
+    silent !lilypond %
     redraw!
     if v:shell_error != 0
         !
