@@ -1,7 +1,9 @@
 import Control.Monad
 import XMonad
 import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.UrgencyHook
 import XMonad.Util.Run(spawnPipe)
 import System.IO
 import XMonad.Util.Themes
@@ -27,7 +29,9 @@ mainModMask = mod4Mask
 
 main = do
     xmproc <- spawnPipe "/usr/bin/xmobar"
-    xmonad $ defaultConfig
+    {- xmonad $ withUrgencyHook (CommandUrgencyHook "notify-send Urgency: '" "'") -}
+    xmonad $ withUrgencyHook dzenUrgencyHook
+        $ ewmh defaultConfig
         { manageHook = myManageHook
         , layoutHook = avoidStruts myLayouts
         , logHook = dynamicLogWithPP xmobarPP
@@ -59,7 +63,7 @@ myManageHook = composeAll $ concat $
         torClassNames = ["Tor Browser"]
         chromiumClassNames = ["Chromium"]
         musicClassNames = ["music"]
-        chatClassNames = ["irssi"]
+        chatClassNames = ["irc"]
         terminalClassNames = ["terminal"]
         newsClassNames = ["news"]
 
@@ -99,7 +103,7 @@ keysToRemove x =
         , (modMask x, xK_h)
         , (modMask x, xK_l)
     ]
- 
+
 -- Delete the keys combinations we want to remove.
 strippedKeys x = foldr M.delete (keys defaultConfig x) (keysToRemove x)
  
@@ -108,3 +112,7 @@ myKeys x = M.union (strippedKeys x) (M.fromList (keysToAdd x))
 
 {- myStartupHook = spawn "tor-browser-en" >> spawn "chromium" -}
 myStartupHook = spawn "chromium"
+
+data CommandUrgencyHook = CommandUrgencyHook String String deriving (Read, Show)
+instance UrgencyHook CommandUrgencyHook where
+    urgencyHook (CommandUrgencyHook prefix suffix) w = spawn $ prefix ++ show w ++ suffix

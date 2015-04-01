@@ -4,16 +4,16 @@
 "change-volume toggleMute"
     m:0x40 + c:31
     Mod4 + i
-"change-volume raise 1"
+"change-volume raise 2"
     m:0x40 + c:32
     Mod4 + o
-"change-volume lower 1"
+"change-volume lower 2"
     m:0x40 + c:30
     Mod4 + u
-"change-volume raise 5"
+"change-volume raise 10"
     m:0x41 + c:32
     Shift+Mod4 + o
-"change-volume lower 5"
+"change-volume lower 10"
     m:0x41 + c:30
     Shift+Mod4 + u
 "sudo poweroff"
@@ -25,15 +25,15 @@
 "xscreensaver-command -lock"
     m:0x40 + c:52
     Mod4 + z
-"chromium --password-store=basic"
+"chromium"
     m:0x40 + c:43
     Mod4 + h
 "scrot -e "mv \$f ${SCREENSHOTS_DIR}""
-    m:0x0 + c:107
-    Print
+    m:0x0 + c:172
+    F8
 "scrot -s -e "mv \$f ${SCREENSHOTS_DIR}""
-    m:0x4 + c:107
-    Control + Print
+    m:0x4 + c:172
+    Control + F8
 "pkill xcowsay"
     m:0x41 + c:53
     Shift+Mod4 + x
@@ -52,7 +52,7 @@
 "xterm -class music ncmpcpp"
     m:0x40 + c:57
     Mod4 + n
-"xterm -class music -e 'ssh -t cdchawth@nullsleep.csclub.uwaterloo.ca raine x ncmpcpp -h /var/run/mpd/socket'"
+"xterm -class music -e 'mosh cdchawth@nullsleep.csclub.uwaterloo.ca -- screen -DR'"
     m:0x41 + c:57
     Shift+Mod4 + n
 "tor-browser-en"
@@ -70,7 +70,7 @@
 "xterm -T xterm-tmux -class terminal -e zsh -c tmux"
     m:0x40 + c:40
     Mod4 + d
-"xterm -T irssi -class irssi -e mosh cdchawth@taurine.csclub.uwaterloo.ca -- dtach -A .irssi_socket irssi"
+"xterm -T irc -class irc -e mosh cdchawth@taurine.csclub.uwaterloo.ca -- tmux attach-session -t irc"
     m:0x40 + c:41
     Mod4 + f
 "pkill xbindkeys; xbindkeys"

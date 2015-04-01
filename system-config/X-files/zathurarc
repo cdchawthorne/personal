@@ -1,11 +1,16 @@
 map r navigate next
 map e navigate previous
+map d scroll full-up
 map <PageUp> scroll full-up
 map <PageDown> scroll full-down
-map u rotate
-set incremental-search true
-set recolor-keephue true
+map ; focus_inputbar
 set scroll-full-overlap 0.1
+map u rotate
 set window-title-basename true
 set statusbar-basename true
 set show-scrollbars false
+set recolor-keephue true
+set recolor
+/* set recolor-darkcolor "#dddddd" */
+/* set recolor-darkcolor "#5cbdff" */
+set recolor-darkcolor "#ffffff"

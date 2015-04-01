@@ -29,13 +29,12 @@ alias ff='find . -name'
 alias fr='find . -regex'
 alias rlwrap='rlwrap -s 1000000'
 alias math='rlwrap math'
-alias racket='rlwrap racket'
+alias ocaml='rlwrap ocaml'
 alias sudo='sudo '
 alias xargs='xargs '
-alias startx='builtin cd; command startx &> "${HOME}/.xsession-errors"'
 alias p='cd ${HOME}/repos/personal'
-alias f='cd ${HOME}/documents/research/usra_2014'
 
+alias vi=vim
 alias tim='vim -t'
 alias vv='vim -c ''e $MYVIMRC'''
 alias vz='vim ~/.zsh_aliases'
@@ -43,9 +42,12 @@ alias sz='source ~/.zsh_aliases'
 function fim {
     vim -c "cs f f $1"
 }
+alias man='man -i'
+alias less='less -i'
 
 alias rh='rehash'
 alias u='sudo zsh -c ''aura -Syu; aura -Akua; ntpd -q; hwclock -w'''
+alias fix-steam='find ~/.steam/root/ \( -name "libgcc_s.so*" -o -name "libstdc++.so*" -o -name "libxcb.so*" \) -print -delete'
 
 function timestamp {
     date +'%Y-%m-%d__%H-%M-%S'
@@ -118,7 +120,7 @@ function backup {
 function x {
     if ! pgrep X &> /dev/null; then
         builtin cd
-        command startx -- -keeptty &> "${HOME}/.xsession-errors"
+        command startx #-- -keeptty &> "${HOME}/.xsession-errors"
     fi
 }
 
@@ -168,8 +170,6 @@ function python {
     )
 }
 
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-
 function perms {
     target_dir=/music/cdchawth
     find ${target_dir} -type f | read-lines-array files
@@ -184,43 +184,6 @@ function perms {
     done
     setfacl -b ${target_dir}/README
     chmod a+r ${target_dir}/README
-}
-
-function get-album {
-    function echo_sql {
-        echo "SELECT base_location.path || '/' || item_extra.location || " \
-             "X'0A' || item_extra.title"
-        echo "FROM album, item_extra, item, base_location"
-        echo "WHERE item_extra.item_pid = item.item_pid AND"
-        echo "      album.album_pid = item.album_pid AND"
-        echo "      album.album = '$1' AND"
-        echo "      base_location.base_location_id = item.base_location_id;"
-    }
-
-    if [[ $# -ne 2 ]]; then
-        echo "USAGE: get-album IPHONE_MOUNT ALBUM_NAME" 1>&2
-        return 1
-    fi
-
-    target_dir="${HOME}/media/music/albums/purchases/$(echo $2 | sed -r 's/ /_/g')"
-    mkdir -p ${target_dir}
-
-    echo_sql $2 | sqlite3 $1/iTunes_Control/iTunes/MediaLibrary.sqlitedb |
-        read-lines-array songs
-
-    i=1
-    while [[ $i -lt ${#songs} ]]; do
-        location=${songs[i]}
-        title_base="$(echo ${songs[$((i+1))]} | sed -re 's/ /_/g' -e 's/\//_slash_/g')"
-        title_extension="$(echo ${location} | sed -re 's/^.*\.([^.]*)/\1/g')"
-        if [[ ${title_extension} == ${location} ]]; then
-            echo "Unable to extract extension: ${title_base} at ${location}" 1>&2
-            cp $1/${location} ${target_dir}/${title_base}.UNKNOWN_EXTENSION
-        else
-            cp $1/${location} ${target_dir}/${title_base}.${title_extension}
-        fi
-        i=$((i+2))
-    done
 }
 
 function usb-backup {
@@ -245,28 +208,5 @@ function a {
 
 function ruw {
     target='cdchawth@taurine.csclub.uwaterloo.ca:~/utilities/rsync_backups'
-    rsync -avz --delete ~/documents/uw/courses ${target}
-}
-
-function rr {
-    target='cdchawth@taurine.csclub.uwaterloo.ca:~/utilities/rsync_backups'
-    rsync -avz --delete ~/documents/research ${target}
-}
-
-function song {
-    song_info=$(mpc -h ~/.mpd/socket | head -n 1)
-    fgrep ${song_info} ${HOME}/ocr_songs.txt &> /dev/null || \
-        echo ${song_info} >> ${HOME}/ocr_songs.txt
-}
-
-function vocal {
-    song_info=$(mpc -h ~/.mpd/socket | head -n 1)
-    fgrep ${song_info} ${HOME}/ocr_vocal.txt &> /dev/null || \
-        echo ${song_info} >> ${HOME}/ocr_vocal.txt
-}
-
-function piano {
-    song_info=$(mpc -h ~/.mpd/socket | head -n 1)
-    fgrep ${song_info} ${HOME}/ocr_piano.txt &> /dev/null || \
-        echo ${song_info} >> ${HOME}/ocr_piano.txt
+    rsync -avz --delete ~/documents/education/undergrad/courses ${target}
 }

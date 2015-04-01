@@ -5,41 +5,42 @@
 XTerm*background:       black
 XTerm*foreground:       white
 XTerm*cursorColor:      white
-XTerm*faceName:         M+ 1m,M+ 1m bold:style=bold
+XTerm*font:             -*-Fixed-medium-R-Normal-*-20-*-*-*-*-*-*-*
+XTerm*faceName:         default
 XTerm*eightBitInput:    false
 XTerm*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
+! XTerm*bellIsUrgent:     true
+! XTerm*visualBell:       true
 
 pwsafe*background:       black
 pwsafe*foreground:       white
 pwsafe*cursorColor:      white
-pwsafe*faceName:         M+ 1m,M+ 1m bold:style=bold
+pwsafe*font:             -*-Fixed-medium-R-Normal-*-20-*-*-*-*-*-*-*
+pwsafe*faceName:         default
 pwsafe*eightBitInput:    false
 pwsafe*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
 
 music*background:       black
 music*foreground:       white
 music*cursorColor:      white
-music*faceName:         M+ 1m,M+ 1m bold:style=bold
+music*font:             -*-Fixed-medium-R-Normal-*-20-*-*-*-*-*-*-*
+music*faceName:         default
 music*eightBitInput:    false
 music*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
 
 terminal*background:       black
 terminal*foreground:       white
 terminal*cursorColor:      white
-terminal*faceName:         M+ 1m,M+ 1m bold:style=bold
+terminal*font:             -*-Fixed-medium-R-Normal-*-20-*-*-*-*-*-*-*
+terminal*faceName:         default
 terminal*eightBitInput:    false
 terminal*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
 
-news*background:       black
-news*foreground:       white
-news*cursorColor:      white
-news*faceName:         M+ 1m,M+ 1m bold:style=bold
-news*eightBitInput:    false
-news*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
-
-irssi*background:       black
-irssi*foreground:       white
-irssi*cursorColor:      white
-irssi*faceName:         M+ 1m,M+ 1m bold:style=bold
-irssi*eightBitInput:    false
-irssi*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
+irc*background:       black
+irc*foreground:       white
+irc*cursorColor:      white
+irc*font:             -*-Fixed-medium-R-Normal-*-20-*-*-*-*-*-*-*
+irc*faceName:         default
+irc*eightBitInput:    false
+irc*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
+irc*bellIsUrgent:     true

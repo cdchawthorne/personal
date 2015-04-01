@@ -20,7 +20,7 @@ set backspace=indent,eol,start
 set backup
 set backupdir=${HOME}/utilities/vim_backups
 set colorcolumn=80
-set cryptmethod=blowfish
+set cryptmethod=blowfish2
 set expandtab
 set hidden
 set history=10000
@@ -104,8 +104,8 @@ set statusline+=\ Buffer
 set statusline+=\ %n
 
 " Coquille options
-let g:coquille_coqtop_executable = "/home/cdchawthorne/documents/uw/courses/"
-let g:coquille_coqtop_executable .= "pmath911/assignments/HoTT/hoqtop"
+" let g:coquille_coqtop_executable = "/home/cdchawthorne/documents/uw/courses/"
+" let g:coquille_coqtop_executable .= "pmath911/assignments/HoTT/hoqtop"
 
 " Gundo options
 let g:gundo_right = 1
@@ -135,19 +135,10 @@ let g:surround_78 = "\\[ \r \\]"
 " LaTeX Box options
 let g:LatexBox_no_mappings = 1
 
-" LaTeX suite options
+" Get rid of annoying & indenting in LaTeX
+let g:tex_indent_and = 0
 
-" Apparently necessary for vim-latex
-" See :help latex-suite.txt
-set grepprg=grep\ -nH\ $*
 let g:tex_flavor="latex"
-let g:Tex_DefaultTargetFormat="pdf"
-let g:Tex_MultipleCompileFormats="dvi,pdf"
-
-" Avoid folding in tex documents
-let Tex_FoldedEnvironments=""
-let Tex_FoldedMisc=""
-let Tex_FoldedSections=""
 
 set diffopt+=iwhite
 set diffopt+=foldcolumn:0
@@ -410,7 +401,8 @@ nnoremap <silent> <Leader>fr <C-r>
 nnoremap <silent> <Leader>fd 0D
 nnoremap <silent> <Leader>fn :call EscapeIndent("down")<CR>
 nnoremap <silent> <Leader>fp :call EscapeIndent("up")<CR>
-nnoremap <silent> <Leader>fb :call BracketReplace()<CR>
+nnoremap <silent> <Leader>fk gq
+nnoremap <silent> <Leader>fi gqgq
 
 vnoremap <silent> <Leader>fd <C-v>0o$x
 vnoremap <silent> <Leader>fn :call EscapeIndent("down")<CR>

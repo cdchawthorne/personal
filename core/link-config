@@ -17,7 +17,7 @@ function link-cli {
     link_from_home=(.emacs .haskeline .inputrc .pyinputrc .tmux.conf .vimrc
                     .zprofile .zsh_aliases .zsh_autoload .zshenv .zshrc .ghci
                     .vim .zsh .rtorrent.rc .latexmkrc .irbrc .screenrc
-                    .ncmpcpp)
+                    .ncmpcpp .mpdconf)
 
     builtin cd
     rm ${link_from_home} 2> /dev/null
@@ -29,7 +29,7 @@ function link-cli {
 
 function link-X {
     link_from_home=(.xbindkeysrc .xinitrc .xmobarrc .Xmodmap .xprofile
-                    .Xresources .zathurarc)
+                    .Xresources)
 
     builtin cd
     rm ${link_from_home} 2> /dev/null

@@ -31,10 +31,10 @@ fi
 pere random
 
 # Turn on xscreensaver
-sed -ri -e 's/^(mode:[[:blank:]]*)off$/\1blank/g' .xscreensaver
 xscreensaver -no-splash &
 
 # Get rid of those thrice-damnèd beeps
 xset b off
 
 exec xmonad
+# exec i3

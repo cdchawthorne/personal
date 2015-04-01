@@ -1,7 +1,8 @@
 \documentclass{article}
 
 \usepackage[margin=1in]{geometry}
-\usepackage[utf8]{inputenc}
+\usepackage[mathletters]{ucs}
+\usepackage[utf8x]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[canadian]{babel}
 
@@ -134,6 +135,7 @@
   \ignorespacesafterend
 }
 
+\theoremstyle{definition}
 \newtheorem{case}{Case}
 \newtheorem{subcase}{Case}
 \numberwithin{subcase}{case}
@@ -243,11 +245,13 @@
 \let \on \operatorname
 \let \xra \xrightarrow
 \let \wh \widehat
+\let \ew \epsilon
 
 % Delimiters
 \DeclarePairedDelimiter{\angs}{\langle}{\rangle}
 \DeclarePairedDelimiterX{\set}[1]{\{}{\}}{\, #1 \,}
 \DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\len}{\lvert}{\rvert}
 \DeclarePairedDelimiter{\card}{\lvert}{\rvert}
 \DeclarePairedDelimiter{\bars}{\lVert}{\rVert}
 \DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
