@@ -1,6 +1,5 @@
 core/line
 core/lines
-core/screen-music
 kernel/zelos-install
 X-utilities/change-volume
 X-utilities/dl
