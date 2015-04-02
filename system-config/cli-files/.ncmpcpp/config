@@ -24,7 +24,7 @@
 #
 ##### connection settings #####
 #
-mpd_host = /home/cdchawthorne/.mpd/socket
+#mpd_host = /home/cdchawthorne/.mpd/socket
 #
 #mpd_port = 6600
 #
@@ -32,7 +32,7 @@ mpd_host = /home/cdchawthorne/.mpd/socket
 #
 ## Needed for tag editor and file operations to work.
 ##
-mpd_music_dir = ~/media/music
+mpd_music_dir = /music
 #
 #mpd_crossfade_time = 5
 #
@@ -92,7 +92,7 @@ mpd_music_dir = ~/media/music
 #
 ## Available values: spectrum, wave.
 ##
-#visualizer_type = wave
+visualizer_type = spectrum
 #
 #visualizer_look = ●▮
 #
@@ -435,7 +435,7 @@ user_interface = alternative
 #
 #block_search_constraints_change_if_items_found = yes
 #
-#mouse_support = yes
+mouse_support = no
 #
 #mouse_list_scroll_whole_page = yes
 #

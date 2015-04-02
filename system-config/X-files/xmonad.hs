@@ -48,20 +48,17 @@ main = do
 myManageHook = composeAll $ concat $
     [
         [className =? name --> doFloat | name <- floatedClassNames]
-      , [className =? name --> doF (W.shift "1") | name <- torClassNames]
-      , [className =? name --> doF (W.shift "2") | name <- chromiumClassNames]
-      , [className =? name --> viewShift "7" | name <- newsClassNames]
-      , [className =? name --> viewShift "8" | name <- chatClassNames]
+      , [className =? name --> viewShift "2" | name <- chromiumClassNames]
       , [className =? name --> viewShift "9" | name <- musicClassNames]
       , [className =? name --> viewShift "3" | name <- terminalClassNames]
+      , [className =? name --> viewShift "8" | name <- chatClassNames]
     ]
     where
         viewShift = doF . liftM2 (.) W.greedyView W.shift
         floatedClassNames = ["Mathematica", "pwsafe"]
         -- It seems the difference between classes and resources is a little
         -- dicey
-        torClassNames = ["Tor Browser"]
-        chromiumClassNames = ["Chromium"]
+        chromiumClassNames = ["Chromium", "Chromium-browser"]
         musicClassNames = ["music"]
         chatClassNames = ["irc"]
         terminalClassNames = ["terminal"]
@@ -110,8 +107,7 @@ strippedKeys x = foldr M.delete (keys defaultConfig x) (keysToRemove x)
 -- Compose all my new key combinations.
 myKeys x = M.union (strippedKeys x) (M.fromList (keysToAdd x))
 
-{- myStartupHook = spawn "tor-browser-en" >> spawn "chromium" -}
-myStartupHook = spawn "chromium"
+myStartupHook = spawn "chromium-browser" >> spawn "chromium"
 
 data CommandUrgencyHook = CommandUrgencyHook String String deriving (Read, Show)
 instance UrgencyHook CommandUrgencyHook where

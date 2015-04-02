@@ -1,6 +1,3 @@
-# (Originally) taken from http://haskell.org/haskellwiki/Xmonad/Config_archive/John_Goerzen's_Configuration
-# (It really doesn't bear much of a resemblance anymore.)
-
 usermodmap=${HOME}/.Xmodmap
 userresources=${HOME}/.Xresources
 userprofile=${HOME}/.xprofile
@@ -13,7 +10,7 @@ if [ -d /etc/X11/xinit/xinitrc.d ]; then
   unset f
 fi
 
-[[ -r ${userprofile} ]] && . ${userprofile}
+[ -r ${userprofile} ] && . ${userprofile}
 
 if [ -r "${usermodmap}" ]; then
     xmodmap "${usermodmap}"
@@ -24,17 +21,19 @@ if [ -r "${userresources}" ]; then
 fi
 
 if [ -r "${HOME}/.xbindkeysrc" ]; then
-    xbindkeys
+    raine x xbindkeys
 fi
-
-# Set background or draw attention to the error
-pere random
-
-# Turn on xscreensaver
-xscreensaver -no-splash &
 
 # Get rid of those thrice-damnèd beeps
 xset b off
+
+feh --bg-max "$(shuf -n 1 ~/scratch/backs.txt)"
+
+raine x xscreensaver -no-splash &
+
+# jam_cmd='pgrep -u "$(whoami)" -f jam.sh &> /dev/null || ${HOME}/jam.sh &|'
+# nerd_cmd='pgrep -u "$(whoami)" -f nerd.sh &> /dev/null || ${HOME}/nerd.sh &|'
+# ssh nullsleep zsh -c "${jam_cmd}; ${nerd_cmd}" &
 
 exec xmonad
 # exec i3

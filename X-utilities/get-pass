@@ -1,11 +1,13 @@
 #!/usr/bin/env zsh
 
 read 'account?Account: ' || exit 1
-read -rs 'pass?Database password: ' || exit 1
+#read -rs 'pass?Database password: ' || exit 1
+raine x pwsafe -pE ${account} | xsel -b
+nohup zsh -c '(sleep 15; xsel -bc) &|' &> /dev/null
 
 # Backgrounding the nohup leads to a race condition (that we typically lose)
 # where xterm exits before nohup finishes making itself immune to hangups, and
 # nohup dies
 # Thus we nohup the backgrounding instead.
-export account pass
-nohup zsh -c 'timeout 60 pwsafe -px ${account} &> /dev/null <<< ${pass} &|' &> /dev/null
+#export account pass
+#nohup zsh -c 'timeout 60 pwsafe -px ${account} &> /dev/null <<< ${pass} &|' &> /dev/null

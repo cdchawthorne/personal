@@ -12,12 +12,29 @@ keycode 50 = Mode_switch
 !add mod4 = Super_L
 !add mod1 = Alt_L
 
+<<<<<<< Updated upstream
 ! Make right command a control key
 remove control = Control_R
 remove mod4 = Super_R
 keycode 134 = Control_R
 add control = Control_R
 add mod4 = Super_R
+=======
+remove control = Control_R
+remove mod4 = Super_R
+remove mod1 = Alt_R
+keycode 108 = Control_R
+keycode 105 = Alt_R
+add control = Control_R
+add mod4 = Super_R
+add mod1 = Alt_R
+
+! Make that silly left backslash key left control
+!remove control = Control_L
+!keycode 94 = Control_L
+!add control = Control_L
+keycode 94 = Shift_L
+>>>>>>> Stashed changes
 
 keycode 29 = y Y Home Home
 keycode 30 = u U End End
@@ -31,6 +48,7 @@ keycode 57 = n N Return Return
 keycode 58 = m M Escape Escape
 keycode 59 = comma less Prior Prior
 keycode 60 = period greater Next Next
+<<<<<<< Updated upstream
 keycode 47 = semicolon colon Multi_key Multi_key
 
 ! Eject button
@@ -49,3 +67,5 @@ keycode 212 = F4
 keycode 128 = F3
 keycode 233 = F2
 keycode 232 = F1
+=======
+>>>>>>> Stashed changes

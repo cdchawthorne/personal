@@ -1,28 +1,28 @@
+#"change-volume toggleMute"
+#    m:0x40 + c:31
+#    Mod4 + i
+#"change-volume raise 1"
+#    m:0x40 + c:32
+#    Mod4 + o
+#"change-volume lower 1"
+#    m:0x40 + c:30
+#    Mod4 + u
+#"change-volume raise 5"
+#    m:0x41 + c:32
+#    Shift+Mod4 + o
+#"change-volume lower 5"
+#    m:0x41 + c:30
+#    Shift+Mod4 + u
+#"sudo poweroff"
+#    m:0x41 + c:26
+#    Shift+Mod4 + e
+#"sudo reboot"
+#    m:0x41 + c:27
+#    Shift+Mod4 + r
 "toggle-xscreensaver"
     m:0x40 + c:53
     Mod4 + x
-"change-volume toggleMute"
-    m:0x40 + c:31
-    Mod4 + i
-"change-volume raise 2"
-    m:0x40 + c:32
-    Mod4 + o
-"change-volume lower 2"
-    m:0x40 + c:30
-    Mod4 + u
-"change-volume raise 10"
-    m:0x41 + c:32
-    Shift+Mod4 + o
-"change-volume lower 10"
-    m:0x41 + c:30
-    Shift+Mod4 + u
-"sudo poweroff"
-    m:0x41 + c:26
-    Shift+Mod4 + e
-"sudo reboot"
-    m:0x41 + c:27
-    Shift+Mod4 + r
-"xscreensaver-command -lock"
+"raine x xscreensaver-command -lock"
     m:0x40 + c:52
     Mod4 + z
 "chromium"
@@ -49,10 +49,10 @@
 "xterm ssh-prompt"
     m:0x40 + c:39
     Mod4 + s
-"xterm -class music ncmpcpp"
+"xterm -class music -e ssh -t cdchawth@nullsleep.csclub.uwaterloo.ca raine x ncmpcpp -h /var/run/mpd/socket"
     m:0x40 + c:57
     Mod4 + n
-"xterm -class music -e 'mosh cdchawth@nullsleep.csclub.uwaterloo.ca -- screen -DR'"
+"xterm -class music -e ssh -t cdchawth@nullsleep.csclub.uwaterloo.ca screen"
     m:0x41 + c:57
     Shift+Mod4 + n
 "tor-browser-en"
@@ -67,21 +67,21 @@
 
 # zsh knows how to do the right thing with respect to colour, so we launch tmux
 # from within zsh
-"xterm -T xterm-tmux -class terminal -e zsh -c tmux"
+"xterm -T xterm-tmux -class terminal -e zsh -c 'raine x tmux'"
     m:0x40 + c:40
     Mod4 + d
-"xterm -T irc -class irc -e mosh cdchawth@taurine.csclub.uwaterloo.ca -- tmux attach-session -t irc"
+"xterm -T irc -class irc -e ssh -t cdchawth@taurine.csclub.uwaterloo.ca tmux attach -t irc"
     m:0x40 + c:41
     Mod4 + f
-"pkill xbindkeys; xbindkeys"
+"pkill xbindkeys; raine x xbindkeys"
     m:0x41 + c:39
     Shift+Mod4 + s
-"cruxis status | grep eduroam && echo nerd | nc -c nullsleep.csclub.uwaterloo.ca 30023"
-    m:0x40 + c:48
-    Mod4 + '
-"cruxis status | grep eduroam && echo jam | nc -c nullsleep.csclub.uwaterloo.ca 30024"
-    m:0x41 + c:48
-    Shift+Mod4 + '
-"cruxis status | grep eduroam && echo gangsta | nc -c nullsleep.csclub.uwaterloo.ca 8978"
-    m:0x40 + c:51
-    Mod4 + \
+"echo gangsta | nc nullsleep 7989; sleep 0.01; echo gangsta | nc nullsleep 9978; sleep 0.01; echo gangsta | nc nullsleep 8979"
+    c:68
+    F2
+"echo jam | nc nullsleep.csclub.uwaterloo.ca 30024"
+    c:69
+    F3
+"echo nerd | nc nullsleep.csclub.uwaterloo.ca 30023"
+    c:70
+    F4

@@ -22,12 +22,12 @@ download_rate = 1270
 upload_rate = 51
 
 # Default directory to save the downloaded torrents.
-directory = /home/cdchawthorne/media/music/local/ocremix
+directory = /music/ocremix
 
 # Default session directory. Make sure you don't run multiple instance
 # of rtorrent using the same session directory. Perhaps using a
 # relative path?
-session = /home/cdchawthorne/.torrent_session/
+session = ~/.torrent_session/
 
 # Watch a directory for new torrents, and stop those that have been
 # deleted.

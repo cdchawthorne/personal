@@ -42,7 +42,7 @@ if [[ -n ${STY} ]]; then
     zle -N zle-line-init
     alias vim='echo -ne ''\eP\e[1 q\e\''; vim'
     alias svim='echo -ne ''\eP\e[1 q\e\''; sudoedit'
-elif [[ -n ${DISPLAY} || ${zsh_parent_process} == "sshd" ]]; then
+elif [[ -n ${DISPLAY} || ${zsh_parent_process} == "sshd"  || ${zsh_parent_process} == "tmux" ]]; then
     function zle-keymap-select {
         if [[ ${KEYMAP} == "vicmd" ]]; then
             echo -ne '\e[1 q'
@@ -117,3 +117,6 @@ if [[ -r ${HOME}/.zsh_autoload ]]; then
 fi
 
 umask 027
+
+PERL_MB_OPT="--install_base \"/users/cdchawth/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/users/cdchawth/perl5"; export PERL_MM_OPT;

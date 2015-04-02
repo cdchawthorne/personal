@@ -10,5 +10,11 @@ set keymap vi-command
 set keymap vi-insert
 
 "fj":vi-movement-mode
+"fJ":vi-movement-mode
+"Fj":vi-movement-mode
+"FJ":vi-movement-mode
 "jf":vi-movement-mode
+"jF":vi-movement-mode
+"Jf":vi-movement-mode
+"JF":vi-movement-mode
 "\C-l":clear-screen

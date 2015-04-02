@@ -20,9 +20,9 @@ key_up_album = 'b'
 #
 key_down_album = 'w'
 #
-key_up_artist = 'W'
+key_up_artist = 'B'
 #
-key_down_artist = 'B'
+key_down_artist = 'W'
 #
 key_page_up = 339 'm'
 #

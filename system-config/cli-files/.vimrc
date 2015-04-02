@@ -138,6 +138,7 @@ let g:LatexBox_no_mappings = 1
 " Get rid of annoying & indenting in LaTeX
 let g:tex_indent_and = 0
 
+" Set LaTeX filetype correctly
 let g:tex_flavor="latex"
 
 set diffopt+=iwhite
@@ -218,9 +219,11 @@ function! LaTeXClean()
 endfunction
 
 function! PdfView()
-    silent !pgrep -f '^zathura --fork %:p:r.pdf$' &> /dev/null
+    " silent !pgrep -f '^zathura --fork %:p:r.pdf$' &> /dev/null
+    silent !pgrep -f '^zathura %:p:r.pdf$' &> /dev/null
     if v:shell_error != 0
-        silent !zathura --fork %:p:r.pdf &> /dev/null
+        " silent !zathura --fork %:p:r.pdf &> /dev/null
+        silent !zathura %:p:r.pdf &> /dev/null &|
     endif
     redraw!
 endfunction

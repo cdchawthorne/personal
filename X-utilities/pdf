@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 
 for pdfFile in $@; do
-    zathura --fork "$(realpath ${pdfFile})" &> /dev/null
+    # zathura --fork "$(realpath ${pdfFile})" &> /dev/null
+    zathura "$(realpath ${pdfFile})" &> /dev/null
 done

@@ -1,2 +1,2 @@
-typeset -U path
-path=(${HOME}/bin ${path})
+# typeset -U path
+# path=(${HOME}/bin ${path})

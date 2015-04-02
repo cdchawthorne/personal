@@ -32,6 +32,8 @@ alias math='rlwrap math'
 alias ocaml='rlwrap ocaml'
 alias sudo='sudo '
 alias xargs='xargs '
+alias x='builtin cd; exec startx &> "${HOME}/.xsession-errors" &|; exit'
+alias startx='builtin cd; exec startx &> "${HOME}/.xsession-errors" &|; exit'
 alias p='cd ${HOME}/repos/personal'
 
 alias vi=vim
@@ -48,6 +50,39 @@ alias less='less -i'
 alias rh='rehash'
 alias u='sudo zsh -c ''aura -Syu; aura -Akua; ntpd -q; hwclock -w'''
 alias fix-steam='find ~/.steam/root/ \( -name "libgcc_s.so*" -o -name "libstdc++.so*" -o -name "libxcb.so*" \) -print -delete'
+alias n='raine x ncmpcpp -h /var/run/mpd/socket'
+
+function song {
+    song_info=$(mpc | head -n 1)
+    fgrep ${song_info} ${HOME}/songs.txt || echo ${song_info} >> ${HOME}/songs.txt
+}
+
+function vocal {
+    song_info=$(mpc | head -n 1)
+    fgrep ${song_info} ${HOME}/ocr_vocals.txt || echo ${song_info} >> ${HOME}/ocr_vocals.txt
+}
+
+function piano {
+    song_info=$(mpc | head -n 1)
+    fgrep ${song_info} ${HOME}/ocr_piano.txt || echo ${song_info} >> ${HOME}/ocr_piano.txt
+}
+
+function m {
+    if [[ "$(hostname)" == "nullsleep" ]]; then
+        /music/bin/mpd_youtube "$1"
+    else
+        ssh nullsleep.csclub.uwaterloo.ca /music/bin/mpd_youtube "'$1'"
+    fi
+}
+
+function ocr_add {
+    song=$(mpc find album 'http://ocremix.org' track $1 | grep -E '^ocremix/OC ReMix - 1 to 3000 \[v20141015\]/')
+    if [[ -n ${song} ]]; then
+        mpc add ${song}
+    else
+        echo "ERROR: track not found: $1" 1>&2
+    fi
+}
 
 function timestamp {
     date +'%Y-%m-%d__%H-%M-%S'
@@ -78,7 +113,7 @@ function to {
 
 function pdf {
     for pdfFile in $@; do
-        zathura --fork "$(realpath ${pdfFile})" &> /dev/null
+        zathura "$(realpath ${pdfFile})" &> /dev/null &|
     done
 }
 
@@ -115,13 +150,6 @@ function backup {
         fi
     fi
     rm -f ${backup} ${encrypted_backup}
-}
-
-function x {
-    if ! pgrep X &> /dev/null; then
-        builtin cd
-        command startx #-- -keeptty &> "${HOME}/.xsession-errors"
-    fi
 }
 
 function xvim {
@@ -172,18 +200,33 @@ function python {
 
 function perms {
     target_dir=/music/cdchawth
+
+    # Apparently dumb shit happens if some of the things are group audio
+    chgrp cdchawth -R ${target_dir}
+
+    # Apparently dumb shit happens if you try to setfacl immediately after
+    # chmod-ing
     find ${target_dir} -type f | read-lines-array files
     for file in ${files}; do
-        chmod 640 ${file}
+        chmod 600 ${file}
+    done
+    for file in ${files}; do
         setfacl -m u:mpd:r ${file}
     done
+
     find ${target_dir} -type d | read-lines-array dirs
     for dir in ${dirs}; do
-        chmod 750 ${dir}
+        chmod 700 ${dir}
+    done
+    for dir in ${dirs}; do
         setfacl -m u:mpd:rx ${dir}
     done
+
     setfacl -b ${target_dir}/README
     chmod a+r ${target_dir}/README
+
+    setfacl -b ${target_dir}
+    chmod a+rx ${target_dir}
 }
 
 function usb-backup {
@@ -209,4 +252,72 @@ function a {
 function ruw {
     target='cdchawth@taurine.csclub.uwaterloo.ca:~/utilities/rsync_backups'
     rsync -avz --delete ~/documents/education/undergrad/courses ${target}
+}
+function ocr_dl {
+    (
+        if [[ $# -ne 1 ]]; then
+            echo "USAGE: ocr_dl URL"
+            return 1
+        fi
+
+        mirror_regex='^(https?://)?(ocrmirror.org|ocr.blueblue.fr|'
+        mirror_regex+='iterations.org|ocremix.dreamhosters.com)'
+        if [[ $1 =~ $mirror_regex ]]; then
+            mirror_url=$1
+        else
+            mirror_url=$(
+                wget -O - $1 2> /dev/null | 
+                sed -rne 's_^.*"((https?://)?ocrmirror.org[^"]*)".*$_\1_p'
+            )
+        fi
+        filename=$(sed -re 's_^.*/([^/]*)$_\1_' <<< ${mirror_url})
+        builtin cd /music/ocremix
+        wget $mirror_url 2> /dev/null
+        chmod a+r $filename
+        if [[ $(hostname) != nullsleep ]]; then
+            ssh nullsleep mpc update ocremix/$filename &> /dev/null
+        else
+            mpc update ocremix/$filename
+        fi
+    )
+}
+
+function wn {
+    if [[ $(hostname) == "nullsleep" ]]; then
+        w -os
+    else
+        ssh nullsleep w -os
+    fi
+}
+
+function log {
+    if [[ $(hostname) == "nullsleep" ]]; then
+        zcat $(find /var/log/mpd/ -regex '.*mpd\.log\..*\.gz' | sort -r) | cat - /var/log/mpd/mpd.log
+    else
+        ssh nullsleep 'zcat $(find /var/log/mpd/ -regex ''.*mpd\.log\..*\.gz'' | sort -r) | cat - /var/log/mpd/mpd.log'
+    fi
+}
+
+alias plog='log | sed -rne ''s/player: played "(.*)"/\1/p'''
+
+function mpc {
+    if [[ $(hostname -f) == nullsleep.csclub.uwaterloo.ca ]]; then
+        command mpc "$@"
+    else
+        ssh nullsleep.csclub.uwaterloo.ca mpc $@
+    fi
+}
+
+function vc {
+    if [[ $# -ne 1 ]]; then
+        echo 'ERROR' 1>&2
+    fi
+
+    (
+        setopt no_nomatch
+        cd ~/utilities/irc/*/$1 &> /dev/null || cd ~/utilities/irc/*/$1* &> /dev/null || (echo 'ERROR: no such directory' 1>&2; return 1)
+        # win="$(tmux new-window -t irc -P 'tail -n +0 -f out')"
+        win="$(tmux new-window -t irc -n "$(basename ${PWD})" 'tail -n +0 -f out')"
+        tmux split-window -t "irc:$(basename ${PWD})" -l 1 'rlwrap cat > in'
+    )
 }

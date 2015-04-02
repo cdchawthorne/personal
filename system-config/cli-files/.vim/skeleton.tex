@@ -259,12 +259,15 @@
 \DeclarePairedDelimiter{\bracks}{[}{]}
 \DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
 \DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\ket}{\lvert}{\rangle}
+\DeclarePairedDelimiter{\bra}{\langle}{\rvert}
 
 % Parametrized macros
 \NewDocumentCommand{\seq}{s m m}{
   {\IfBooleanTF{#1}{\pars*}{\pars}{#2 : #3 < \omega}}
 }
 \NewDocumentCommand{\idx}{m m}{{#1_0, \dots, #1_{#2}}}
+\NewDocumentCommand{\pdif}{m m}{\frac{\partial #1}{\partial #2}}
 
 % Non-simple operators
 \DeclareMathOperator{\ch}{char}
