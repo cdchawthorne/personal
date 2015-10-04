@@ -36,7 +36,7 @@ alias p='cd ${HOME}/repos/personal'
 
 alias vi=vim
 alias tim='vim -t'
-alias vv='vim -c ''e $MYVIMRC'''
+alias vv='vim -c ''edit $MYVIMRC'''
 alias vz='vim ~/.zsh_aliases'
 alias sz='source ~/.zsh_aliases'
 function fim {
@@ -48,6 +48,8 @@ alias less='less -i'
 alias rh='rehash'
 alias u='sudo zsh -c ''aura -Syu; aura -Akua; ntpd -q; hwclock -w'''
 alias fix-steam='find ~/.steam/root/ \( -name "libgcc_s.so*" -o -name "libstdc++.so*" -o -name "libxcb.so*" \) -print -delete'
+alias k='cd ~/documents/education/undergrad/research/usra_2015/'
+alias gpg='DISPLAY= gpg'
 
 function timestamp {
     date +'%Y-%m-%d__%H-%M-%S'
@@ -140,28 +142,28 @@ function xvim {
     done
 }
 
-function zvim {
-    if [[ -n ${DISPLAY} || ${zsh_parent_process} == "sshd" ]]; then
-        echo -ne '\e[1 q'
-    else
-        echo -ne '\e[?6c'
-    fi
-    vim -u <(cat << EOF
-exe "source " fnameescape("${HOME}/.vimrc")
-autocmd BufNewFile *
-    \ setfiletype zsh |
-    \ 0put = '#!/usr/bin/env zsh' |
-    \ 1put = '' |
-    \ normal G
-EOF) $@
+# function zvim {
+    # if [[ -n ${DISPLAY} || ${zsh_parent_process} == "sshd" ]]; then
+        # echo -ne '\e[1 q'
+    # else
+        # echo -ne '\e[?6c'
+    # fi
+    # vim -u <(cat << EOF
+# exe "source " fnameescape("${HOME}/.vimrc")
+# autocmd BufNewFile *
+    # \ setfiletype zsh |
+    # \ 0put = '#!/usr/bin/env zsh' |
+    # \ 1put = '' |
+    # \ normal G
+# EOF) $@
 
-    optionRegex='^-.*$'
-    for arg in $@; do
-        if [[ ! ${arg} =~ ${optionRegex} && -e ${arg} && ! -x ${arg} ]]; then
-            chmod +x ${arg}
-        fi
-    done
-}
+    # optionRegex='^-.*$'
+    # for arg in $@; do
+        # if [[ ! ${arg} =~ ${optionRegex} && -e ${arg} && ! -x ${arg} ]]; then
+            # chmod +x ${arg}
+        # fi
+    # done
+# }
 
 function python {
     (
@@ -205,8 +207,11 @@ function usb-backup {
 function a {
     cd ~/documents/education/undergrad/courses/$1
 }
+function b {
+    cd ~/documents/education/masters/courses/$1
+}
 
 function ruw {
     target='cdchawth@taurine.csclub.uwaterloo.ca:~/utilities/rsync_backups'
-    rsync -avz --delete ~/documents/education/undergrad/courses ${target}
+    rsync -avz --delete ~/documents/education/masters ${target}
 }

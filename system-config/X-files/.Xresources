@@ -9,8 +9,8 @@ XTerm*font:             -*-Fixed-medium-R-Normal-*-20-*-*-*-*-*-*-*
 XTerm*faceName:         default
 XTerm*eightBitInput:    false
 XTerm*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
-! XTerm*bellIsUrgent:     true
-! XTerm*visualBell:       true
+XTerm*bellIsUrgent:     true
+XTerm*visualBell:       true
 
 pwsafe*background:       black
 pwsafe*foreground:       white
@@ -44,3 +44,12 @@ irc*faceName:         default
 irc*eightBitInput:    false
 irc*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
 irc*bellIsUrgent:     true
+
+calendar*background:       black
+calendar*foreground:       white
+calendar*cursorColor:      white
+calendar*font:             -*-Fixed-medium-R-Normal-*-20-*-*-*-*-*-*-*
+calendar*faceName:         default
+calendar*eightBitInput:    false
+calendar*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
+calendar*bellIsUrgent:     true

@@ -1,0 +1,3 @@
+#compdef b
+
+_arguments "1: :($(cd ~/documents/education/masters/courses; echo *))"

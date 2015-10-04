@@ -1,6 +1,3 @@
-"toggle-xscreensaver"
-    m:0x40 + c:53
-    Mod4 + x
 "change-volume toggleMute"
     m:0x40 + c:31
     Mod4 + i
@@ -28,13 +25,16 @@
 "chromium"
     m:0x40 + c:43
     Mod4 + h
+"tor-browser-en"
+    m:0x41 + c:43
+    Shift+Mod4 + h
 "scrot -e "mv \$f ${SCREENSHOTS_DIR}""
     m:0x0 + c:172
     F8
 "scrot -s -e "mv \$f ${SCREENSHOTS_DIR}""
     m:0x4 + c:172
     Control + F8
-"pkill xcowsay"
+"killall xcowsay"
     m:0x41 + c:53
     Shift+Mod4 + x
 "pere random"
@@ -46,7 +46,7 @@
 "xterm -class pwsafe get-pass"
     m:0x40 + c:46
     Mod4 + l
-"xterm ssh-prompt"
+"zsh -c "synclient touchpadoff=$(synclient -l | grep -c 'TouchpadOff.*=.*0')""
     m:0x40 + c:39
     Mod4 + s
 "xterm -class music ncmpcpp"
@@ -55,7 +55,7 @@
 "xterm -class music -e 'mosh cdchawth@nullsleep.csclub.uwaterloo.ca -- screen -DR'"
     m:0x41 + c:57
     Shift+Mod4 + n
-"tor-browser-en"
+"sudo rw"
     m:0x40 + c:47
     Mod4 + ;
 "xterm"
@@ -70,18 +70,12 @@
 "xterm -T xterm-tmux -class terminal -e zsh -c tmux"
     m:0x40 + c:40
     Mod4 + d
-"xterm -T irc -class irc -e mosh cdchawth@taurine.csclub.uwaterloo.ca -- tmux attach-session -t irc"
+"press-z"
     m:0x40 + c:41
     Mod4 + f
-"pkill xbindkeys; xbindkeys"
+"killall xbindkeys; xbindkeys"
     m:0x41 + c:39
     Shift+Mod4 + s
-"cruxis status | grep eduroam && echo nerd | nc -c nullsleep.csclub.uwaterloo.ca 30023"
-    m:0x40 + c:48
-    Mod4 + '
-"cruxis status | grep eduroam && echo jam | nc -c nullsleep.csclub.uwaterloo.ca 30024"
-    m:0x41 + c:48
-    Shift+Mod4 + '
-"cruxis status | grep eduroam && echo gangsta | nc -c nullsleep.csclub.uwaterloo.ca 8978"
-    m:0x40 + c:51
-    Mod4 + \
+"xterm -class calendar wyrd"
+    m:0x40 + c:38
+    Mod4 + a

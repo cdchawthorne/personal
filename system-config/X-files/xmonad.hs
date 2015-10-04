@@ -50,7 +50,7 @@ myManageHook = composeAll $ concat $
         [className =? name --> doFloat | name <- floatedClassNames]
       , [className =? name --> doF (W.shift "1") | name <- torClassNames]
       , [className =? name --> doF (W.shift "2") | name <- chromiumClassNames]
-      , [className =? name --> viewShift "7" | name <- newsClassNames]
+      , [className =? name --> viewShift "7" | name <- calendarClassNames]
       , [className =? name --> viewShift "8" | name <- chatClassNames]
       , [className =? name --> viewShift "9" | name <- musicClassNames]
       , [className =? name --> viewShift "3" | name <- terminalClassNames]
@@ -65,7 +65,7 @@ myManageHook = composeAll $ concat $
         musicClassNames = ["music"]
         chatClassNames = ["irc"]
         terminalClassNames = ["terminal"]
-        newsClassNames = ["news"]
+        calendarClassNames = ["calendar"]
 
 myLayouts = noBorders Full ||| tiled ||| Mirror tiled
     where
@@ -81,17 +81,26 @@ keysToAdd x =
         , ((modMask x, xK_Right), nextWS)
         , (((modMask x .|. shiftMask), xK_Left), shiftToPrev)
         , (((modMask x .|. shiftMask), xK_Right), shiftToNext)
-        , ((modMask x, xK_bracketleft), sendMessage Shrink)
-        , ((modMask x, xK_bracketright), sendMessage Expand)
-        , ((modMask x .|. shiftMask, xK_bracketleft),
+        , ((modMask x, xK_braceleft), sendMessage Shrink)
+        , ((modMask x, xK_braceright), sendMessage Expand)
+        , ((modMask x .|. shiftMask, xK_braceleft),
            sendMessage (IncMasterN 1))
-        , ((modMask x .|. shiftMask, xK_bracketright),
+        , ((modMask x .|. shiftMask, xK_braceright),
            sendMessage (IncMasterN (-1)))
         , ((modMask x, xK_equal), refresh)
         , ((modMask x, xK_b), sendMessage ToggleStruts)
-        , ((modMask x, xK_t),
+        , ((modMask x, xK_g),
+           workspacePrompt defaultXPConfig (windows . W.greedyView))
+        , ((modMask x .|. shiftMask, xK_g),
            workspacePrompt defaultXPConfig (windows . W.shift))
     ]
+    ++
+    [((m .|. modMask x, k), windows $ f i)
+            | (i, k) <- zip (XMonad.workspaces x)
+              [xK_exclam, xK_at, xK_numbersign, xK_dollar, xK_percent,
+               xK_asciicircum, xK_ampersand, xK_asterisk, xK_parenleft,
+               xK_parenright]
+        , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
  
 keysToRemove x =
     [

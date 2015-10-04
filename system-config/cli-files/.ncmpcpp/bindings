@@ -591,3 +591,36 @@ def_key "d"
 
 def_key "'"
   show_lyrics
+
+def_key "!"
+  show_playlist
+
+def_key "@"
+  show_browser
+
+def_key "@"
+  change_browse_mode
+
+def_key "#"
+  show_search_engine
+
+def_key "#"
+  reset_search_engine
+
+def_key "$"
+  show_media_library
+
+def_key "$"
+  toggle_media_library_columns_mode
+
+def_key "%"
+  show_playlist_editor
+
+def_key "^"
+  show_tag_editor
+
+def_key "&"
+  show_outputs
+
+def_key "*"
+  show_visualizer

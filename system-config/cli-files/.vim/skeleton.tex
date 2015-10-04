@@ -34,16 +34,16 @@
 }{
     \let \oldqedsymbol \qedsymbol
     \IfValueTF{#2}{
-      \RenewDocumentCommand{\qedsymbol}{}{\oldqedsymbol \, #2}
+      \renewcommand{\qedsymbol}{\oldqedsymbol \, #2}
     }{}
   \end{proof}
-  \RenewDocumentCommand{\qedsymbol}{}{\oldqedsymbol}
+  \renewcommand{\qedsymbol}{\oldqedsymbol}
 }
 
 % \newtheorem replacement that internally labels all theorems and tracks the
 % last theorem
 \newcounter{smarttheorem:smarttheoremcounter}
-\def \smarttheoremlabel {%
+\newcommand{\smarttheoremlabel}{%
   smarttheorem:\arabic{smarttheorem:smarttheoremcounter}%
 }
 
@@ -69,55 +69,14 @@
   \end{pf}
 }
 
-% Convenience environments
-
 \NewDocumentEnvironment{lrpf}{O{\smarttheoremlabel}}{
   \begin{rpf}[Proof of \Cref{#1}][#1]
 }{
   \end{rpf}
 }
 
-\NewDocumentEnvironment{dpf}{O{\proofname} o}{
-  \IfValueTF{#2}{
-  \begin{pf}[#1][#2]
-  }{
-    \begin{pf}[#1]
-  }
-    \mbox{}
-    \begin{description}
-}{
-    \end{description}
-  \end{pf}
-}
-
-\NewDocumentEnvironment{drpf}{O{\proofname} o}{
-    \IfValueTF{#2}{
-    \begin{rpf}[#1][#2]
-    }{
-    \begin{rpf}[#1]
-  }
-    \mbox{}
-    \begin{description}
-}{
-    \end{description}
-  \end{rpf}
-}
-
-\NewDocumentEnvironment{dlrpf}{o}{
-  \IfValueTF{#1}{
-    \begin{lrpf}[#1]
-  }{
-    \begin{lrpf}
-  }
-    \mbox{}
-    \begin{description}
-}{
-    \end{description}
-  \end{lrpf}
-}
-
-\NewDocumentCommand{\lr}{}{\item[\((\implies)\)]}
-\NewDocumentCommand{\rl}{}{\item[\((\impliedby)\)]}
+\newcommand{\plr}{\item[\((\implies)\)]}
+\newcommand{\prl}{\item[\((\impliedby)\)]}
 
 \NewDocumentEnvironment{ea}{O{rCl}}{
   \begin{IEEEeqnarray*}{#1}
@@ -136,13 +95,15 @@
 }
 
 \theoremstyle{definition}
-\newtheorem{case}{Case}
-\newtheorem{subcase}{Case}
-\numberwithin{subcase}{case}
 
-\NewDocumentEnvironment{caselist}{}{
-  \setcounter{case}{0}
+\newcounter{case}
+\newenvironment{caselist}{
+  \setcounter{case}{0}\begin{description}
+}{
+  \end{description}
 }
+
+\newcommand \case {\setcounter{case}{\value{case}+1}\item[Case \thecase.]}
 
 % Theorems
 \newcounter{theoremcounter}
@@ -165,132 +126,122 @@
 \newsmarttheorem{conjecture}[theoremcounter]{Conjecture}
 \newsmarttheorem{exercise}[theoremcounter]{Exercise}
 \newsmarttheorem{example}[theoremcounter]{Example}
-\newsmarttheorem{counterexample}[theoremcounter]{Counterexample}
-\newsmarttheorem{property}[theoremcounter]{Property}
-\NewDocumentEnvironment{pconjecture}{m}{
-  \begin{conjecture}[Proven: see \Cref{#1}]
-}{
-  \end{conjecture}
-}
-\NewDocumentEnvironment{dconjecture}{m}{
-  \begin{conjecture}[Disproven: see \Cref{#1}]
-}{
-  \end{conjecture}
-}
 
 % Blackboard bold
-\NewDocumentCommand{\bA}{}{\mathbb{A}}
-\NewDocumentCommand{\bC}{}{\mathbb{C}}
-\NewDocumentCommand{\bD}{}{\mathbb{D}}
-\NewDocumentCommand{\bN}{}{\mathbb{N}}
-\NewDocumentCommand{\bQ}{}{\mathbb{Q}}
-\NewDocumentCommand{\bR}{}{\mathbb{R}}
-\NewDocumentCommand{\bT}{}{\mathbb{T}}
-\NewDocumentCommand{\bZ}{}{\mathbb{Z}}
+\newcommand \bA {{\mathbb{A}}}
+\newcommand \bC {{\mathbb{C}}}
+\newcommand \bD {{\mathbb{D}}}
+\newcommand \bF {{\mathbb{F}}}
+\newcommand \bN {{\mathbb{N}}}
+\newcommand \bP {{\mathbb{P}}}
+\newcommand \bQ {{\mathbb{Q}}}
+\newcommand \bR {{\mathbb{R}}}
+\newcommand \bT {{\mathbb{T}}}
+\newcommand \bZ {{\mathbb{Z}}}
 
 % Math Calligraphy
-\NewDocumentCommand{\cA}{}{\mathcal{A}}
-\NewDocumentCommand{\cB}{}{\mathcal{B}}
-\NewDocumentCommand{\cC}{}{\mathcal{C}}
-\NewDocumentCommand{\cD}{}{\mathcal{D}}
-\NewDocumentCommand{\cE}{}{\mathcal{E}}
-\NewDocumentCommand{\cF}{}{\mathcal{F}}
-\NewDocumentCommand{\cG}{}{\mathcal{G}}
-\NewDocumentCommand{\cH}{}{\mathcal{H}}
-\NewDocumentCommand{\cI}{}{\mathcal{I}}
-\NewDocumentCommand{\cJ}{}{\mathcal{J}}
-\NewDocumentCommand{\cK}{}{\mathcal{K}}
-\NewDocumentCommand{\cL}{}{\mathcal{L}}
-\NewDocumentCommand{\cM}{}{\mathcal{M}}
-\NewDocumentCommand{\cN}{}{\mathcal{N}}
-\NewDocumentCommand{\cO}{}{\mathcal{O}}
-\NewDocumentCommand{\cP}{}{\mathcal{P}}
-\NewDocumentCommand{\cQ}{}{\mathcal{Q}}
-\NewDocumentCommand{\cR}{}{\mathcal{R}}
-\NewDocumentCommand{\cS}{}{\mathcal{S}}
-\NewDocumentCommand{\cT}{}{\mathcal{T}}
-\NewDocumentCommand{\cU}{}{\mathcal{U}}
-\NewDocumentCommand{\cV}{}{\mathcal{V}}
-\NewDocumentCommand{\cW}{}{\mathcal{W}}
-\NewDocumentCommand{\cX}{}{\mathcal{X}}
-\NewDocumentCommand{\cY}{}{\mathcal{Y}}
-\NewDocumentCommand{\cZ}{}{\mathcal{Z}}
+\newcommand \cA {{\mathcal{A}}}
+\newcommand \cB {{\mathcal{B}}}
+\newcommand \cC {{\mathcal{C}}}
+\newcommand \cD {{\mathcal{D}}}
+\newcommand \cE {{\mathcal{E}}}
+\newcommand \cF {{\mathcal{F}}}
+\newcommand \cG {{\mathcal{G}}}
+\newcommand \cH {{\mathcal{H}}}
+\newcommand \cI {{\mathcal{I}}}
+\newcommand \cJ {{\mathcal{J}}}
+\newcommand \cK {{\mathcal{K}}}
+\newcommand \cL {{\mathcal{L}}}
+\newcommand \cM {{\mathcal{M}}}
+\newcommand \cN {{\mathcal{N}}}
+\newcommand \cO {{\mathcal{O}}}
+\newcommand \cP {{\mathcal{P}}}
+\newcommand \cQ {{\mathcal{Q}}}
+\newcommand \cR {{\mathcal{R}}}
+\newcommand \cS {{\mathcal{S}}}
+\newcommand \cT {{\mathcal{T}}}
+\newcommand \cU {{\mathcal{U}}}
+\newcommand \cV {{\mathcal{V}}}
+\newcommand \cW {{\mathcal{W}}}
+\newcommand \cX {{\mathcal{X}}}
+\newcommand \cY {{\mathcal{Y}}}
+\newcommand \cZ {{\mathcal{Z}}}
 
 % Aliases
 \let \weirdepsilon \epsilon
 \let \weirdphi \phi
+\renewcommand \epsilon \varepsilon
+\renewcommand \phi \varphi
 
-\let \epsilon \varepsilon
-\let \phi \varphi
 
-\let \gangnamstyle \displaystyle
-\let \ol \overline
+\let \sharps \ss
+\renewcommand \ss \subseteq
+\newcommand \ssne \subsetneqq
+\newcommand \sps \supseteq
+\newcommand \spsne \supsetneqq
+\newcommand \fss {\subseteq_{\mathrm{fin}}}
 
-\let \ss \subseteq
-\let \ssne \subsetneqq
-\let \sps \supseteq
-\let \spsne \supsetneqq
-\let \es \emptyset
-\NewDocumentCommand{\fss}{}{\subseteq_{\operatorname{fin}}}
+\newcommand \ra \rightarrow
+\newcommand \hra \hookrightarrow
+\newcommand \la \leftarrow
+\newcommand \hla \hookleftarrow
+\newcommand \lra \leftrightarrow
+\newcommand \xra \xrightarrow
 
-\let \ra \rightarrow
-\let \hra \hookrightarrow
-\let \la \leftarrow
-\let \hla \hookleftarrow
+\newcommand \on  \operatorname
+\newcommand \wh  \widehat
+\newcommand \ol  \overline
+\newcommand \ul  \underline
 
-\let \cnot \centernot
-\NewDocumentCommand{\fin}{}{{\operatorname{fin}}}
-\let \co \colon
-\let \sm \setminus
-\let \on \operatorname
-\let \xra \xrightarrow
-\let \wh \widehat
-\let \ew \epsilon
+\newcommand \cnot \centernot
+\newcommand \co \colon
+\newcommand \sm \setminus
+\newcommand \ep \epsilon
+\newcommand \es \emptyset
+\newcommand \rs \restriction
+\newcommand \ip \implies
+\newcommand \pe \preceq
+\newcommand \se \succeq
+\newcommand \wt \widetilde
+\newcommand \ora \overrightarrow
+
+\newcommand \thorn \th
+\renewcommand \th {^\mathrm{th}}
+\newcommand \telse {\text{else}}
+
+\newcommand \lit [1] {\item[#1]}
+
+\newenvironment{menumerate}{\mbox{}\begin{enumerate}}{\end{enumerate}}
+\newenvironment{mitemize}{\mbox{}\begin{itemize}}{\end{itemize}}
+\newenvironment{mdescription}{\mbox{}\begin{description}}{\end{description}}
 
 % Delimiters
-\DeclarePairedDelimiter{\angs}{\langle}{\rangle}
-\DeclarePairedDelimiterX{\set}[1]{\{}{\}}{\, #1 \,}
-\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
-\DeclarePairedDelimiter{\len}{\lvert}{\rvert}
-\DeclarePairedDelimiter{\card}{\lvert}{\rvert}
-\DeclarePairedDelimiter{\bars}{\lVert}{\rVert}
-\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
-\DeclarePairedDelimiter{\pars}{(}{)}
-\DeclarePairedDelimiter{\bracks}{[}{]}
-\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
-\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter \angs  \langle \rangle
+\DeclarePairedDelimiter \abs \lvert \rvert
+\DeclarePairedDelimiter \len \lvert \rvert
+\DeclarePairedDelimiter \card \lvert \rvert
+\DeclarePairedDelimiter \bars \lVert \rVert
+\DeclarePairedDelimiter \norm \lVert \rVert
+\DeclarePairedDelimiter \pars ( )
+\DeclarePairedDelimiter \bracks [ ]
+\DeclarePairedDelimiter \floor \lfloor \rfloor
+\DeclarePairedDelimiter \ceil \lceil \rceil
 
-% Parametrized macros
-\NewDocumentCommand{\seq}{s m m}{
-  {\IfBooleanTF{#1}{\pars*}{\pars}{#2 : #3 < \omega}}
-}
-\NewDocumentCommand{\idx}{m m}{{#1_0, \dots, #1_{#2}}}
+\DeclarePairedDelimiterX{\set}[1]{\{}{\}}{\, #1 \,}
 
 % Non-simple operators
-\DeclareMathOperator{\ch}{char}
-\DeclareMathOperator{\im}{Im}
-\DeclareMathOperator{\lspan}{span}
+\DeclareMathOperator \ch {char}
+\DeclareMathOperator \im {Im}
+\DeclareMathOperator \lspan {span}
 
 % Simple operators
-\DeclareMathOperator{\Th}{Th}
-\DeclareMathOperator{\tp}{tp}
-\DeclareMathOperator{\dcl}{dcl}
-\DeclareMathOperator{\acl}{acl}
-\DeclareMathOperator{\alg}{alg}
-\DeclareMathOperator{\cl}{cl}
-\DeclareMathOperator{\Cl}{Cl}
-\DeclareMathOperator{\RM}{RM}
-\DeclareMathOperator{\dM}{dM}
-\DeclareMathOperator{\eq}{eq}
-\DeclareMathOperator{\age}{age}
-\DeclareMathOperator{\qftp}{qftp}
-\DeclareMathOperator{\dom}{dom}
-\DeclareMathOperator{\Ind}{Ind}
-\DeclareMathOperator{\diag}{diag}
-\DeclareMathOperator{\Aut}{Aut}
-\DeclareMathOperator{\ob}{Ob}
-\DeclareMathOperator{\id}{id}
-\DeclareMathOperator{\ran}{Ran}
+\DeclareMathOperator \dom {dom}
+\DeclareMathOperator \ob {Ob}
+\DeclareMathOperator \id {id}
+\DeclareMathOperator \ran {Ran}
+\DeclareMathOperator \sgn {sgn}
+\DeclareMathOperator \rank {rank}
+\DeclareMathOperator \tr {tr}
 
 \title{}
 \author{Christopher Hawthorne}

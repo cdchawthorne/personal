@@ -139,6 +139,8 @@ let g:LatexBox_no_mappings = 1
 let g:tex_indent_and = 0
 
 let g:tex_flavor="latex"
+let g:tex_items='\\bibitem\|\\item\|\\plr\|\\prl\|\\case\|\\lit'
+let g:tex_itemize_env='itemize\|description\|enumerate\|thebibliography\|caselist'
 
 set diffopt+=iwhite
 set diffopt+=foldcolumn:0
@@ -318,13 +320,12 @@ endfunction
 
 function! LaTeXEnvironmentComplete(ArgLead, CmdLine, CursorPos)
     let envs = [
-                \ "pf", "rpf", "dpf", "drpf", "ea", "tcd", "case", "subcase",
+                \ "pf", "rpf", "lrpf", "ea", "tcd", "case", "subcase",
                 \ "caselist", "theorem", "lemma", "proposition", "claim",
                 \ "corollary", "fact", "todo", "definition", "notation",
-                \ "question", "remark", "note", "conjecture", "dconjecture",
-                \ "pconjecture", "exercise", "example", "counterexample",
-                \ "enumerate", "itemize", "description", "proof", "tikzcd",
-                \ "pmatrix", "verbatim"]
+                \ "question", "remark", "exercise", "example", "enumerate",
+                \ "itemize", "description", "pmatrix", "verbatim",
+                \ "tabular", "menumerate", "mitemize", "mdescription"]
     call sort(envs)
 
     return filter(envs, 'v:val =~# "^' . a:ArgLead . '"')
@@ -337,92 +338,155 @@ endfunction
 
 
 " Non-leader mappings
-nnoremap <silent> Q gq
-nnoremap <silent> QQ gqgq
 nnoremap / /\v
 nnoremap ? ?\v
-nnoremap <silent> <Tab> %
-nnoremap <silent> S m
-nnoremap <silent> m <C-b>
-nnoremap <silent> <Space> <C-f>
-nnoremap <silent> fj a<Esc>fj
+nnoremap <Tab> %
+nnoremap S m
+nnoremap m <C-b>
+nnoremap <Space> <C-f>
+
+" What on earth is this for?
+" nnoremap <silent> fj a<Esc>fj
+
+nnoremap ) 0
+nnoremap 0 )
+nnoremap ( 9
+nnoremap 9 (
+nnoremap * 8
+nnoremap 8 *
+nnoremap & 7
+nnoremap 7 &
+nnoremap ^ 6
+nnoremap 6 ^
+" nnoremap % 5
+" nnoremap 5 %
+" nnoremap $ 4
+" nnoremap 4 $
+" nnoremap # 3
+" nnoremap 3 #
+" nnoremap @ 2
+" nnoremap 2 @
+" nnoremap ! 1
+" nnoremap 1 !
+
+vnoremap ) 0
+vnoremap 0 )
+vnoremap ( 9
+vnoremap 9 (
+vnoremap * 8
+vnoremap 8 *
+vnoremap & 7
+vnoremap 7 &
+vnoremap ^ 6
+vnoremap 6 ^
+" vnoremap % 5
+" vnoremap 5 %
+" vnoremap $ 4
+" vnoremap 4 $
+" vnoremap # 3
+" vnoremap 3 #
+" vnoremap @ 2
+" vnoremap 2 @
+" vnoremap ! 1
+" vnoremap 1 !
+
+onoremap ) 0
+onoremap 0 )
+onoremap ( 9
+onoremap 9 (
+onoremap * 8
+onoremap 8 *
+onoremap & 7
+onoremap 7 &
+onoremap ^ 6
+onoremap 6 ^
+" onoremap % 5
+" onoremap 5 %
+" onoremap $ 4
+" onoremap 4 $
+" onoremap # 3
+" onoremap 3 #
+" onoremap @ 2
+" onoremap 2 @
+" onoremap ! 1
+" onoremap 1 !
 
 vnoremap <silent> Q gq
 vnoremap / /\v
 vnoremap ? ?\v
-vnoremap <silent> <Tab> %
-vnoremap <silent> m <C-b>
-vnoremap <silent> <Space> <C-f>
+vnoremap <Tab> %
+vnoremap m <C-b>
+vnoremap <Space> <C-f>
 
-onoremap <silent> <Tab> %
-onoremap <silent> m <C-b>
-onoremap <silent> <Space> <C-f>
+onoremap <Tab> %
+onoremap m <C-b>
+onoremap <Space> <C-f>
 
-inoremap <silent> fj <C-]><Esc>
-inoremap <silent> Fj <C-]><Esc>
-inoremap <silent> fJ <C-]><Esc>
-inoremap <silent> FJ <C-]><Esc>
-inoremap <silent> jf <C-]><Esc>
-inoremap <silent> Jf <C-]><Esc>
-inoremap <silent> jF <C-]><Esc>
-inoremap <silent> JF <C-]><Esc>
-inoremap <silent> <C-u> <C-g>u<C-u>
+inoremap fj <C-]><Esc>
+inoremap Fj <C-]><Esc>
+inoremap fJ <C-]><Esc>
+inoremap FJ <C-]><Esc>
+inoremap jf <C-]><Esc>
+inoremap Jf <C-]><Esc>
+inoremap jF <C-]><Esc>
+inoremap JF <C-]><Esc>
+inoremap <C-u> <C-g>u<C-u>
 
-inoremap <silent> fdm <C-g>u<Esc>viwUgi
-inoremap <silent> fdk <C-k>
-inoremap <silent> fdu <C-g>u<C-u>
-inoremap <silent> fdn <C-n>
-inoremap <silent> fdp <C-p>
-inoremap <silent> fds <C-g>u<Esc>gqgqA
-inoremap <silent> fdw <C-w>
-inoremap <silent> fdx <NOP>
+inoremap fdm <C-g>u<Esc>viwUgi
+inoremap fdk <C-k>
+inoremap fdu <C-g>u<C-u>
+inoremap fdn <C-n>
+inoremap fdp <C-p>
+inoremap fds <C-g>u<Esc>gqgqA
+inoremap fdw <C-w>
+inoremap fdx <NOP>
 
 " Leader mappings
 let mapleader = "s"
 let maplocalleader = "sl"
 
-nnoremap <silent> <Leader> <NOP>
-nnoremap <silent> <Leader>x <NOP>
-vnoremap <silent> <Leader> <NOP>
-vnoremap <silent> <Leader>x <NOP>
+nnoremap <Leader> <NOP>
+nnoremap <Leader>x <NOP>
+vnoremap <Leader> <NOP>
+vnoremap <Leader>x <NOP>
 
-nnoremap <silent> <LocalLeader> <NOP>
-nnoremap <silent> <LocalLeader>x <NOP>
-vnoremap <silent> <LocalLeader> <NOP>
-vnoremap <silent> <LocalLeader>x <NOP>
+nnoremap <LocalLeader> <NOP>
+nnoremap <LocalLeader>x <NOP>
+vnoremap <LocalLeader> <NOP>
+vnoremap <LocalLeader>x <NOP>
 
 " Navigation and editing
-nnoremap <silent> <Leader>f <NOP>
-nnoremap <silent> <Leader>fx <NOP>
-vnoremap <silent> <Leader>f <NOP>
-vnoremap <silent> <Leader>fx <NOP>
+nnoremap <Leader>f <NOP>
+nnoremap <Leader>fx <NOP>
+vnoremap <Leader>f <NOP>
+vnoremap <Leader>fx <NOP>
 
-nnoremap <silent> <Leader>fr <C-r>
-nnoremap <silent> <Leader>fd 0D
-nnoremap <silent> <Leader>fn :call EscapeIndent("down")<CR>
-nnoremap <silent> <Leader>fp :call EscapeIndent("up")<CR>
-nnoremap <silent> <Leader>fk gq
-nnoremap <silent> <Leader>fi gqgq
+nnoremap <Leader>fr <C-r>
+nnoremap <Leader>fd 0D
+nnoremap <Leader>fn :call EscapeIndent("down")<CR>
+nnoremap <Leader>fp :call EscapeIndent("up")<CR>
+nnoremap <Leader>fk gq
+nnoremap <Leader>fi gqgq
 
-vnoremap <silent> <Leader>fd <C-v>0o$x
-vnoremap <silent> <Leader>fn :call EscapeIndent("down")<CR>
-vnoremap <silent> <Leader>fp :call EscapeIndent("up")<CR>
+vnoremap <Leader>fd <C-v>0o$x
+vnoremap <Leader>fn :call EscapeIndent("down")<CR>
+vnoremap <Leader>fp :call EscapeIndent("up")<CR>
 
 " vimrc and other config
-nnoremap <silent> <Leader>v <NOP>
-nnoremap <silent> <Leader>vx <NOP>
-vnoremap <silent> <Leader>v <NOP>
-vnoremap <silent> <Leader>vx <NOP>
+nnoremap <Leader>v <NOP>
+nnoremap <Leader>vx <NOP>
+vnoremap <Leader>v <NOP>
+vnoremap <Leader>vx <NOP>
 
 nnoremap <silent> <Leader>ve :split $MYVIMRC<CR>
 nnoremap <silent> <Leader>vs :source $MYVIMRC \| filetype detect<CR>
 nnoremap <silent> <Leader>vk :split $HOME/.vim/skeleton.%:e<CR>
 
 " Settings and plugins
-nnoremap <silent> <Leader>s <NOP>
-nnoremap <silent> <Leader>sx <NOP>
-vnoremap <silent> <Leader>s <NOP>
-vnoremap <silent> <Leader>sx <NOP>
+nnoremap <Leader>s <NOP>
+nnoremap <Leader>sx <NOP>
+vnoremap <Leader>s <NOP>
+vnoremap <Leader>sx <NOP>
 
 nnoremap <silent> <Leader>sh :nohlsearch<CR>
 nnoremap <silent> <Leader>sn :call ToggleNumber()<CR>
@@ -436,10 +500,10 @@ nnoremap <silent> <Leader>sF :NERDTreeToggle<CR>:NERDTreeToggle<CR>
 nnoremap <silent> <Leader>ss :syntax sync fromstart<CR>
 
 " Writing, quitting, and compiling
-nnoremap <silent> <Leader>k <NOP>
-nnoremap <silent> <Leader>kx <NOP>
-vnoremap <silent> <Leader>k <NOP>
-vnoremap <silent> <Leader>kx <NOP>
+nnoremap <Leader>k <NOP>
+nnoremap <Leader>kx <NOP>
+vnoremap <Leader>k <NOP>
+vnoremap <Leader>kx <NOP>
 
 nnoremap <silent> <Leader>ks :write<CR>
 nnoremap <silent> <Leader>kc :quit<CR>
@@ -454,18 +518,18 @@ nnoremap <silent> <Leader>kp :N<CR>
 nnoremap <silent> <Leader>kb :!<CR>
 
 " Window mapping
-nnoremap <silent> <Leader>d <C-w>
-nnoremap <silent> <Leader>dd <C-w><C-w>
+nnoremap <Leader>d <C-w>
+nnoremap <Leader>dd <C-w><C-w>
 
 " NERD commenter
-nnoremap <silent> <Leader>c <NOP>
-nnoremap <silent> <Leader>cx <NOP>
-vnoremap <silent> <Leader>c <NOP>
-vnoremap <silent> <Leader>cx <NOP>
+nnoremap <Leader>c <NOP>
+nnoremap <Leader>cx <NOP>
+vnoremap <Leader>c <NOP>
+vnoremap <Leader>cx <NOP>
 
 " Miscellaneous top-level leader mappings
-nnoremap <silent> <Leader>; q:i
-vnoremap <silent> <Leader>; q:i
+nnoremap <Leader>; q:i
+vnoremap <Leader>; q:i
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
