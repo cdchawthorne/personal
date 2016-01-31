@@ -139,7 +139,7 @@ let g:LatexBox_no_mappings = 1
 let g:tex_indent_and = 0
 
 let g:tex_flavor="latex"
-let g:tex_items='\\bibitem\|\\item\|\\plr\|\\prl\|\\case\|\\lit'
+let g:tex_items='\\bibitem\|\\item\|\\plr\|\\prl\|\\case\|\\lit\|\\pss\|\\psps'
 let g:tex_itemize_env='itemize\|description\|enumerate\|thebibliography\|caselist'
 
 set diffopt+=iwhite
@@ -164,7 +164,7 @@ augroup skeleton_files
 
     autocmd BufNewFile *.tex
       \ 0r ${HOME}/.vim/skeleton.tex |
-      \ normal Gdd6k$
+      \ normal! Gdd6k$
 augroup END
 
 augroup restore_cursor_pos
@@ -254,78 +254,55 @@ function! EscapeIndent(upOrDown)
     endif
 endfunction
 
-function! LaTeXEnvironment(env, beforeOrAfter)
-    if a:beforeOrAfter ==# "before"
-        let keys = "O"
+function! LaTeXEnvironment(env, labelOrNot)
+    let current_line = getline(".")
+    if current_line =~ '[^ ]'
+        let keys = 'o'
     else
-        let keys = "o"
+        let keys = 'cc'
     endif
-    let keys .= "\\begin{\<Esc>\"=a:env\<CR>pa}\<CR> \<BS>\<CR>"
-    let keys .= "\\end{\<Esc>\"=a:env\<CR>pa}\<Esc>k"
-    execute "normal! " . keys
-    startinsert!
+    let keys .= "\\begin{\<Esc>\"=a:env\<CR>pa}\<CR>"
+    let keys .= "\\end{\<Esc>\"=a:env\<CR>pa}\<Esc>"
+    if a:labelOrNot ==# "label"
+        let keys .= "kA[]"
+        execute "normal! " . keys
+        startinsert
+    else
+        let keys .= "O \<BS>"
+        execute "normal! " . keys
+        startinsert!
+    endif
 endfunction
 
-function! LaTeXBeginEnvironment(env, beforeOrAfter)
-    if a:beforeOrAfter ==# "before"
-        let key = "O"
+" TODO: optionally indent
+function! LaTeXEnvironmentAroundOp(type)
+    if a:type ==# 'v' || a:type ==# 'V'
+        let start = line("'<")
+        let end = line("'>")
     else
-        let key = "o"
+        let start = line("'[")
+        let end = line("']")
     endif
-    execute "normal! ". key . "\\begin{\<Esc>\"=a:env\<CR>pa}\<CR> \<BS>"
-    startinsert!
-endfunction
-
-function! LaTeXEndEnvironment(beforeOrAfter)
-    let oldLine = line(".")
-    let oldColumn = col(".")
-
-    let deleteOld = 0
-    if getline(".") =~# '\v^ *$'
-        let deleteOld = 1
-        call search('\v[^ ]', 'Wb')
+    let env = input("","","customlist,LaTeXEnvironmentComplete")
+    " Indent twice for itemize environments
+    if env =~ g:tex_itemize_env
+        execute start . "," . end . ">"
     endif
-
-    let endLine = line(".")
-    let endColumn = col(".")
-
-    call EscapeIndent("up")
-    while getline(".") !~# '\v^ *\\begin\{[[:alpha:]]+\*?\}' &&
-                \ col(".") != 1 && line(".") != 1
-        call EscapeIndent("up")
-    endwhile
-
-    let beginEnv = matchstr(getline("."), '\v^ *\\begin\{[[:alpha:]]+\*?\}')
-
-    if beginEnv !=# ''
-        if deleteOld
-            call cursor(oldLine, oldColumn)
-            normal dd
-        endif
-
-        call cursor(endLine, endColumn)
-
-        " Without the g flag, it only gets the first match
-        let endEnv = substitute(beginEnv, "begin", "end", "")
-        if a:beforeOrAfter ==# "before"
-            let key = "O"
-        else
-            let key = "o"
-        endif
-        exe "normal! " . key . "\<C-u>\<Esc>\"=endEnv\<CR>p"
-    else
-        call cursor(oldLine, oldColumn)
-    endif
+    execute start . "," . end . ">"
+    execute "normal! o\\end{\<Esc>\"=env\<CR>pa}"
+    call cursor(start, 0)
+    execute "normal! O\\begin{\<Esc>\"=env\<CR>pa}"
 endfunction
 
 function! LaTeXEnvironmentComplete(ArgLead, CmdLine, CursorPos)
     let envs = [
-                \ "pf", "rpf", "lrpf", "ea", "tcd", "case", "subcase",
+                \ "pf", "rpf", "lrpf", "ea", "tcd", "equation",
                 \ "caselist", "theorem", "lemma", "proposition", "claim",
                 \ "corollary", "fact", "todo", "definition", "notation",
                 \ "question", "remark", "exercise", "example", "enumerate",
                 \ "itemize", "description", "pmatrix", "verbatim",
-                \ "tabular", "menumerate", "mitemize", "mdescription"]
+                \ "tabular", "menumerate", "mitemize", "mdescription",
+                \ "cases", "aside", "subclaim" ]
     call sort(envs)
 
     return filter(envs, 'v:val =~# "^' . a:ArgLead . '"')
@@ -345,9 +322,6 @@ nnoremap S m
 nnoremap m <C-b>
 nnoremap <Space> <C-f>
 
-" What on earth is this for?
-" nnoremap <silent> fj a<Esc>fj
-
 nnoremap ) 0
 nnoremap 0 )
 nnoremap ( 9
@@ -358,16 +332,6 @@ nnoremap & 7
 nnoremap 7 &
 nnoremap ^ 6
 nnoremap 6 ^
-" nnoremap % 5
-" nnoremap 5 %
-" nnoremap $ 4
-" nnoremap 4 $
-" nnoremap # 3
-" nnoremap 3 #
-" nnoremap @ 2
-" nnoremap 2 @
-" nnoremap ! 1
-" nnoremap 1 !
 
 vnoremap ) 0
 vnoremap 0 )
@@ -379,16 +343,6 @@ vnoremap & 7
 vnoremap 7 &
 vnoremap ^ 6
 vnoremap 6 ^
-" vnoremap % 5
-" vnoremap 5 %
-" vnoremap $ 4
-" vnoremap 4 $
-" vnoremap # 3
-" vnoremap 3 #
-" vnoremap @ 2
-" vnoremap 2 @
-" vnoremap ! 1
-" vnoremap 1 !
 
 onoremap ) 0
 onoremap 0 )
@@ -400,16 +354,6 @@ onoremap & 7
 onoremap 7 &
 onoremap ^ 6
 onoremap 6 ^
-" onoremap % 5
-" onoremap 5 %
-" onoremap $ 4
-" onoremap 4 $
-" onoremap # 3
-" onoremap 3 #
-" onoremap @ 2
-" onoremap 2 @
-" onoremap ! 1
-" onoremap 1 !
 
 vnoremap <silent> Q gq
 vnoremap / /\v
@@ -432,14 +376,15 @@ inoremap jF <C-]><Esc>
 inoremap JF <C-]><Esc>
 inoremap <C-u> <C-g>u<C-u>
 
-inoremap fdm <C-g>u<Esc>viwUgi
+inoremap fdm <C-g>u<C-]><Esc>viwUgi
 inoremap fdk <C-k>
 inoremap fdu <C-g>u<C-u>
 inoremap fdn <C-n>
 inoremap fdp <C-p>
-inoremap fds <C-g>u<Esc>gqgqA
+inoremap fds <C-g>u<C-]><Esc>gqgqA
 inoremap fdw <C-w>
 inoremap fdx <NOP>
+inoremap fdd <C-g>u<C-R>=strftime("%Y-%m-%d")<CR>
 
 " Leader mappings
 let mapleader = "s"
@@ -466,7 +411,6 @@ nnoremap <Leader>fd 0D
 nnoremap <Leader>fn :call EscapeIndent("down")<CR>
 nnoremap <Leader>fp :call EscapeIndent("up")<CR>
 nnoremap <Leader>fk gq
-nnoremap <Leader>fi gqgq
 
 vnoremap <Leader>fd <C-v>0o$x
 vnoremap <Leader>fn :call EscapeIndent("down")<CR>

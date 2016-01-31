@@ -1,8 +1,7 @@
 \documentclass{article}
 
 \usepackage[margin=1in]{geometry}
-\usepackage[mathletters]{ucs}
-\usepackage[utf8x]{inputenc}
+\usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[canadian]{babel}
 
@@ -77,6 +76,8 @@
 
 \newcommand{\plr}{\item[\((\implies)\)]}
 \newcommand{\prl}{\item[\((\impliedby)\)]}
+\newcommand{\pss}{\item[\((\subseteq)\)]}
+\newcommand{\psps}{\item[\((\supseteq)\)]}
 
 \NewDocumentEnvironment{ea}{O{rCl}}{
   \begin{IEEEeqnarray*}{#1}
@@ -112,9 +113,11 @@
 \newsmarttheorem{lemma}[theoremcounter]{Lemma}
 \newsmarttheorem{proposition}[theoremcounter]{Proposition}
 \newsmarttheorem{claim}[theoremcounter]{Claim}
+\newsmarttheorem{subclaim}[theoremcounter]{Subclaim}
 \newsmarttheorem{corollary}[theoremcounter]{Corollary}
 \newsmarttheorem{fact}[theoremcounter]{Fact}
 \newsmarttheorem{todo}{TODO}
+\newtheorem{assignment}{Assignment}
 
 \theoremstyle{definition}
 \newsmarttheorem{definition}[theoremcounter]{Definition}
@@ -123,49 +126,150 @@
 \theoremstyle{remark}
 \newsmarttheorem{question}[theoremcounter]{Question}
 \newsmarttheorem{remark}[theoremcounter]{Remark}
+\newsmarttheorem{aside}[theoremcounter]{Aside}
 \newsmarttheorem{conjecture}[theoremcounter]{Conjecture}
 \newsmarttheorem{exercise}[theoremcounter]{Exercise}
 \newsmarttheorem{example}[theoremcounter]{Example}
 
 % Blackboard bold
-\newcommand \bA {{\mathbb{A}}}
-\newcommand \bC {{\mathbb{C}}}
-\newcommand \bD {{\mathbb{D}}}
-\newcommand \bF {{\mathbb{F}}}
-\newcommand \bN {{\mathbb{N}}}
-\newcommand \bP {{\mathbb{P}}}
-\newcommand \bQ {{\mathbb{Q}}}
-\newcommand \bR {{\mathbb{R}}}
-\newcommand \bT {{\mathbb{T}}}
-\newcommand \bZ {{\mathbb{Z}}}
+\newcommand \jda {{\mathbb{A}}}
+\newcommand \jdb {{\mathbb{B}}}
+\newcommand \jdc {{\mathbb{C}}}
+\newcommand \jdd {{\mathbb{D}}}
+\newcommand \jde {{\mathbb{E}}}
+\newcommand \jdf {{\mathbb{F}}}
+\newcommand \jdg {{\mathbb{G}}}
+\newcommand \jdh {{\mathbb{H}}}
+\newcommand \jdi {{\mathbb{I}}}
+\newcommand \jdj {{\mathbb{J}}}
+\newcommand \jdk {{\mathbb{K}}}
+\newcommand \jdl {{\mathbb{L}}}
+\newcommand \jdm {{\mathbb{M}}}
+\newcommand \jdn {{\mathbb{N}}}
+\newcommand \jdo {{\mathbb{O}}}
+\newcommand \jdp {{\mathbb{P}}}
+\newcommand \jdq {{\mathbb{Q}}}
+\newcommand \jdr {{\mathbb{R}}}
+\newcommand \jds {{\mathbb{S}}}
+\newcommand \jdt {{\mathbb{T}}}
+\newcommand \jdu {{\mathbb{U}}}
+\newcommand \jdv {{\mathbb{V}}}
+\newcommand \jdw {{\mathbb{W}}}
+\newcommand \jdx {{\mathbb{X}}}
+\newcommand \jdy {{\mathbb{Y}}}
+\newcommand \jdz {{\mathbb{Z}}}
 
-% Math Calligraphy
-\newcommand \cA {{\mathcal{A}}}
-\newcommand \cB {{\mathcal{B}}}
-\newcommand \cC {{\mathcal{C}}}
-\newcommand \cD {{\mathcal{D}}}
-\newcommand \cE {{\mathcal{E}}}
-\newcommand \cF {{\mathcal{F}}}
-\newcommand \cG {{\mathcal{G}}}
-\newcommand \cH {{\mathcal{H}}}
-\newcommand \cI {{\mathcal{I}}}
-\newcommand \cJ {{\mathcal{J}}}
-\newcommand \cK {{\mathcal{K}}}
-\newcommand \cL {{\mathcal{L}}}
-\newcommand \cM {{\mathcal{M}}}
-\newcommand \cN {{\mathcal{N}}}
-\newcommand \cO {{\mathcal{O}}}
-\newcommand \cP {{\mathcal{P}}}
-\newcommand \cQ {{\mathcal{Q}}}
-\newcommand \cR {{\mathcal{R}}}
-\newcommand \cS {{\mathcal{S}}}
-\newcommand \cT {{\mathcal{T}}}
-\newcommand \cU {{\mathcal{U}}}
-\newcommand \cV {{\mathcal{V}}}
-\newcommand \cW {{\mathcal{W}}}
-\newcommand \cX {{\mathcal{X}}}
-\newcommand \cY {{\mathcal{Y}}}
-\newcommand \cZ {{\mathcal{Z}}}
+% Bold
+\newcommand \jba {{\mathbf{A}}}
+\newcommand \jbb {{\mathbf{B}}}
+\newcommand \jbc {{\mathbf{C}}}
+\newcommand \jbd {{\mathbf{D}}}
+\newcommand \jbe {{\mathbf{E}}}
+\newcommand \jbf {{\mathbf{F}}}
+\newcommand \jbg {{\mathbf{G}}}
+\newcommand \jbh {{\mathbf{H}}}
+\newcommand \jbi {{\mathbf{I}}}
+\newcommand \jbj {{\mathbf{J}}}
+\newcommand \jbk {{\mathbf{K}}}
+\newcommand \jbl {{\mathbf{L}}}
+\newcommand \jbm {{\mathbf{M}}}
+\newcommand \jbn {{\mathbf{N}}}
+\newcommand \jbo {{\mathbf{O}}}
+\newcommand \jbp {{\mathbf{P}}}
+\newcommand \jbq {{\mathbf{Q}}}
+\newcommand \jbr {{\mathbf{R}}}
+\newcommand \jbs {{\mathbf{S}}}
+\newcommand \jbt {{\mathbf{T}}}
+\newcommand \jbu {{\mathbf{U}}}
+\newcommand \jbv {{\mathbf{V}}}
+\newcommand \jbw {{\mathbf{W}}}
+\newcommand \jbx {{\mathbf{X}}}
+\newcommand \jby {{\mathbf{Y}}}
+\newcommand \jbz {{\mathbf{Z}}}
+
+% Math calligraphy
+\newcommand \jca {{\mathcal{A}}}
+\newcommand \jcb {{\mathcal{B}}}
+\newcommand \jcc {{\mathcal{C}}}
+\newcommand \jcd {{\mathcal{D}}}
+\newcommand \jce {{\mathcal{E}}}
+\newcommand \jcf {{\mathcal{F}}}
+\newcommand \jcg {{\mathcal{G}}}
+\newcommand \jch {{\mathcal{H}}}
+\newcommand \jci {{\mathcal{I}}}
+\newcommand \jcj {{\mathcal{J}}}
+\newcommand \jck {{\mathcal{K}}}
+\newcommand \jcl {{\mathcal{L}}}
+\newcommand \jcm {{\mathcal{M}}}
+\newcommand \jcn {{\mathcal{N}}}
+\newcommand \jco {{\mathcal{O}}}
+\newcommand \jcp {{\mathcal{P}}}
+\newcommand \jcq {{\mathcal{Q}}}
+\newcommand \jcr {{\mathcal{R}}}
+\newcommand \jcs {{\mathcal{S}}}
+\newcommand \jct {{\mathcal{T}}}
+\newcommand \jcu {{\mathcal{U}}}
+\newcommand \jcv {{\mathcal{V}}}
+\newcommand \jcw {{\mathcal{W}}}
+\newcommand \jcx {{\mathcal{X}}}
+\newcommand \jcy {{\mathcal{Y}}}
+\newcommand \jcz {{\mathcal{Z}}}
+
+% Math fraktur
+\newcommand \jka {{\mathfrak{A}}}
+\newcommand \jkb {{\mathfrak{B}}}
+\newcommand \jkc {{\mathfrak{C}}}
+\newcommand \jkd {{\mathfrak{D}}}
+\newcommand \jke {{\mathfrak{E}}}
+\newcommand \jkf {{\mathfrak{F}}}
+\newcommand \jkg {{\mathfrak{G}}}
+\newcommand \jkh {{\mathfrak{H}}}
+\newcommand \jki {{\mathfrak{I}}}
+\newcommand \jkj {{\mathfrak{J}}}
+\newcommand \jkk {{\mathfrak{K}}}
+\newcommand \jkl {{\mathfrak{L}}}
+\newcommand \jkm {{\mathfrak{M}}}
+\newcommand \jkn {{\mathfrak{N}}}
+\newcommand \jko {{\mathfrak{O}}}
+\newcommand \jkp {{\mathfrak{P}}}
+\newcommand \jkq {{\mathfrak{Q}}}
+\newcommand \jkr {{\mathfrak{R}}}
+\newcommand \jks {{\mathfrak{S}}}
+\newcommand \jkt {{\mathfrak{T}}}
+\newcommand \jku {{\mathfrak{U}}}
+\newcommand \jkv {{\mathfrak{V}}}
+\newcommand \jkw {{\mathfrak{W}}}
+\newcommand \jkx {{\mathfrak{X}}}
+\newcommand \jky {{\mathfrak{Y}}}
+\newcommand \jkz {{\mathfrak{Z}}}
+
+% Math fraktur lowercase
+\newcommand \jla {{\mathfrak{a}}}
+\newcommand \jlb {{\mathfrak{b}}}
+\newcommand \jlc {{\mathfrak{c}}}
+\newcommand \jld {{\mathfrak{d}}}
+\newcommand \jle {{\mathfrak{e}}}
+\newcommand \jlf {{\mathfrak{f}}}
+\newcommand \jlg {{\mathfrak{g}}}
+\newcommand \jlh {{\mathfrak{h}}}
+\newcommand \jli {{\mathfrak{i}}}
+\newcommand \jlj {{\mathfrak{j}}}
+\newcommand \jlk {{\mathfrak{k}}}
+\newcommand \jll {{\mathfrak{l}}}
+\newcommand \jlm {{\mathfrak{m}}}
+\newcommand \jln {{\mathfrak{n}}}
+\newcommand \jlo {{\mathfrak{o}}}
+\newcommand \jlp {{\mathfrak{p}}}
+\newcommand \jlq {{\mathfrak{q}}}
+\newcommand \jlr {{\mathfrak{r}}}
+\newcommand \jls {{\mathfrak{s}}}
+\newcommand \jlt {{\mathfrak{t}}}
+\newcommand \jlu {{\mathfrak{u}}}
+\newcommand \jlv {{\mathfrak{v}}}
+\newcommand \jlw {{\mathfrak{w}}}
+\newcommand \jlx {{\mathfrak{x}}}
+\newcommand \jly {{\mathfrak{y}}}
+\newcommand \jlz {{\mathfrak{z}}}
 
 % Aliases
 \let \weirdepsilon \epsilon
@@ -173,43 +277,98 @@
 \renewcommand \epsilon \varepsilon
 \renewcommand \phi \varphi
 
-
 \let \sharps \ss
 \renewcommand \ss \subseteq
 \newcommand \ssne \subsetneqq
 \newcommand \sps \supseteq
 \newcommand \spsne \supsetneqq
 \newcommand \fss {\subseteq_{\mathrm{fin}}}
-
-\newcommand \ra \rightarrow
-\newcommand \hra \hookrightarrow
-\newcommand \la \leftarrow
-\newcommand \hla \hookleftarrow
-\newcommand \lra \leftrightarrow
-\newcommand \xra \xrightarrow
-
-\newcommand \on  \operatorname
-\newcommand \wh  \widehat
-\newcommand \ol  \overline
-\newcommand \ul  \underline
-
-\newcommand \cnot \centernot
-\newcommand \co \colon
-\newcommand \sm \setminus
-\newcommand \ep \epsilon
 \newcommand \es \emptyset
 \newcommand \rs \restriction
 \newcommand \ip \implies
 \newcommand \pe \preceq
 \newcommand \se \succeq
+\newcommand \ra \rightarrow
+\newcommand \la \leftarrow
+\newcommand \hra \hookrightarrow
+\newcommand \hla \hookleftarrow
+\newcommand \xra \xrightarrow
+\newcommand \xla \xleftarrow
+\newcommand \tra \twoheadrightarrow
+\newcommand \tla \twoheadleftarrow
+\newcommand \xhra \xhookrightarrow
+\newcommand \xhla \xhookleftarrow
+\newcommand \lra \leftrightarrow
+\newcommand \lras \leftrightarrows
+\newcommand \rlas \rightleftarrows
+\newcommand \ua \uparrow
+\newcommand \da \downarrow
+\newcommand \cnot \centernot
+\newcommand \co \colon
+\newcommand \sm \setminus
+\newcommand \mt \mapsto
+\newcommand \mdl \models
+\newcommand \ts \times
+\newcommand \bts \bigtimes
+\newcommand \opl \oplus
+\newcommand \ots \otimes
+\newcommand \bopl \bigoplus
+\newcommand \bots \bigotimes
+\newcommand \xst \exists
+\newcommand \frl \forall
+\newcommand \tle \trianglelefteq
+\newcommand \tlne \triangleleft
+\newcommand \tre \trianglerighteq
+\newcommand \trne \triangleright
+\newcommand \nn \notin
+\newcommand \bcap \bigcap
+\newcommand \bcup \bigcup
+\newcommand \wdg \wedge
+\newcommand \bwdg \bigwedge
+\newcommand \bvee \bigvee
+\newcommand \cm \circ
+\newcommand \plm \varprojlim
+\newcommand \ilm \varinjlim
+\newcommand \cpd \coprod
+
+\newcommand \on  \operatorname
+\newcommand \wh  \widehat
+\newcommand \ol  \overline
+\newcommand \ul  \underline
+\newcommand \ti \textit
+\newcommand \sst \substack
 \newcommand \wt \widetilde
 \newcommand \ora \overrightarrow
+\newcommand \ub \underbrace
+\newcommand \ob \overbrace
 
-\newcommand \thorn \th
+\newcommand \ala \alpha
+\newcommand \bt \beta
+\newcommand \gm \gamma
+\newcommand \dl \delta
+\newcommand \ep \epsilon
+\newcommand \io \iota
+\newcommand \kp \kappa
+\newcommand \lb \lambda
+\newcommand \sg \sigma
+\newcommand \om \omega
+\newcommand \tht \theta
+\newcommand \ale \aleph
+
+\newcommand \Dl \Delta
+\newcommand \Gm \Gamma
+\newcommand \Lb \Lambda
+\newcommand \Sg \Sigma
+\newcommand \Tht \Theta
+\newcommand \Om \Omega
+
+\let \thorn \th
 \renewcommand \th {^\mathrm{th}}
 \newcommand \telse {\text{else}}
 
 \newcommand \lit [1] {\item[#1]}
+\newcommand \pdif [2] {\frac{\partial #1}{\partial #2}}
+\newcommand \dif [2] {\frac{\mathrm{d} #1}{\mathrm{d} #2}}
 
 \newenvironment{menumerate}{\mbox{}\begin{enumerate}}{\end{enumerate}}
 \newenvironment{mitemize}{\mbox{}\begin{itemize}}{\end{itemize}}
@@ -218,35 +377,44 @@
 % Delimiters
 \DeclarePairedDelimiter \angs  \langle \rangle
 \DeclarePairedDelimiter \abs \lvert \rvert
-\DeclarePairedDelimiter \len \lvert \rvert
-\DeclarePairedDelimiter \card \lvert \rvert
-\DeclarePairedDelimiter \bars \lVert \rVert
-\DeclarePairedDelimiter \norm \lVert \rVert
+\DeclarePairedDelimiter \nrm \lVert \rVert
 \DeclarePairedDelimiter \pars ( )
 \DeclarePairedDelimiter \bracks [ ]
+\DeclarePairedDelimiter \braces \{ \}
 \DeclarePairedDelimiter \floor \lfloor \rfloor
 \DeclarePairedDelimiter \ceil \lceil \rceil
 
 \DeclarePairedDelimiterX{\set}[1]{\{}{\}}{\, #1 \,}
 
-% Non-simple operators
-\DeclareMathOperator \ch {char}
-\DeclareMathOperator \im {Im}
+\DeclareMathOperator \fchar {char}
+\DeclareMathOperator \imag {Im}
+\DeclareMathOperator \real {Re}
 \DeclareMathOperator \lspan {span}
-
-% Simple operators
 \DeclareMathOperator \dom {dom}
-\DeclareMathOperator \ob {Ob}
+\DeclareMathOperator \obj {Ob}
 \DeclareMathOperator \id {id}
 \DeclareMathOperator \ran {Ran}
-\DeclareMathOperator \sgn {sgn}
+\DeclareMathOperator \sign {sgn}
 \DeclareMathOperator \rank {rank}
-\DeclareMathOperator \tr {tr}
+\DeclareMathOperator \trc {tr}
+\DeclareMathOperator \dist {dist}
+\DeclareMathOperator \ord {ord}
+\DeclareMathOperator \ann {Ann}
+\DeclareMathOperator \im {im}
+\DeclareMathOperator \ckr {coker}
+
+\newcommand \lhs {\mathrm{LHS}}
+\newcommand \rhs {\mathrm{RHS}}
+
+\newcommand \tfdc {the following diagram commutes}
+\newcommand \Tfdc {The following diagram commutes}
+\newcommand \tfsc {the following diagrams commute}
+\newcommand \Tfsc {The following diagrams commute}
 
 \title{}
 \author{Christopher Hawthorne}
 \date{cdchawth, 20387811}
 
 \begin{document}
-  \maketitle
+\maketitle
 \end{document}

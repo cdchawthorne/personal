@@ -2,7 +2,7 @@
 
 alias ls='ls --color=auto --group-directories-first'
 
-alias grep='grep --colour=always'
+alias grep='grep --colour=auto'
 
 alias ll='ls -alF'
 alias la='ls -A'
@@ -19,26 +19,28 @@ function cd {
 }
 alias scd='cd'
 alias d='cd'
-alias cd..='cd ..'
 alias c='cd'
 alias dc='cd'
 alias dcd='cd'
 
-alias xp='chmod +x'
-alias ff='find . -name'
-alias fr='find . -regex'
 alias rlwrap='rlwrap -s 1000000'
 alias math='rlwrap math'
 alias ocaml='rlwrap ocaml'
 alias sudo='sudo '
 alias xargs='xargs '
-alias p='cd ${HOME}/repos/personal'
 
 alias vi=vim
 alias tim='vim -t'
 alias vv='vim -c ''edit $MYVIMRC'''
 alias vz='vim ~/.zsh_aliases'
 alias sz='source ~/.zsh_aliases'
+function vn {
+    (
+        [[ -r course_material/notes.tex ]] && builtin cd course_material
+        vimdiff notes.tex ~/.vim/skeleton.tex
+        vim notes.tex
+    )
+}
 function fim {
     vim -c "cs f f $1"
 }
@@ -48,7 +50,6 @@ alias less='less -i'
 alias rh='rehash'
 alias u='sudo zsh -c ''aura -Syu; aura -Akua; ntpd -q; hwclock -w'''
 alias fix-steam='find ~/.steam/root/ \( -name "libgcc_s.so*" -o -name "libstdc++.so*" -o -name "libxcb.so*" \) -print -delete'
-alias k='cd ~/documents/education/undergrad/research/usra_2015/'
 alias gpg='DISPLAY= gpg'
 
 function timestamp {
@@ -91,7 +92,7 @@ function backup {
              ${HOME}/.ssh ${HOME}/.config ${HOME}/scratch $@)
     backup="${backup_dir}/$(hostname)_$(timestamp).tar.gz"
     encrypted_backup=${backup}.gpg
-    remote_machine=cdchawth@linux.student.cs.uwaterloo.ca
+    remote_machine=cdchawth@linux.math.uwaterloo.ca
     remote_backup_dir='~/utilities/remote_backups'
     pwsafe_db=${HOME}/.pwsafe.dat
 
@@ -125,45 +126,6 @@ function x {
         command startx #-- -keeptty &> "${HOME}/.xsession-errors"
     fi
 }
-
-function xvim {
-    if [[ -n ${DISPLAY} || ${zsh_parent_process} == sshd ]]; then
-        echo -ne '\e[1 q'
-    else
-        echo -ne '\e[?6c'
-    fi
-    vim $@
-
-    optionRegex='^-.*$'
-    for arg in $@; do
-        if [[ ! ${arg} =~ ${optionRegex} && -e ${arg} && ! -x ${arg} ]]; then
-            chmod +x ${arg}
-        fi
-    done
-}
-
-# function zvim {
-    # if [[ -n ${DISPLAY} || ${zsh_parent_process} == "sshd" ]]; then
-        # echo -ne '\e[1 q'
-    # else
-        # echo -ne '\e[?6c'
-    # fi
-    # vim -u <(cat << EOF
-# exe "source " fnameescape("${HOME}/.vimrc")
-# autocmd BufNewFile *
-    # \ setfiletype zsh |
-    # \ 0put = '#!/usr/bin/env zsh' |
-    # \ 1put = '' |
-    # \ normal G
-# EOF) $@
-
-    # optionRegex='^-.*$'
-    # for arg in $@; do
-        # if [[ ! ${arg} =~ ${optionRegex} && -e ${arg} && ! -x ${arg} ]]; then
-            # chmod +x ${arg}
-        # fi
-    # done
-# }
 
 function python {
     (
@@ -209,6 +171,9 @@ function a {
 }
 function b {
     cd ~/documents/education/masters/courses/$1
+}
+function m {
+    pdf ~/documents/education/books/$1
 }
 
 function ruw {

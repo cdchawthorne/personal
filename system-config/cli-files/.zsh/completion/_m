@@ -1,0 +1,3 @@
+#compdef m
+
+_arguments "1: :{_path_files -W ~/documents/education/books}"

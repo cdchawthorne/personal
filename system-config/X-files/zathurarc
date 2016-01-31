@@ -10,7 +10,7 @@ set window-title-basename true
 set statusbar-basename true
 set show-scrollbars false
 set recolor-keephue true
-set recolor
+/* set recolor */
 /* set recolor-darkcolor "#dddddd" */
 /* set recolor-darkcolor "#5cbdff" */
 set recolor-darkcolor "#ffffff"

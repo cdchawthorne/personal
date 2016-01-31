@@ -61,7 +61,7 @@ myManageHook = composeAll $ concat $
         -- It seems the difference between classes and resources is a little
         -- dicey
         torClassNames = ["Tor Browser"]
-        chromiumClassNames = ["Chromium"]
+        chromiumClassNames = ["chromium"]
         musicClassNames = ["music"]
         chatClassNames = ["irc"]
         terminalClassNames = ["terminal"]

@@ -269,7 +269,7 @@ def_key "space"
 #  show_server_info
 #
 def_key "s"
-  press_space
+  add_item_to_playlist
 
 #def_key "s"
 #  stop
@@ -301,9 +301,6 @@ def_key "s"
 #def_key "backspace_2"
 #  replay_song
 #
-def_key "f"
-  apply_filter
-
 #def_key "f"
 #  seek_forward
 #
@@ -392,7 +389,10 @@ def_key "."
 #  toggle_find_mode
 #
 def_key "e"
-  press_enter
+  enter_directory
+
+def_key "e"
+  play_item
 
 #def_key "e"
 #  edit_song
@@ -541,7 +541,7 @@ def_key "L"
 #def_key "F"
 #  toggle_fetching_lyrics_in_background
 #
-def_key "ctrl_l"
+def_key "ctrl-l"
   run_external_command "pkill -WINCH ncmpcpp"
 
 #def_key "ctrl_l"
