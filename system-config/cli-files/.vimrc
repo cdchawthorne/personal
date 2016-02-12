@@ -481,21 +481,21 @@ vnoremap <Leader>; q:i
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
-command! DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
+command! DiffOrig vertical new | set bt=nofile | r # | 0d_ | diffthis
       \ | wincmd p | diffthis
 
 command! -nargs=? -complete=tag Tagge tag <args>
 command! -nargs=? -complete=tag STagge stag <args>
-command! -nargs=? -complete=tag VSTagge vert stag <args>
-command! -nargs=1 -complete=tag Cfs cs f s <args>
-command! -nargs=1 -complete=tag Csfs scs f s <args>
-command! -nargs=1 -complete=tag Vcsfs vert scs f s <args>
-command! -nargs=1 -complete=tag Cfc cs f c <args>
-command! -nargs=1 -complete=tag Csfc scs f c <args>
-command! -nargs=1 -complete=tag Vcsfc vert scs f c <args>
-command! -nargs=1 -complete=file Cff cs f f
-command! -nargs=1 -complete=file Scff scs f f
-command! -nargs=1 -complete=file Vscff vert scs f f
+command! -nargs=? -complete=tag VSTagge vertical stag <args>
+command! -nargs=1 -complete=tag Cfs cscope find s <args>
+command! -nargs=1 -complete=tag Csfs scscope find s <args>
+command! -nargs=1 -complete=tag Vcsfs vertical scscope find s <args>
+command! -nargs=1 -complete=tag Cfc cscope find c <args>
+command! -nargs=1 -complete=tag Csfc scscope find c <args>
+command! -nargs=1 -complete=tag Vcsfc vertical scscope find c <args>
+command! -nargs=1 -complete=file Cff cscope find f
+command! -nargs=1 -complete=file Scff scscope find f
+command! -nargs=1 -complete=file Vscff vertical scscope find f
 command! -nargs=0 Sexe execute SelectedLines()
 
 
@@ -507,9 +507,9 @@ command! -nargs=0 Sexe execute SelectedLines()
 augroup cmd_window_au
     autocmd!
 
-    autocmd CmdwinEnter * iabbrev <buffer> vsn vert snext
-    autocmd CmdwinEnter * iabbrev <buffer> vsN vert sNext
-    autocmd CmdwinEnter * iabbrev <buffer> vstag vert stag
+    autocmd CmdwinEnter * iabbrev <buffer> vsn vertical snext
+    autocmd CmdwinEnter * iabbrev <buffer> vsN vertical sNext
+    autocmd CmdwinEnter * iabbrev <buffer> vstag vertical stag
     autocmd CmdwinEnter * iabbrev <buffer> tbn tabnew
     autocmd CmdwinEnter * iabbrev <buffer> tagge Tagge
     autocmd CmdwinEnter * iabbrev <buffer> stagge STagge
