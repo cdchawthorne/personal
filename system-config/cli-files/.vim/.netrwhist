@@ -1,2 +1,11 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =0
+let g:netrw_dirhist_cnt =9
+let g:netrw_dirhist_1='/home/cdchawthorne/documents/education/undergrad/research/usra_2013'
+let g:netrw_dirhist_2='/home/cdchawthorne/documents/education/undergrad/research'
+let g:netrw_dirhist_3='/home/cdchawthorne/documents/education/undergrad'
+let g:netrw_dirhist_4='/home/cdchawthorne/documents/education'
+let g:netrw_dirhist_5='/home/cdchawthorne/documents/education/masters'
+let g:netrw_dirhist_6='/home/cdchawthorne/documents/education/masters/courses'
+let g:netrw_dirhist_7='/home/cdchawthorne/documents/education/masters/courses/f2015'
+let g:netrw_dirhist_8='/home/cdchawthorne/documents/education/masters/courses/f2015/pmath753'
+let g:netrw_dirhist_9='/home/cdchawthorne/documents/education/masters/courses/f2015/pmath753/talk'

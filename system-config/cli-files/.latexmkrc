@@ -1,1 +1,3 @@
-$pdflatex = 'pdflatex -interaction=nonstopmode'
+$pdflatex = 'lualatex -interaction=nonstopmode %O %S';
+$pdf_mode = 1;
+$postscript_mode = $dvi_mode = 0;

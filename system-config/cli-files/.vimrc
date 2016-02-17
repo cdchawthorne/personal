@@ -198,7 +198,7 @@ endfunction
 
 function! LaTeXCompile()
     write
-    silent !latexmk -lualatex %
+    silent !latexmk %
     redraw!
     if v:shell_error != 0
         !
