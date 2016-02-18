@@ -56,9 +56,13 @@ iabbrev <buffer> tfsc tfsc{}
 iabbrev <buffer> tfsc: tfsc{}:
 iabbrev <buffer> Tfsc Tfsc{}
 iabbrev <buffer> Tfsc: Tfsc{}:
+iabbrev <buffer> tfae tfae{}
+iabbrev <buffer> tfae: tfae{}:
+iabbrev <buffer> Tfae Tfae{}
+iabbrev <buffer> Tfae: Tfae{}:
 
 nnoremap <silent> <buffer> <LocalLeader>c
-            \ :call LaTeXCompile() \| call PdfView()<CR>
+            \ :call LaTeXCompileAndView()<CR>
 nnoremap <silent> <buffer> <LocalLeader>v :call PdfView()<CR>
 nnoremap <silent> <buffer> <LocalLeader>t :call LatexBox_TOC()<CR>
 nnoremap <silent> <buffer> <LocalLeader>r :call LaTeXClean()<CR>

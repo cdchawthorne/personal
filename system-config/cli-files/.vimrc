@@ -196,13 +196,15 @@ function! SelectedLines()
     return join(getline(line("'<"), line("'>")), "\n")
 endfunction
 
-function! LaTeXCompile()
+function! LaTeXCompileAndView()
     write
-    silent !latexmk %
-    redraw!
-    if v:shell_error != 0
-        !
-    endif
+    silent ![[ "$(tmux list-panes | wc -l)" -ge 2 ]] && tmux kill-pane -a
+    let command = "!tmux split-window -dh -l 65 zsh -c \"latexmk "
+    let command .= shellescape(expand("%")) . " && (pgrep -f '^zathura --fork "
+    let command .= shellescape(expand("%:p:r")) . ".pdf$' &> /dev/null || "
+    let command .= "zathura --fork " . shellescape(expand("%:p:r"))
+    let command .= ".pdf &> /dev/null) || cat\""
+    silent execute command
 endfunction
 
 function! LilyPondCompile()
@@ -261,8 +263,14 @@ function! LaTeXEnvironment(env, labelOrNot)
     else
         let keys = 'cc'
     endif
-    let keys .= "\\begin{\<Esc>\"=a:env\<CR>pa}\<CR>"
-    let keys .= "\\end{\<Esc>\"=a:env\<CR>pa}\<Esc>"
+    if a:env ==# "embedlua"
+        let begenv = "\\embedlua"
+        let endenv = "\\endembedlua"
+    else
+        let begenv = "\\begin{\<C-R>=a:env\<CR>}"
+        let endenv = "\\end{\<C-R>=a:env\<CR>}"
+    endif
+    let keys .= begenv . "\<CR>" . endenv . "\<Esc>"
     if a:labelOrNot ==# "label"
         let keys .= "kA[]"
         execute "normal! " . keys
@@ -289,9 +297,18 @@ function! LaTeXEnvironmentAroundOp(type)
         execute start . "," . end . ">"
     endif
     execute start . "," . end . ">"
-    execute "normal! o\\end{\<Esc>\"=env\<CR>pa}"
+
+    if env ==# "embedlua"
+        let begenv = "\\embedlua"
+        let endenv = "\<BS>\\endembedlua"
+    else
+        let begenv = "\\begin{\<C-R>=env\<CR>}"
+        let endenv = "\\end{\<C-R>=env\<CR>}"
+    endif
+
+    execute "normal! o" . endenv
     call cursor(start, 0)
-    execute "normal! O\\begin{\<Esc>\"=env\<CR>pa}"
+    execute "normal! O" . begenv
 endfunction
 
 function! LaTeXEnvironmentComplete(ArgLead, CmdLine, CursorPos)
@@ -302,7 +319,7 @@ function! LaTeXEnvironmentComplete(ArgLead, CmdLine, CursorPos)
                 \ "question", "remark", "exercise", "example", "enumerate",
                 \ "itemize", "description", "pmatrix", "verbatim",
                 \ "tabular", "menumerate", "mitemize", "mdescription",
-                \ "cases", "aside", "subclaim" ]
+                \ "cases", "aside", "subclaim", "embedlua", "luacode" ]
     call sort(envs)
 
     return filter(envs, 'v:val =~# "^' . a:ArgLead . '"')

@@ -7,9 +7,10 @@ unlet b:current_syntax
 syn include @LUA syntax/lua.vim
 
 syn region luatexSnip matchgroup=Snip
-    \ start='\\begin{\z(luacode\|luacode*\)}'
+    \ start='\\begin{\z(luacode\|luacode\*\)}'
     \ end='\\end{\z1}'
     \ contains=@LUA
+    \ containedin=ALLBUT,texComment
 
 syn region luatexSnip matchgroup=Snip
     \ start='\\\(directlua\|luadirect\|luaexec\){'
