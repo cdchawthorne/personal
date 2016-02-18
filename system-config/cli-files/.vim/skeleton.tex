@@ -2,7 +2,7 @@
 
 % Order appears to be matter in some of these.
 \usepackage[margin=1in]{geometry}
-\usepackage{amsmath,amssymb,tikz-cd,centernot,mathtools,csquotes,filecontents}
+\usepackage{amsmath,amssymb,tikz-cd,centernot,mathtools,csquotes,cdcluacode}
 \usepackage[unicode=true]{hyperref}
 \usepackage{amsthm}
 \usepackage[log-declarations=false]{xparse}
@@ -72,7 +72,7 @@
 
 % Macros
 
-\begin{filecontents*}{\jobname.lua}
+\embedlua
   local names = {b=[[bf]], c=[[cal]], d=[[bb]], k=[[frak]]}
   -- Portability be damned
   for i = string.byte('a'), string.byte('z') do
@@ -82,8 +82,7 @@
     end
     tex.sprint(string.format([[\newcommand\jl%c{{\mathfrak{%c}}}]], i, i))
   end
-\end{filecontents*}
-\directlua{require [[\jobname]]}
+\endembedlua
 
 \newcommand{\plr}{\item[\((\implies)\)]}
 \newcommand{\prl}{\item[\((\impliedby)\)]}

@@ -18,8 +18,8 @@ syn region luatexSnip matchgroup=Snip
     \ containedin=ALLBUT,texComment
 
 syn region luatexSnip matchgroup=Snip
-    \ start='\\begin{filecontents\*}{.*\.lua}'
-    \ end='\\end{filecontents\*}'
+    \ start='\\embedlua'
+    \ end='\\endembedlua'
     \ contains=@LUA
     \ containedin=ALLBUT,texComment
 
