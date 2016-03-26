@@ -1,0 +1,306 @@
+\documentclass{article}
+
+% Order appears to be matter in some of these.
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb, tikz-cd, centernot, mathtools, csquotes,
+            cdcluacode, mathrsfs, fontspec, hyperref, amsthm, xparse}
+\usepackage[nameinlink]{cleveref}
+\usepackage{IEEEtrantools}
+
+\hypersetup{
+  colorlinks,
+  linktoc=section,
+  linkcolor=blue,
+  citecolor=blue,
+  urlcolor=blue,
+}
+
+% \newtheorem replacement that internally labels all theorems and tracks the
+% last theorem
+\newcounter{smarttheorem:smarttheoremcounter}
+\newcommand{\smarttheoremlabel}{%
+  smarttheorem:\arabic{smarttheorem:smarttheoremcounter}%
+}
+\NewDocumentCommand{\newsmarttheorem}{m o m}{
+  \IfNoValueTF{#2}{\newcounter{#1}}{}
+  \newtheorem{hidden#1}[\IfValueTF{#2}{#2}{#1}]{#3}
+
+  \NewDocumentEnvironment{#1}{o}{
+    \IfNoValueTF{##1}{\begin{hidden#1}}{\begin{hidden#1}[{##1}]}
+      \stepcounter{smarttheorem:smarttheoremcounter}
+      \label{\smarttheoremlabel}
+  }{
+      \end{hidden#1}
+  }
+}
+
+% Enriched proof environments
+
+% Vanilla qed symbols
+\let \vqedsymbol \qedsymbol
+\let \vqed \qed
+
+% Proof environment allowing labelled qed
+% Note that if the second parameter is a macro bound by \let (rather than \def
+% or \newcommand), it will be evaluated on exiting the environment
+% Further note that macros that don't immediately expand will may require a
+% \noexpand
+\NewDocumentEnvironment{pf}{o o}{
+  \IfValueTF{#2}{
+    \edef \qedsymbollabel {#2}
+    \renewcommand \qedsymbol {\vqedsymbol \, \qedsymbollabel}
+  }{
+    \renewcommand \qedsymbol \vqedsymbol
+  }
+  \IfValueTF{#1}{\begin{proof}[#1]}{\begin{proof}}
+}{
+  \end{proof}
+}
+
+% Reference proof: tags the proof using Cref on either the label provided or
+% the last smarttheorem
+\NewDocumentEnvironment{rpf}{O{\proofname} O{\smarttheoremlabel}}{
+  \begin{pf}[#1][\noexpand\Cref{#2}]
+}{
+  \end{pf}
+}
+
+% Convenience environment for labelling the proof of a specific result
+\NewDocumentEnvironment{lrpf}{m}{
+  \begin{rpf}[Proof of \Cref{#1}][#1]
+}{
+  \end{rpf}
+}
+
+% Macros
+
+\embedlua
+  local upper_names = {b=[[bf]], c=[[cal]], d=[[bb]], k=[[frak]], s=[[scr]]}
+  local lower_names = {t=[[bf]], l=[[frak]]}
+  -- Portability be damned
+  for i = string.byte('a'), string.byte('z') do
+    for name,font in pairs(upper_names) do
+      tex.sprint(string.format([[\newcommand\j%s%c{{\math%s{%c}}}]],
+          name, i,font, i-32));
+    end
+    for name,font in pairs(lower_names) do
+      tex.sprint(string.format([[\newcommand\j%s%c{{\math%s{%c}}}]],
+          name, i,font, i));
+    end
+  end
+\endembedlua
+
+\newcommand{\plr}{\item[\((\implies)\)]}
+\newcommand{\prl}{\item[\((\impliedby)\)]}
+\newcommand{\pss}{\item[\((\subseteq)\)]}
+\newcommand{\psps}{\item[\((\supseteq)\)]}
+
+\NewDocumentEnvironment{ea}{O{rCl}}{
+  \begin{IEEEeqnarray*}{#1}
+}{
+  \end{IEEEeqnarray*}
+  \ignorespacesafterend
+}
+
+\NewDocumentEnvironment{tcd}{s}{
+  \IfBooleanTF{#1}{\begin{equation}}{\[}
+    \begin{tikzcd}
+}{
+    \end{tikzcd}
+  \IfBooleanTF{#1}{\end{equation}}{\]}
+  \ignorespacesafterend
+}
+
+\theoremstyle{definition}
+
+\newcounter{case}
+\newenvironment{caselist}{
+  \setcounter{case}{0}\begin{description}
+}{
+  \end{description}
+}
+
+\newcommand \case {\setcounter{case}{\value{case}+1}\item[Case \thecase.]}
+
+% Theorems
+\newcounter{theoremcounter}
+\theoremstyle{plain}
+\newsmarttheorem{theorem}[theoremcounter]{Theorem}
+\newsmarttheorem{lemma}[theoremcounter]{Lemma}
+\newsmarttheorem{proposition}[theoremcounter]{Proposition}
+\newsmarttheorem{claim}[theoremcounter]{Claim}
+\newsmarttheorem{subclaim}[theoremcounter]{Subclaim}
+\newsmarttheorem{corollary}[theoremcounter]{Corollary}
+\newsmarttheorem{fact}[theoremcounter]{Fact}
+\newsmarttheorem{todo}{TODO}
+\newtheorem{assignment}{Assignment}
+
+\theoremstyle{definition}
+\newsmarttheorem{definition}[theoremcounter]{Definition}
+\newsmarttheorem{notation}[theoremcounter]{Notation}
+
+\theoremstyle{remark}
+\newsmarttheorem{question}[theoremcounter]{Question}
+\newsmarttheorem{remark}[theoremcounter]{Remark}
+\newsmarttheorem{aside}[theoremcounter]{Aside}
+\newsmarttheorem{conjecture}[theoremcounter]{Conjecture}
+\newsmarttheorem{exercise}[theoremcounter]{Exercise}
+\newsmarttheorem{example}[theoremcounter]{Example}
+
+% Aliases
+\let \weirdepsilon \epsilon
+\let \weirdphi \phi
+\renewcommand \epsilon \varepsilon
+\renewcommand \phi \varphi
+
+\let \sharps \ss
+\renewcommand \ss \subseteq
+\newcommand \ssne \subsetneqq
+\newcommand \sps \supseteq
+\newcommand \spsne \supsetneqq
+\newcommand \fss {\subseteq_{\mathrm{fin}}}
+\newcommand \es \emptyset
+\newcommand \rs \restriction
+\newcommand \ip \implies
+\newcommand \pe \preceq
+\newcommand \se \succeq
+\newcommand \ra \rightarrow
+\newcommand \la \leftarrow
+\newcommand \hra \hookrightarrow
+\newcommand \hla \hookleftarrow
+\newcommand \xra \xrightarrow
+\newcommand \xla \xleftarrow
+\newcommand \tra \twoheadrightarrow
+\newcommand \tla \twoheadleftarrow
+\newcommand \xhra \xhookrightarrow
+\newcommand \xhla \xhookleftarrow
+\newcommand \lra \leftrightarrow
+\newcommand \lras \leftrightarrows
+\newcommand \rlas \rightleftarrows
+\newcommand \ua \uparrow
+\newcommand \da \downarrow
+\newcommand \cnot \centernot
+\newcommand \co \colon
+\newcommand \sm \setminus
+\newcommand \mt \mapsto
+\newcommand \mdl \models
+\newcommand \ts \times
+\newcommand \bts \bigtimes
+\newcommand \opl \oplus
+\newcommand \ots \otimes
+\newcommand \bopl \bigoplus
+\newcommand \bots \bigotimes
+\newcommand \xst \exists
+\newcommand \frl \forall
+\newcommand \tle \trianglelefteq
+\newcommand \tlne \triangleleft
+\newcommand \tre \trianglerighteq
+\newcommand \trne \triangleright
+\newcommand \nn \notin
+\newcommand \bcap \bigcap
+\newcommand \bcup \bigcup
+\newcommand \wdg \wedge
+\newcommand \bwdg \bigwedge
+\newcommand \bvee \bigvee
+\newcommand \cm \circ
+\newcommand \plm \varprojlim
+\newcommand \ilm \varinjlim
+\newcommand \cpd \coprod
+\newcommand \sq \sqcup
+\newcommand \bsq \bigsqcup
+\newcommand \bul \bullet
+
+\newcommand \on  \operatorname
+\newcommand \wh  \widehat
+\newcommand \ol  \overline
+\newcommand \ul  \underline
+\newcommand \sst \substack
+\newcommand \wt \widetilde
+\newcommand \ora \overrightarrow
+\newcommand \ub \underbrace
+\newcommand \ob \overbrace
+
+\newcommand \ala \alpha
+\newcommand \bt \beta
+\newcommand \gm \gamma
+\newcommand \dl \delta
+\newcommand \ep \epsilon
+\newcommand \io \iota
+\newcommand \kp \kappa
+\newcommand \lb \lambda
+\newcommand \sg \sigma
+\newcommand \om \omega
+\newcommand \tht \theta
+\newcommand \ale \aleph
+
+\newcommand \Dl \Delta
+\newcommand \Gm \Gamma
+\newcommand \Lb \Lambda
+\newcommand \Sg \Sigma
+\newcommand \Tht \Theta
+\newcommand \Om \Omega
+
+\let \thorn \th
+\renewcommand \th {^\mathrm{th}}
+\newcommand \telse {\text{else}}
+\newcommand \tif {\text{if }}
+
+\newcommand \lit [1] {\item[#1]}
+\newcommand \pip [2] {\item[\underline{(#1)\(\implies\)(#2)}]}
+\newcommand \piff [2] {\item[\underline{(#1)\(\iff\)(#2)}]}
+\newcommand \pdif [2] {\frac{\partial #1}{\partial #2}}
+\newcommand \dif [2] {\frac{\mathrm{d} #1}{\mathrm{d} #2}}
+
+\newenvironment{menumerate}{\mbox{}\begin{enumerate}}{\end{enumerate}}
+\newenvironment{mitemize}{\mbox{}\begin{itemize}}{\end{itemize}}
+\newenvironment{mdescription}{\mbox{}\begin{description}}{\end{description}}
+
+% Delimiters
+\DeclarePairedDelimiter \angs  \langle \rangle
+\DeclarePairedDelimiter \abs \lvert \rvert
+\DeclarePairedDelimiter \nrm \lVert \rVert
+\DeclarePairedDelimiter \pars ( )
+\DeclarePairedDelimiter \bracks [ ]
+\DeclarePairedDelimiter \braces \{ \}
+\DeclarePairedDelimiter \floor \lfloor \rfloor
+\DeclarePairedDelimiter \ceil \lceil \rceil
+
+\DeclarePairedDelimiterX{\set}[1]{\{}{\}}{\, #1 \,}
+
+\DeclareMathOperator \fchar {char}
+\DeclareMathOperator \imag {Im}
+\DeclareMathOperator \real {Re}
+\DeclareMathOperator \lspan {span}
+\DeclareMathOperator \dom {dom}
+\DeclareMathOperator \obj {Ob}
+\DeclareMathOperator \id {id}
+\DeclareMathOperator \ran {Ran}
+\DeclareMathOperator \sign {sgn}
+\DeclareMathOperator \rank {rank}
+\DeclareMathOperator \trc {tr}
+\DeclareMathOperator \dist {dist}
+\DeclareMathOperator \ord {ord}
+\DeclareMathOperator \ann {Ann}
+\DeclareMathOperator \im {im}
+\DeclareMathOperator \ckr {coker}
+\DeclareMathOperator \spec {Spec}
+\DeclareMathOperator \ndm {End}
+
+\newcommand \lhs {\mathrm{LHS}}
+\newcommand \rhs {\mathrm{RHS}}
+
+\newcommand \tfdc {the following diagram commutes}
+\newcommand \Tfdc {The following diagram commutes}
+\newcommand \tfsc {the following diagrams commute}
+\newcommand \Tfsc {The following diagrams commute}
+
+\newcommand \tfae {the following are equivalent}
+\newcommand \Tfae {The following are equivalent}
+
+\title{}
+\author{Christopher Hawthorne}
+\date{cdchawth, 20387811}
+
+\begin{document}
+\maketitle
+\end{document}
