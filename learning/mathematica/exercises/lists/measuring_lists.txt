@@ -1,6 +1,0 @@
-Range[7] outputs {1, 2, 3, 4, 5, 6, 7}.
-Dimensions[Range[7]] outputs {7}.
-Length[{{1,2},{2,3},{3,4},{4,5},{5,6},{6,7}}] outputs 6.
-Dimensions[{{1,2},{2,3},{3,4},{4,5},{5,6},{6,7}}] outputs {6, 2}.
-
-Aside: Dimensions[{{1,2},{1,2,3}}] outputs {2}.

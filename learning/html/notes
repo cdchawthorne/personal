@@ -1,9 +1,0 @@
-html uses tags
-
-CSS defines style/layout of webpage
--stored in stylesheets
-
-Tag: lower-case keywords surrounded by angle brackets
-Come in pairs
-can contain attributes, can be nested, contain elements between tags
-e.g. <p class="text"><i>This is text.</i></p>

@@ -1,9 +1,0 @@
-#!/usr/bin/env zsh
-
-
-num=$(find ${HOME}/media/music/sabers -mindepth 1 | wc -l)
-
-chosenNum=$(((RANDOM % num) + 1))
-chosenFile=$(find ${HOME}/media/music/sabers | head -${chosenNum} | tail -1)
-
-mplayer ${chosenFile}

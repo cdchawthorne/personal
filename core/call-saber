@@ -1,9 +1,0 @@
-#!/bin/bash
-
-if pgrep -f play-saber > /dev/null; then
-    exit 0
-fi
-
-if [[ $((RANDOM % 20)) -eq 0 ]]; then
-    play-saber
-fi

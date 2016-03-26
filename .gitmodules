@@ -1,30 +1,30 @@
-[submodule "system-config/cli-files/.vim/bundle/vim-surround"]
-	path = system-config/cli-files/.vim/bundle/vim-surround
+[submodule "system-config/.vim/bundle/vim-surround"]
+	path = system-config/.vim/bundle/vim-surround
 	url = git://github.com/tpope/vim-surround.git
-[submodule "system-config/cli-files/.vim/bundle/gundo"]
-	path = system-config/cli-files/.vim/bundle/gundo
+[submodule "system-config/.vim/bundle/gundo"]
+	path = system-config/.vim/bundle/gundo
 	url = git://github.com/sjl/gundo.vim.git
-[submodule "system-config/cli-files/.vim/bundle/nerdtree"]
-	path = system-config/cli-files/.vim/bundle/nerdtree
+[submodule "system-config/.vim/bundle/nerdtree"]
+	path = system-config/.vim/bundle/nerdtree
 	url = git://github.com/scrooloose/nerdtree.git
-[submodule "system-config/cli-files/.vim/bundle/nerdcommenter"]
-	path = system-config/cli-files/.vim/bundle/nerdcommenter
+[submodule "system-config/.vim/bundle/nerdcommenter"]
+	path = system-config/.vim/bundle/nerdcommenter
 	url = git://github.com/scrooloose/nerdcommenter.git
-[submodule "system-config/cli-files/.vim/bundle/tagbar"]
-	path = system-config/cli-files/.vim/bundle/tagbar
+[submodule "system-config/.vim/bundle/tagbar"]
+	path = system-config/.vim/bundle/tagbar
 	url = git://github.com/majutsushi/tagbar.git
 [submodule "submodules/vim-pathogen"]
 	path = submodules/vim-pathogen
 	url = git://github.com/tpope/vim-pathogen.git/
-[submodule "system-config/cli-files/.vim/bundle/inkpot"]
-	path = system-config/cli-files/.vim/bundle/inkpot
+[submodule "system-config/.vim/bundle/inkpot"]
+	path = system-config/.vim/bundle/inkpot
 	url = git://github.com/ciaranm/inkpot.git
-[submodule "system-config/cli-files/.vim/bundle/coquille"]
-	path = system-config/cli-files/.vim/bundle/coquille
+[submodule "system-config/.vim/bundle/coquille"]
+	path = system-config/.vim/bundle/coquille
 	url = https://github.com/the-lambda-church/coquille.git
-[submodule "system-config/cli-files/.vim/bundle/vimbufsync"]
-	path = system-config/cli-files/.vim/bundle/vimbufsync
+[submodule "system-config/.vim/bundle/vimbufsync"]
+	path = system-config/.vim/bundle/vimbufsync
 	url = https://github.com/def-lkb/vimbufsync.git
-[submodule "system-config/cli-files/.vim/bundle/vim-racket"]
-	path = system-config/cli-files/.vim/bundle/vim-racket
+[submodule "system-config/.vim/bundle/vim-racket"]
+	path = system-config/.vim/bundle/vim-racket
 	url = https://github.com/wlangstroth/vim-racket

@@ -1,9 +1,0 @@
-#!/bin/bash
-
-if pgrep -f play-moan > /dev/null; then
-    exit 0
-fi
-
-if [[ $((RANDOM % 30)) -eq 0 ]]; then
-    play-moan
-fi

@@ -1,3 +1,0 @@
-#!/usr/bin/env zsh
-
-head -n $1 | tail -n 1

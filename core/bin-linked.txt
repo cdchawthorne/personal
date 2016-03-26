@@ -1,9 +1,0 @@
-core/line
-core/lines
-kernel/zelos-install
-X-utilities/change-volume
-X-utilities/dl
-X-utilities/pdf
-X-utilities/ssh-prompt
-X-utilities/get-pass
-X-utilities/get-username-pass
