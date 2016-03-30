@@ -99,6 +99,7 @@ bindkey -M vicmd "k" history-beginning-search-backward
 bindkey -M vicmd "j" history-beginning-search-forward
 bindkey -M vicmd '^[[3~' vi-delete-char
 bindkey -M vicmd 'skt' tetris
+bindkey -M vicmd ')' vi-beginning-of-line
 
 # # Navigation bindings
 # function _new-tab { tmux new-window -c "#{pane_current_path}" &> /dev/null }

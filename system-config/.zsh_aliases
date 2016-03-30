@@ -1,5 +1,3 @@
-# cdchawthorne
-
 alias ls='ls --color=auto --group-directories-first'
 
 alias grep='grep --colour=auto'
@@ -29,7 +27,8 @@ alias ocaml='rlwrap ocaml'
 alias sudo='sudo '
 alias xargs='xargs '
 
-alias e=nvim
+alias e='nvim' #nvim-terminal-edit.py
+alias ed='nvim -d'
 alias vim='return 0'
 alias tim='vim -t'
 alias er='nvim -c ''edit $MYVIMRC'''
@@ -38,8 +37,8 @@ alias sz='source ~/.zsh_aliases'
 function en {
     (
         [[ -r course_material/notes.tex ]] && builtin cd course_material
-        vimdiff notes.tex ~/.vim/skeleton.tex
-        nvim notes.tex
+        nvim -d notes.tex ~/.vim/skeleton.tex
+        nvim-terminal-edit.py notes.tex
     )
 }
 function fim {
@@ -78,47 +77,6 @@ function find-grep {
 
 function to {
     cd "$(dirname $1)"
-}
-
-function pdf {
-    for pdfFile in $@; do
-        zathura --fork "$(realpath ${pdfFile})" &> /dev/null
-    done
-}
-
-function legacy_backup {
-    backup_dir=${HOME}/.backup
-    targets=(${HOME}/documents ${HOME}/media/pictures ${HOME}/utilities
-             ${HOME}/.cdchawthorne_jade_db ${HOME}/.gnupg ${HOME}/.pere
-             ${HOME}/.ssh ${HOME}/.config ${HOME}/scratch $@)
-    backup="${backup_dir}/$(hostname)_$(timestamp).tar.gz"
-    encrypted_backup=${backup}.gpg
-    remote_machine=cdchawth@linux.math.uwaterloo.ca
-    remote_backup_dir='~/utilities/remote_backups'
-    pwsafe_db=${HOME}/.pwsafe.dat
-
-    echo "Compressing backup..."
-    tar -czf ${backup} ${targets}
-    echo "Encrypt backup?"
-    xcowsay "Ready to encrypt backup"
-    read -q encrypt
-    if [[ ${encrypt} == y ]]; then
-        echo "Encrypting backup..."
-        gpg -c --force-mdc --cipher-algo AES256 ${backup}
-
-        echo "Transfer backup?"
-        xcowsay "Ready to transfer backup"
-        read -q transfer
-        if [[ ${transfer} == y ]]; then
-            echo "Transferring..."
-            ssh ${remote_machine} rm \
-                "${remote_backup_dir}/$(hostname)_*.tar.gz.gpg"
-
-            scp ${pwsafe_db} ${encrypted_backup} \
-                ${remote_machine}:${remote_backup_dir}
-        fi
-    fi
-    rm -f ${backup} ${encrypted_backup}
 }
 
 function backup {

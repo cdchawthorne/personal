@@ -1,6 +1,107 @@
 setlocal shiftwidth=2
-setlocal iskeyword+=:
 
+" Functions
+
+function! LaTeXCompileAndView()
+    write
+    let is_hidden = &hidden
+    set nohidden
+    silent only
+    let &hidden = is_hidden
+    let command = "latexmk -cd " . shellescape(expand("%"))
+    let command .= " && (pgrep -f '^zathura --fork "
+    let command .= shellescape(expand("%:p:r")) . ".pdf$' &> /dev/null || "
+    let command .= "zathura --fork " . shellescape(expand("%:p:r"))
+    let command .= ".pdf &> /dev/null)"
+    "TODO: determine the width automatically?
+    66vnew
+    call termopen(command)
+    setlocal nobuflisted
+    execute "normal \<C-w>h"
+endfunction
+
+function! LaTeXClean()
+    call jobstart(['latexmk', '-C', '-cd', expand('%')])
+    echo 'LaTeXClean'
+endfunction
+
+" TODO: jobs?
+function! PdfView()
+    silent !pgrep -f '^zathura --fork %:p:r.pdf$' &> /dev/null
+    if v:shell_error != 0
+        silent !zathura --fork %:p:r.pdf &> /dev/null
+    endif
+    redraw!
+endfunction
+
+function! LaTeXEnvironment(env, labelOrNot)
+    let current_line = getline(".")
+    if current_line =~ '[^ ]'
+        let keys = 'o'
+    else
+        let keys = 'cc'
+    endif
+    if a:env ==# "embedlua"
+        let begenv = "\\embedlua"
+        let endenv = "\\endembedlua"
+    else
+        let begenv = "\\begin{\<C-R>=a:env\<CR>}"
+        let endenv = "\\end{\<C-R>=a:env\<CR>}"
+    endif
+    let keys .= begenv . "\<CR>" . endenv . "\<Esc>"
+    if a:labelOrNot ==# "label"
+        let keys .= "kA[]"
+        execute "normal! " . keys
+        startinsert
+    else
+        let keys .= "O \<BS>"
+        execute "normal! " . keys
+        startinsert!
+    endif
+endfunction
+
+" TODO: optionally indent
+function! LaTeXEnvironmentAroundOp(type)
+    if a:type ==# 'v' || a:type ==# 'V'
+        let start = line("'<")
+        let end = line("'>")
+    else
+        let start = line("'[")
+        let end = line("']")
+    endif
+    let env = input("","","customlist,LaTeXEnvironmentComplete")
+    " Indent twice for itemize environments
+    if env =~ g:tex_itemize_env
+        execute start . "," . end . ">"
+    endif
+    execute start . "," . end . ">"
+
+    if env ==# "embedlua"
+        let begenv = "\\embedlua"
+        let endenv = "\<BS>\\endembedlua"
+    else
+        let begenv = "\\begin{\<C-R>=env\<CR>}"
+        let endenv = "\\end{\<C-R>=env\<CR>}"
+    endif
+
+    execute "normal! o" . endenv
+    call cursor(start, 0)
+    execute "normal! O" . begenv
+endfunction
+
+function! LaTeXEnvironmentComplete(ArgLead, CmdLine, CursorPos)
+    let envs = [
+                \ "pf", "rpf", "lrpf", "ea", "tcd", "equation",
+                \ "caselist", "theorem", "lemma", "proposition", "claim",
+                \ "corollary", "fact", "todo", "definition", "notation",
+                \ "question", "remark", "exercise", "example", "enumerate",
+                \ "itemize", "description", "pmatrix", "verbatim",
+                \ "tabular", "menumerate", "mitemize", "mdescription",
+                \ "cases", "aside", "subclaim", "embedlua", "luacode" ]
+    call sort(envs)
+
+    return filter(envs, 'v:val =~# "^' . a:ArgLead . '"')
+endfunction
 
 command! -buffer -nargs=1 -complete=customlist,LaTeXEnvironmentComplete
             \ Le call LaTeXEnvironment("<args>", "no_label")

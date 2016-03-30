@@ -1,3 +1,6 @@
+" Apparently this is supposed to get set here instead of in ftplugin?
+setlocal iskeyword+=:
+
 call TexNewMathZone("cea","ea",0)
 call TexNewMathZone("ctcd","tcd",0)
 call TexNewMathZone("ccea","IEEEeqnarray",1)

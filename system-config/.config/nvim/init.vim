@@ -2,6 +2,8 @@
 " Mappings and functions are allowed to clobber the z mark or buffer.
 "
 
+" TODO: diff
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins
@@ -10,13 +12,13 @@
 call plug#begin('~/.config/nvim/plugged')
 
 " Plug 'benekastah/neomake'
+" Plug 'bling/vim-bufferline'
+Plug '~/.config/nvim/my_plugged/vim-bufferline'
 Plug 'ciaranm/inkpot'
 Plug 'LaTeX-Box-Team/LaTeX-Box', {'for': 'tex'}
 " Plug 'jalvesaq/vimcmdline'
-" Plug 'junegunn/goyo.vim'
-" Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-" Plug 'junegunn/fzf.vim'
-" Plug 'junegunn/limelight.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 " Plug 'junegunn/vim-easy-align'
 Plug 'majutsushi/tagbar'
 " Plug 'mhinz/vim-grepper'
@@ -28,6 +30,7 @@ Plug 'sjl/gundo.vim', {'on': 'GundoToggle'}
 " Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-surround'
 " Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline-themes'
 " Plug 'vim-utils/vim-man'
 
 call plug#end()
@@ -60,7 +63,7 @@ set shiftwidth=4
 set showcmd
 set showmatch
 set smartcase
-set softtabstop=4 
+set softtabstop=4
 set spelllang=en_ca
 set splitbelow
 set splitright
@@ -71,23 +74,24 @@ set timeoutlen=1000
 set undofile
 set undodir=${HOME}/utilities/vim_undo
 
+let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 1
+
 " Colours
 let g:inkpot_black_background=1
 colorscheme inkpot
 highlight ColorColumn ctermbg=60
 
-" Statusline
-set statusline=%t
-set statusline+=\ (%l
-set statusline+=/
-set statusline+=%L)
-set statusline+=\ %m
-set statusline+=\ %r
-set statusline+=%=
-set statusline+=\ Column
-set statusline+=\ %c
-set statusline+=\ Buffer
-set statusline+=\ %n
+" Alternatives: badwolf, dark, raven, lucius, laederon
+" let g:airline_theme='badwolf'
+
+let g:bufferline_echo = 0
+augroup BufferLine
+    autocmd VimEnter *
+    \ let &statusline='%{bufferline#refresh_status()}'
+    \ .bufferline#get_status_string()
+augroup END
+
+let g:tex_flavor="latex"
 
 " Gundo options
 let g:gundo_right = 1
@@ -100,7 +104,10 @@ let g:tagbar_width=28
 let g:tagbar_sort=0
 let g:tagbar_compact=1
 
+let g:terminal_scrollback_buffer_size = 100000
+"
 " vim-surround options
+" Keys mapped are m, M, n, and N, respectively
 let g:surround_109 = "\\(\r\\)"
 let g:surround_77 = "\\( \r \\)"
 let g:surround_110 = "\\[\r\\]"
@@ -108,19 +115,17 @@ let g:surround_78 = "\\[ \r \\]"
 
 " LaTeX Box options
 let g:LatexBox_no_mappings = 1
+let g:LatexBox_custom_indent = 0
+let g:LatexBox_split_side='belowright'
 
 " Get rid of annoying & indenting in LaTeX
 let g:tex_indent_and = 0
 
 " LaTeX syntax highlighting customization
-let g:tex_flavor="latex"
 let g:tex_items='\\bibitem\|\\item\|\\plr\|\\prl\|\\case\|\\lit\|\\pss\|'
 let g:tex_items.='\\psps\|\\pip\|\\piff'
 let g:tex_itemize_env='itemize\|description\|enumerate\|thebibliography\|'
-let g:tex_itemize_env='caselist'
-
-" Most recent tab
-let g:tab_stack = [1]
+let g:tex_itemize_env.='caselist'
 
 set diffopt+=iwhite
 set diffopt+=foldcolumn:0
@@ -159,16 +164,13 @@ augroup END
 augroup terminal_autocmds
     autocmd!
 
-    autocmd TermClose * call feedkeys("\<CR>")
-    autocmd BufEnter zsh[0-9]\\\{1,3\} startinsert
-augroup END
-
-augroup set_last_tab
-    autocmd!
-
-    autocmd TabClosed * call TabJustClosed()
-    autocmd TabLeave *
-        \ call add(filter(g:tab_stack, 'v:val != ' . tabpagenr()), tabpagenr())
+    " TODO: autocmd BufLeave * if exists('b:terminal_job_pid') update_name
+    " Probably process name if not zsh, else cwd
+    " Or not
+    autocmd TermOpen * setlocal nocursorline
+    " Hack pending https://github.com/neovim/neovim/pull/4296
+    autocmd TermClose * call CloseTerminal()
+    autocmd BufEnter zsh[0-9]\\\{1,2\} startinsert
 augroup END
 
 
@@ -177,30 +179,54 @@ augroup END
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
-let g:shell_num = 0
+if !exists('g:shell_num')
+    let g:shell_num = 1
+endif
+
 function! SpawnShell(layout_cmd)
-    if exists("b:terminal_job")
-        let dir = system("realpath /proc/" . jobpid(b:terminal_job) . "/cwd")
+    if exists("b:terminal_job_pid")
+        let dir = system(["realpath",  "/proc/" . b:terminal_job_pid . "/cwd"])
+        " Get rid of trailing newline
+        let dir = dir[0:-2]
     else
         let dir = expand("%:p:h")
     endif
-    let cwd = getcwd()
+    let nvim_cwd = getcwd()
     execute 'cd ' . dir
     silent execute a:layout_cmd
-    let b:terminal_job = termopen([$SHELL])
-    execute 'cd ' . cwd
+    call termopen([$SHELL])
+    execute 'cd ' . nvim_cwd
     execute "file zsh" . g:shell_num
-    let g:shell_num = g:shell_num + 1
+    let g:shell_num += 1
     startinsert
 endfunction
 
-function! TabJustClosed()
-    let dead_num = remove(g:tab_stack, -1)
-    call map(g:tab_stack, 'v:val > ' . dead_num . ' ? v:val - 1 : v:val')
-    echom string(g:tab_stack)
-    let dup_tab_stack = copy(g:tab_stack)
-    execute "tabnext " . g:tab_stack[-1]
-    let g:tab_stack = copy(dup_tab_stack)
+function! OpenFromCwd()
+    if exists("b:terminal_job_pid")
+        let dir = system(["realpath",  "/proc/" . b:terminal_job_pid . "/cwd"])
+        " Get rid of trailing newline
+        let dir = dir[0:-2]
+    else
+        let dir = expand("%:p:h")
+    endif
+    execute 'Files ' . dir
+endfunction
+
+function! CloseTerminal()
+    if exists('b:terminal_job_pid')
+        call feedkeys("l\<BS>")
+    else
+        only
+    endif
+endfunction
+
+function! SwitchBuffer(buffer_command)
+    if v:count
+        execute a:buffer_command . ' ' . v:count
+    else
+        buffers
+        call feedkeys(':' . a:buffer_command . ' ')
+    endif
 endfunction
 
 function! ToggleNumber()
@@ -217,125 +243,6 @@ function! SelectedLines()
     return join(getline(line("'<"), line("'>")), "\n")
 endfunction
 
-function! LaTeXCompileAndView()
-    " TODO: change to directory containing file
-    write
-    silent ![[ "$(tmux list-panes | wc -l)" -ge 2 ]] && tmux kill-pane -a
-    let command = "!tmux split-window -dh -l 65 zsh -c \"latexmk "
-    let command .= shellescape(expand("%")) . " && (pgrep -f '^zathura --fork "
-    let command .= shellescape(expand("%:p:r")) . ".pdf$' &> /dev/null || "
-    let command .= "zathura --fork " . shellescape(expand("%:p:r"))
-    let command .= ".pdf &> /dev/null) || cat\""
-    silent execute command
-endfunction
-
-function! LaTeXCompileAndViewNeo()
-    " TODO: change to directory containing file
-    write
-    let is_hidden = &hidden
-    set nohidden
-    silent only
-    let &hidden = is_hidden
-    let command = "latexmk " . shellescape(expand("%"))
-    let command .= " && (pgrep -f '^zathura --fork "
-    let command .= shellescape(expand("%:p:r")) . ".pdf$' &> /dev/null || "
-    let command .= "zathura --fork " . shellescape(expand("%:p:r"))
-    let command .= ".pdf &> /dev/null)"
-    67vnew
-    call termopen(command)
-    execute "normal \<C-w>h"
-endfunction
-
-function! LilyPondCompile()
-    write
-    silent !lilypond %
-    redraw!
-    if v:shell_error != 0
-        !
-    endif
-endfunction
-
-function! LaTeXClean()
-    silent !latexmk -C
-    redraw!
-endfunction
-
-function! PdfView()
-    silent !pgrep -f '^zathura --fork %:p:r.pdf$' &> /dev/null
-    if v:shell_error != 0
-        silent !zathura --fork %:p:r.pdf &> /dev/null
-    endif
-    redraw!
-endfunction
-
-function! LaTeXEnvironment(env, labelOrNot)
-    let current_line = getline(".")
-    if current_line =~ '[^ ]'
-        let keys = 'o'
-    else
-        let keys = 'cc'
-    endif
-    if a:env ==# "embedlua"
-        let begenv = "\\embedlua"
-        let endenv = "\\endembedlua"
-    else
-        let begenv = "\\begin{\<C-R>=a:env\<CR>}"
-        let endenv = "\\end{\<C-R>=a:env\<CR>}"
-    endif
-    let keys .= begenv . "\<CR>" . endenv . "\<Esc>"
-    if a:labelOrNot ==# "label"
-        let keys .= "kA[]"
-        execute "normal! " . keys
-        startinsert
-    else
-        let keys .= "O \<BS>"
-        execute "normal! " . keys
-        startinsert!
-    endif
-endfunction
-
-" TODO: optionally indent
-function! LaTeXEnvironmentAroundOp(type)
-    if a:type ==# 'v' || a:type ==# 'V'
-        let start = line("'<")
-        let end = line("'>")
-    else
-        let start = line("'[")
-        let end = line("']")
-    endif
-    let env = input("","","customlist,LaTeXEnvironmentComplete")
-    " Indent twice for itemize environments
-    if env =~ g:tex_itemize_env
-        execute start . "," . end . ">"
-    endif
-    execute start . "," . end . ">"
-
-    if env ==# "embedlua"
-        let begenv = "\\embedlua"
-        let endenv = "\<BS>\\endembedlua"
-    else
-        let begenv = "\\begin{\<C-R>=env\<CR>}"
-        let endenv = "\\end{\<C-R>=env\<CR>}"
-    endif
-
-    execute "normal! o" . endenv
-    call cursor(start, 0)
-    execute "normal! O" . begenv
-endfunction
-
-function! LaTeXEnvironmentComplete(ArgLead, CmdLine, CursorPos)
-    let envs = [
-                \ "pf", "rpf", "lrpf", "ea", "tcd", "equation",
-                \ "caselist", "theorem", "lemma", "proposition", "claim",
-                \ "corollary", "fact", "todo", "definition", "notation",
-                \ "question", "remark", "exercise", "example", "enumerate",
-                \ "itemize", "description", "pmatrix", "verbatim",
-                \ "tabular", "menumerate", "mitemize", "mdescription",
-                \ "cases", "aside", "subclaim", "embedlua", "luacode" ]
-    call sort(envs)
-
-    return filter(envs, 'v:val =~# "^' . a:ArgLead . '"')
-endfunction
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -384,61 +291,7 @@ onoremap 7 &
 onoremap ^ 6
 onoremap 6 ^
 
-" Tab mapping
-" TODO: kill, break, move tabs
-" TODO: move panes
-" TODO: tnoremap pageup pagedown?
-" TODO: ctrlspace?
-nnoremap <C-k><C-k> :execute "tabnext " . g:tab_stack[-1]<CR>
-nnoremap <C-k>c :call SpawnShell('$tabnew')<CR>
-nnoremap <C-k>s :call SpawnShell('new')<CR>
-nnoremap <C-k>v :call SpawnShell('vnew')<CR>
-nnoremap <C-k>- :call SpawnShell('new')<CR>
-nnoremap <C-k>\ :call SpawnShell('vnew')<CR>
-nnoremap <C-k>n :tabprevious<CR>
-nnoremap <C-k>p :tabnext<CR>
-nnoremap <C-k>h <C-w>h
-nnoremap <C-k>j <C-w>j
-nnoremap <C-k>k <C-w>k
-nnoremap <C-k>l <C-w>l
-nnoremap <C-k>q :qall<CR>
-
-nnoremap <C-k>1 :tabnext 1<CR>
-nnoremap <C-k>2 :tabnext 2<CR>
-nnoremap <C-k>3 :tabnext 3<CR>
-nnoremap <C-k>4 :tabnext 4<CR>
-nnoremap <C-k>5 :tabnext 5<CR>
-nnoremap <C-k>^ :tabnext 6<CR>
-nnoremap <C-k>& :tabnext 7<CR>
-nnoremap <C-k>* :tabnext 8<CR>
-nnoremap <C-k>( :tabnext 9<CR>
-nnoremap <C-k>) :tabnext 10<CR>
-
-tnoremap <C-k><C-k> <C-\><C-n>:execute "tabnext " . g:lasttab<CR>
-tnoremap <C-k><C-k> <C-\><C-n>:execute "tabnext " . g:tab_stack[-1]<CR>
-tnoremap <C-k>c <C-\><C-n>:call SpawnShell('tabnew')<CR>
-tnoremap <C-k>s <C-\><C-n>:call SpawnShell('new')<CR>
-tnoremap <C-k>v <C-\><C-n>:call SpawnShell('vnew')<CR>
-tnoremap <C-k>- <C-\><C-n>:call SpawnShell('new')<CR>
-tnoremap <C-k>\ <C-\><C-n>:call SpawnShell('vnew')<CR>
-tnoremap <C-k>p <C-\><C-n>:tabprevious<CR>
-tnoremap <C-k>n <C-\><C-n>:tabnext<CR>
-tnoremap <C-k>h <C-\><C-n><C-w>h
-tnoremap <C-k>j <C-\><C-n><C-w>j
-tnoremap <C-k>k <C-\><C-n><C-w>k
-tnoremap <C-k>l <C-\><C-n><C-w>l
-tnoremap <C-k>q <C-\><C-n>:qall<CR>
-
-tnoremap <C-k>1 <C-\><C-n>:tabnext 1<CR>
-tnoremap <C-k>2 <C-\><C-n>:tabnext 2<CR>
-tnoremap <C-k>3 <C-\><C-n>:tabnext 3<CR>
-tnoremap <C-k>4 <C-\><C-n>:tabnext 4<CR>
-tnoremap <C-k>5 <C-\><C-n>:tabnext 5<CR>
-tnoremap <C-k>^ <C-\><C-n>:tabnext 6<CR>
-tnoremap <C-k>& <C-\><C-n>:tabnext 7<CR>
-tnoremap <C-k>* <C-\><C-n>:tabnext 8<CR>
-tnoremap <C-k>( <C-\><C-n>:tabnext 9<CR>
-tnoremap <C-k>) <C-\><C-n>:tabnext 10<CR>
+tnoremap <C-k> <C-\><C-n>
 
 vnoremap <silent> Q gq
 vnoremap / /\v
@@ -484,15 +337,26 @@ vnoremap <LocalLeader> <NOP>
 nnoremap <Leader>f <NOP>
 vnoremap <Leader>f <NOP>
 
-nnoremap <Leader>fk gq
+nnoremap <silent> <Leader>fo :Files<CR>
+nnoremap <Leader>fi :Files 
+nnoremap <silent> <Leader>fb :Buffers<CR>
+nnoremap <silent> <Leader>fl :Lines<CR>
+nnoremap <silent> <Leader>fw :Lines<CR>
+nnoremap <silent> <Leader>ff :History<CR>
+nnoremap <silent> <Leader>fh :Helptags<CR>
+nnoremap <silent> <Leader>f; :History:<CR>
+nnoremap <silent> <Leader>f/ :History/<CR>
+nnoremap <silent> <Leader>fc :Commands<CR>
 
 " vimrc and other config
 nnoremap <Leader>v <NOP>
 vnoremap <Leader>v <NOP>
 
-nnoremap <silent> <Leader>ve :split $MYVIMRC<CR>
+nnoremap <silent> <Leader>ve :edit $MYVIMRC<CR>
 nnoremap <silent> <Leader>vs :source $MYVIMRC \| filetype detect<CR>
-nnoremap <silent> <Leader>vk :split $HOME/.vim/skeleton.%:e<CR>
+nnoremap <silent> <Leader>vk :edit $HOME/.config/nvim/skeleton.%:e<CR>
+nnoremap <silent> <Leader>va
+    \ :edit $HOME/.config/nvim/after/ftplugin/<C-R>=&filetype<CR>.vim<CR>
 
 " Settings and plugins
 nnoremap <Leader>s <NOP>
@@ -509,21 +373,30 @@ nnoremap <silent> <Leader>sf :NERDTreeToggle<CR>
 nnoremap <silent> <Leader>sF :NERDTreeToggle<CR>:NERDTreeToggle<CR>
 nnoremap <silent> <Leader>ss :syntax sync fromstart<CR>
 
-" Writing, quitting, and compiling
+" Buffers
 nnoremap <Leader>k <NOP>
 vnoremap <Leader>k <NOP>
 
-nnoremap <silent> <Leader>ks :write<CR>
-nnoremap <silent> <Leader>kc :quit<CR>
-nnoremap <silent> <Leader>kC :quit!<CR>
-nnoremap <silent> <Leader>kl :wq<CR>
-nnoremap <silent> <Leader>kw :wall<CR>
-nnoremap <silent> <Leader>ke :qall<CR>
-nnoremap <silent> <Leader>kE :qall!<CR>
-nnoremap <silent> <Leader>ka :wqall<CR>
-nnoremap <silent> <Leader>kn :next<CR>
-nnoremap <silent> <Leader>kp :previous<CR>
-nnoremap <silent> <Leader>kb :!<CR>
+nnoremap <silent> <Leader>kl :<C-u>call SwitchBuffer('buffer')<CR>
+nnoremap <silent> <Leader>ks :<C-u>call SwitchBuffer('sbuffer')<CR>
+nnoremap <silent> <Leader>kv :<C-u>call SwitchBuffer('vertical sbuffer')<CR>
+nnoremap <Leader>kf <C-^>
+nnoremap <silent> <Leader>kd :bdelete<CR>
+nnoremap <silent> <Leader>kn :bnext<CR>
+nnoremap <silent> <Leader>kp :bprevious<CR>
+
+" Writing, quitting, opening terminals, and formatting
+nnoremap <Leader>j <NOP>
+vnoremap <Leader>j <NOP>
+
+nnoremap <silent> <Leader>jf :write<CR>
+nnoremap <silent> <Leader>jw :wall<CR>
+nnoremap <silent> <Leader>je :qall<CR>
+nnoremap <silent> <Leader>jc :call SpawnShell('enew')<CR>
+nnoremap <silent> <Leader>js :call SpawnShell('new')<CR>
+nnoremap <silent> <Leader>jv :call SpawnShell('vnew')<CR>
+nnoremap <silent> <Leader>jo :call OpenFromCwd()<CR>
+nnoremap <Leader>jk gq
 
 " Window mapping
 nnoremap <Leader>d <C-w>

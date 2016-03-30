@@ -200,10 +200,9 @@ function! SelectedLines()
 endfunction
 
 function! LaTeXCompileAndView()
-    " TODO: change to directory containing file
     write
     silent ![[ "$(tmux list-panes | wc -l)" -ge 2 ]] && tmux kill-pane -a
-    let command = "!tmux split-window -dh -l 65 zsh -c \"latexmk "
+    let command = "!tmux split-window -dh -l 65 zsh -c \"latexmk -cd "
     let command .= shellescape(expand("%")) . " && (pgrep -f '^zathura --fork "
     let command .= shellescape(expand("%:p:r")) . ".pdf$' &> /dev/null || "
     let command .= "zathura --fork " . shellescape(expand("%:p:r"))
