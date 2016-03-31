@@ -5,7 +5,10 @@ let s:updatetime = &updatetime
 let s:window_start = 0
 
 function! s:generate_names()
-  let names = []
+  " cdchawthorne 
+  let file_names = []
+  let shell_names = []
+
   let i = 1
   let last_buffer = bufnr('$')
   let current_buffer = bufnr('%')
@@ -15,7 +18,18 @@ function! s:generate_names()
       if getbufvar(i, '&mod')
         let modified = g:bufferline_modified
       endif
-      let fname = fnamemodify(bufname(i), g:bufferline_fname_mod)
+
+      " cdchawthorne
+      let fname = bufname(i)
+      if fname =~# 'term://'
+          " TODO: more general?
+          let fname = 'zsh'
+          let is_term = 1
+      else
+          let is_term = 0
+      endif
+      let fname = fnamemodify(fname, g:bufferline_fname_mod)
+
       if g:bufferline_pathshorten != 0
         let fname = pathshorten(fname)
       endif
@@ -32,22 +46,58 @@ function! s:generate_names()
       if !skip
         let name = ''
         if g:bufferline_show_bufnr != 0 && g:bufferline_status_info.count >= g:bufferline_show_bufnr
-          let name =  i . ':'
+          " cdchawthorne
+          " TODO: Good code, right here
+          let name =  'INSERT_NUM_PREFIX_HERE:'
         endif
-        let name .= fname . modified
+        let name .= fname
+        if !is_term
+            let name .= modified
+        endif
 
         if current_buffer == i
           let name = g:bufferline_active_buffer_left . name . g:bufferline_active_buffer_right
-          let g:bufferline_status_info.current = name
+
+          " cdchawthorne
+          " Ugh...
+          let current_buffer_term = is_term
+          let current_buffer_index = len(is_term ? shell_names : file_names)
         else
           let name = g:bufferline_separator . name . g:bufferline_separator
         endif
 
-        call add(names, [i, name])
+        " cdchawthorne
+        call add(is_term ? shell_names : file_names, [i, name])
       endif
     endif
     let i += 1
   endwhile
+
+  " cdchawthorne
+  let i = 0
+  while i < len(shell_names)
+      let shell_names[i][1] = substitute(shell_names[i][1], 'INSERT_NUM_PREFIX_HERE', i+1, "")
+      let i += 1
+  endwhile
+  let i = 0
+  while i < len(file_names)
+      let file_names[i][1] = substitute(file_names[i][1], 'INSERT_NUM_PREFIX_HERE', i+len(shell_names)+1, "")
+      let i += 1
+  endwhile
+
+  " cdchawthorne
+  if current_buffer_term
+      let g:bufferline_status_info.current = shell_names[current_buffer_index][1]
+  else
+      let g:bufferline_status_info.current = file_names[current_buffer_index][1]
+  endif
+
+  if empty(shell_names) || empty(file_names)
+      let names = shell_names + file_names
+  else
+      let names = shell_names + [[2718, ' | ']] + file_names
+  endif
+  let g:bufnummap = map(shell_names, 'v:val[0]') + map(file_names, 'v:val[0]')
 
   if len(names) > 1
     if g:bufferline_rotate == 1
@@ -66,12 +116,6 @@ function! bufferline#get_echo_string()
   endif
 
   let names = s:generate_names()
-
-  " cdchawthorne's modification
-  let shell_names = filter(copy(names), 'v:val[1] =~# "[0-9]*:zsh[0-9]*"')
-  let file_names = filter(names, 'v:val[1] !~# "[0-9]*:zsh[0-9]*"')
-  let names = shell_names + [[2718, '| ']] + file_names
-
   let line = ''
   for val in names
     let line .= val[1]

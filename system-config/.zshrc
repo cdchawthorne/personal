@@ -26,53 +26,27 @@ fi
 PROMPT2='> '
 KEYTIMEOUT=100
 
-export zsh_parent_process="$(ps --no-headers -o comm $(ps --no-headers -o ppid | head -n 1))"
-if [[ -n ${STY} ]]; then
-    function zle-keymap-select {
-        if [[ ${KEYMAP} == "vicmd" ]]; then
-            echo -ne '\eP\e[1 q\e\'
-        elif [[ ${KEYMAP} == "main" ]]; then
-            echo -ne '\eP\e[3 q\e\'
-        fi
-    }
-    function zle-line-init { 
-        echo -ne '\eP\e[3 q\e\'
-    }
-    zle -N zle-keymap-select
-    zle -N zle-line-init
-    alias vim='echo -ne ''\eP\e[1 q\e\''; vim'
-    alias svim='echo -ne ''\eP\e[1 q\e\''; sudoedit'
-elif [[ -n ${DISPLAY} || ${zsh_parent_process} == "sshd" ]]; then
-    function zle-keymap-select {
-        if [[ ${KEYMAP} == "vicmd" ]]; then
-            echo -ne '\e[1 q'
-        elif [[ ${KEYMAP} == "main" ]]; then
-            echo -ne '\e[3 q'
-        fi
-    }
-    function zle-line-init { 
-        echo -ne '\e[3 q'
-    }
-    zle -N zle-keymap-select
-    zle -N zle-line-init
-    alias vim='echo -ne ''\e[1 q''; vim'
-    alias svim='echo -ne ''\e[1 q''; sudoedit'
-else
-    function zle-keymap-select {
-        if [[ ${KEYMAP} == "vicmd" ]]; then
-            echo -ne '\e[?6c'
-        elif [[ ${KEYMAP} == "main" ]]; then
-            echo -ne '\e[?2c'
-        fi
-    }
-    function zle-line-init {
-        echo -ne '\e[?2c'
-    }
-    zle -N zle-keymap-select
-    zle -N zle-line-init
-    alias vim='echo -ne ''\e[?6c''; vim'
-    alias svim='echo -ne ''\e[?6c''; sudoedit'
-fi
+vim_ins_mode="%F{red}INS%f"
+vim_cmd_mode="%F{green}CMD%f"
+vim_mode=$vim_ins_mode
+
+function zle-keymap-select {
+  vim_mode="${${KEYMAP/vicmd/${vim_cmd_mode}}/(main|viins)/${vim_ins_mode}}"
+  zle reset-prompt
+}
+zle -N zle-keymap-select
+
+RPROMPT='${vim_mode}'
+
+function TRAPINT() {
+  vim_mode=$vim_ins_mode
+  return $(( 128 + $1 ))
+}
+
+function zle-line-finish {
+  vim_mode=$vim_ins_mode
+}
+zle -N zle-line-finish
 
 autoload up-line-or-beginning-search
 autoload down-line-or-beginning-search

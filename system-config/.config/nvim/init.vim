@@ -13,7 +13,8 @@ call plug#begin('~/.config/nvim/plugged')
 
 " Plug 'benekastah/neomake'
 " Plug 'bling/vim-bufferline'
-Plug '~/.config/nvim/my_plugged/vim-bufferline'
+" Plug '~/.config/nvim/my_plugged/vim-bufferline'
+Plug '~/.config/nvim/my_plugged/cdc-bufferline'
 Plug 'ciaranm/inkpot'
 Plug 'LaTeX-Box-Team/LaTeX-Box', {'for': 'tex'}
 " Plug 'jalvesaq/vimcmdline'
@@ -84,11 +85,16 @@ highlight ColorColumn ctermbg=60
 " Alternatives: badwolf, dark, raven, lucius, laederon
 " let g:airline_theme='badwolf'
 
-let g:bufferline_echo = 0
+" let g:bufferline_echo = 0
+" augroup BufferLine
+    " autocmd VimEnter *
+    " \ let &statusline='%{bufferline#refresh_status()}'
+    " \ .bufferline#get_status_string()
+" augroup END
 augroup BufferLine
     autocmd VimEnter *
-    \ let &statusline='%{bufferline#refresh_status()}'
-    \ .bufferline#get_status_string()
+        \ let &statusline=
+        \ '%{CdcBufferlineUpdate()}' . CdcBufferlineStatusString()
 augroup END
 
 let g:tex_flavor="latex"
@@ -170,7 +176,7 @@ augroup terminal_autocmds
     autocmd TermOpen * setlocal nocursorline
     " Hack pending https://github.com/neovim/neovim/pull/4296
     autocmd TermClose * call CloseTerminal()
-    autocmd BufEnter zsh[0-9]\\\{1,2\} startinsert
+    " autocmd BufEnter zsh[0-9]\\\{1,2\} startinsert
 augroup END
 
 
@@ -179,37 +185,23 @@ augroup END
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
-if !exists('g:shell_num')
-    let g:shell_num = 1
-endif
-
-function! SpawnShell(layout_cmd)
+function! GetBufCwd()
     if exists("b:terminal_job_pid")
         let dir = system(["realpath",  "/proc/" . b:terminal_job_pid . "/cwd"])
         " Get rid of trailing newline
-        let dir = dir[0:-2]
+        return dir[0:-2]
     else
-        let dir = expand("%:p:h")
+        return expand("%:p:h")
     endif
+endfunction
+
+function! SpawnShell(layout_cmd)
     let nvim_cwd = getcwd()
-    execute 'cd ' . dir
+    execute 'cd ' . GetBufCwd()
     silent execute a:layout_cmd
     call termopen([$SHELL])
     execute 'cd ' . nvim_cwd
-    execute "file zsh" . g:shell_num
-    let g:shell_num += 1
     startinsert
-endfunction
-
-function! OpenFromCwd()
-    if exists("b:terminal_job_pid")
-        let dir = system(["realpath",  "/proc/" . b:terminal_job_pid . "/cwd"])
-        " Get rid of trailing newline
-        let dir = dir[0:-2]
-    else
-        let dir = expand("%:p:h")
-    endif
-    execute 'Files ' . dir
 endfunction
 
 function! CloseTerminal()
@@ -222,11 +214,17 @@ endfunction
 
 function! SwitchBuffer(buffer_command)
     if v:count
-        execute a:buffer_command . ' ' . v:count
+        execute a:buffer_command . ' ' . g:cbl_bufnummap[v:count-1]
     else
         buffers
         call feedkeys(':' . a:buffer_command . ' ')
     endif
+endfunction
+
+function! StepBuffer(multiplier)
+    let steps = (v:count ? v:count : 1) * a:multiplier
+    let idx = (index(g:cbl_bufnummap, bufnr('%')) + steps)
+    execute 'buffer ' . g:cbl_bufnummap[idx % len(g:cbl_bufnummap)]
 endfunction
 
 function! ToggleNumber()
@@ -341,12 +339,14 @@ nnoremap <silent> <Leader>fo :Files<CR>
 nnoremap <Leader>fi :Files 
 nnoremap <silent> <Leader>fb :Buffers<CR>
 nnoremap <silent> <Leader>fl :Lines<CR>
-nnoremap <silent> <Leader>fw :Lines<CR>
+nnoremap <silent> <Leader>fc :execute 'Files ' . GetBufCwd()<CR>
 nnoremap <silent> <Leader>ff :History<CR>
 nnoremap <silent> <Leader>fh :Helptags<CR>
 nnoremap <silent> <Leader>f; :History:<CR>
 nnoremap <silent> <Leader>f/ :History/<CR>
-nnoremap <silent> <Leader>fc :Commands<CR>
+nnoremap <silent> <Leader>f? :History?<CR>
+nnoremap <silent> <Leader>fs :new<CR>:Files<CR>
+nnoremap <silent> <Leader>fv :vnew<CR>:Files<CR>
 
 " vimrc and other config
 nnoremap <Leader>v <NOP>
@@ -382,8 +382,8 @@ nnoremap <silent> <Leader>ks :<C-u>call SwitchBuffer('sbuffer')<CR>
 nnoremap <silent> <Leader>kv :<C-u>call SwitchBuffer('vertical sbuffer')<CR>
 nnoremap <Leader>kf <C-^>
 nnoremap <silent> <Leader>kd :bdelete<CR>
-nnoremap <silent> <Leader>kn :bnext<CR>
-nnoremap <silent> <Leader>kp :bprevious<CR>
+nnoremap <silent> <Leader>kj :<C-u>call StepBuffer(1)<CR>
+nnoremap <silent> <Leader>kk :<C-u>call StepBuffer(-1)<CR>
 
 " Writing, quitting, opening terminals, and formatting
 nnoremap <Leader>j <NOP>
@@ -395,7 +395,7 @@ nnoremap <silent> <Leader>je :qall<CR>
 nnoremap <silent> <Leader>jc :call SpawnShell('enew')<CR>
 nnoremap <silent> <Leader>js :call SpawnShell('new')<CR>
 nnoremap <silent> <Leader>jv :call SpawnShell('vnew')<CR>
-nnoremap <silent> <Leader>jo :call OpenFromCwd()<CR>
+nnoremap <Leader>jo :edit <C-r>=GetBufCwd()<CR>/
 nnoremap <Leader>jk gq
 
 " Window mapping
@@ -419,44 +419,4 @@ vnoremap <Leader>; q:i
 command! DiffOrig vertical new | set bt=nofile | r # | 0d_ | diffthis
       \ | wincmd p | diffthis
 
-command! -nargs=? -complete=tag Tagge tag <args>
-command! -nargs=? -complete=tag STagge stag <args>
-command! -nargs=? -complete=tag VSTagge vertical stag <args>
-command! -nargs=1 -complete=tag Cfs cscope find s <args>
-command! -nargs=1 -complete=tag Csfs scscope find s <args>
-command! -nargs=1 -complete=tag Vcsfs vertical scscope find s <args>
-command! -nargs=1 -complete=tag Cfc cscope find c <args>
-command! -nargs=1 -complete=tag Csfc scscope find c <args>
-command! -nargs=1 -complete=tag Vcsfc vertical scscope find c <args>
-command! -nargs=1 -complete=file Cff cscope find f
-command! -nargs=1 -complete=file Scff scscope find f
-command! -nargs=1 -complete=file Vscff vertical scscope find f
 command! -nargs=0 Sexe execute SelectedLines()
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Command abbreviations
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-
-augroup cmd_window_au
-    autocmd!
-
-    autocmd CmdwinEnter * iabbrev <buffer> vsn vertical snext
-    autocmd CmdwinEnter * iabbrev <buffer> vsN vertical sNext
-    autocmd CmdwinEnter * iabbrev <buffer> vstag vertical stag
-    autocmd CmdwinEnter * iabbrev <buffer> tbn tabnew
-    autocmd CmdwinEnter * iabbrev <buffer> tagge Tagge
-    autocmd CmdwinEnter * iabbrev <buffer> stagge STagge
-    autocmd CmdwinEnter * iabbrev <buffer> vstagge VSTagge
-    autocmd CmdwinEnter * iabbrev <buffer> ff Cff
-    autocmd CmdwinEnter * iabbrev <buffer> sff Scff
-    autocmd CmdwinEnter * iabbrev <buffer> vsff Vscff
-    autocmd CmdwinEnter * iabbrev <buffer> fs Cfs
-    autocmd CmdwinEnter * iabbrev <buffer> sfs Csfs
-    autocmd CmdwinEnter * iabbrev <buffer> vsfs Vcsfs
-    autocmd CmdwinEnter * iabbrev <buffer> fc Cfc
-    autocmd CmdwinEnter * iabbrev <buffer> sfc Csfc
-    autocmd CmdwinEnter * iabbrev <buffer> vsfc Vcsfc
-
-augroup END

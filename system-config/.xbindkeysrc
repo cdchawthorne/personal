@@ -70,7 +70,7 @@
 "xterm -T xterm-tmux -class terminal -e zsh -c tmux"
     m:0x41 + c:40
     Shift+Mod4 + d
-"xterm -T neovim -class terminal -e zsh -c 'nvim -c startinsert -c "file zsh0" term://zsh'"
+"xterm -T neovim -class terminal -e zsh -c 'nvim -c startinsert term://zsh'"
     m:0x40 + c:40
     Mod4 + d
 "press-z"
