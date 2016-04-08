@@ -1,9 +1,9 @@
 " Basically a fork of bufferline
 " TODO: proper plugin
 
-function! GetBufferData()
-    let shell_names = []
-    let file_names = []
+function! GetBufferData(window)
+    let shell_buffers = []
+    let file_buffers = []
 
     let i = 1
     let last_buffer = bufnr('$')
@@ -16,76 +16,51 @@ function! GetBufferData()
             let fname = bufname(i)
 
             if is_term
-                call add(shell_names, i)
+                " TODO: display program or CWD?
+                call add(shell_buffers, i)
             else
-                call add(file_names, [i, modified, fname])
+                call add(file_buffers, [i, modified, fname])
             endif
         endif
         let i += 1
     endwhile
-    return [shell_names, file_names, bufnr('%')]
+    let current_buffer = winbufnr(a:window)
+    " TODO: special behaviour here?
+    " if !bufexists(current_buffer) || !buflisted(current_buffer)
+        " let current_buffer = -1
+    " endif
+    return [shell_buffers, file_buffers, current_buffer]
 endfunction
 
-" TODO: check for help file
-" Ugh... why
-function! StatusLineParts(shell_names, file_names, current_buffer)
-    let lines = ['']
-    let i = 0
-    " TODO: bold current
-    while i < len(a:shell_names)
-        if a:shell_names[i] == a:current_buffer
-            call add(lines, '[')
-        endif
-
-        " TODO: display program or CWD?
-        let lines[-1] .= (i+1) . ':zsh'
-        if a:shell_names[i] == a:current_buffer
-            let lines[-1] .= ']'
-            " I have no idea why this is necessary...
-            " The new section seems to eat a space for whatever reason
-            call add(lines, ' ')
-        endif
-        let lines[-1] .= '  '
-        let i += 1
-    endwhile
-
-    if !empty(a:shell_names) && !empty(a:file_names)
-        let lines[-1] .= '|  '
+function! MakeShellName(index, bufnum, current_buffer)
+    if a:bufnum ==# a:current_buffer
+        return '%#StatusLine#[' . a:index . ']%#StatusLineNC#'
+    else
+        return a:index
     endif
-    let i = 0
-    while i < len(a:file_names)
-        let [bufnum, modified, fname] = a:file_names[i]
-        if bufnum == a:current_buffer
-            call add(lines, '[')
-        endif
-        let lines[-1] .= (i+len(a:shell_names) + 1) . ':'
-        let lines[-1] .= substitute(fnamemodify(fname, ':t'), '%', '%%', 'g')
-        " TODO: space if unmodified?
-        let lines[-1] .= (modified ? '+' : '')
-        if bufnum == a:current_buffer
-            let lines[-1] .= ']'
-            call add(lines, ' ')
-        endif
-        let lines[-1] .= '  '
-        let i += 1
-    endwhile
-    return lines
+endfunction
+
+function! MakeFileName(index, file_data, current_buffer)
+    let [bufnum, modified, fname] = a:file_data
+    let line = a:index . ':'
+    let line .= substitute(fnamemodify(fname, ':t'), '%', '%%', 'g')
+    let line .= (modified ? '+' : '')
+    if bufnum ==# a:current_buffer
+        let line = '%#StatusLine#[' . line . ']%#StatusLineNC#'
+    endif
+    return line
+endfunction
+
+function! MakeStatusLine(shell_buffers, file_buffers, current_buffer)
+    let shell_names = map(a:shell_buffers, 'MakeShellName(v:key+len(a:file_buffers)+1, v:val, a:current_buffer)')
+    let file_names = map(a:file_buffers, 'MakeFileName(v:key+1, v:val, a:current_buffer)')
+    return '%#StatusLineNC#' . join(file_names, '  ') . '%=' . join(shell_names, '  ')
 endfunction
 
 " Convenience function for returning new status line and updating
 " g:cbl_bufnummap
-function! CdcBufferlineUpdate()
-    let [shell_names, file_names, current_buffer] = GetBufferData()
-    let [g:cbl_before, g:cbl_current, g:cbl_after] = 
-                \ StatusLineParts(shell_names, file_names, current_buffer)
-    let g:cbl_bufnummap = shell_names + map(file_names, 'v:val[0]')
-    return ''
-    let line = '%#StatusLineNC#'
-endfunction
-
-function! CdcBufferlineStatusString()
-    let line = '%#StatusLineNC#%{g:cbl_before}'
-    let line .= '%#StatusLine#%{g:cbl_current}'
-    let line .= '%#StatusLineNC#%{g:cbl_after}'
-    return line
+function! CdcBufferlineUpdate(window)
+    let [shell_buffers, file_buffers, current_buffer] = GetBufferData(a:window)
+    let g:cbl_bufnummap = map(copy(file_buffers), 'v:val[0]') + shell_buffers
+    return MakeStatusLine(shell_buffers, file_buffers, current_buffer)
 endfunction

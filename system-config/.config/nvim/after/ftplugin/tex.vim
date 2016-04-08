@@ -97,7 +97,8 @@ function! LaTeXEnvironmentComplete(ArgLead, CmdLine, CursorPos)
                 \ "question", "remark", "exercise", "example", "enumerate",
                 \ "itemize", "description", "pmatrix", "verbatim",
                 \ "tabular", "menumerate", "mitemize", "mdescription",
-                \ "cases", "aside", "subclaim", "embedlua", "luacode" ]
+                \ "cases", "aside", "subclaim", "embedlua", "luacode",
+                \ "tikzcd" ]
     call sort(envs)
 
     return filter(envs, 'v:val =~# "^' . a:ArgLead . '"')
@@ -112,6 +113,7 @@ command! -buffer -nargs=1 -range -complete=customlist,LaTeXEnvironmentComplete
 command! -buffer -nargs=1 -complete=customlist,LaTeXEnvironmentComplete
             \ Lce execute "normal \<Plug>LatexChangeEnv<args>\<CR>"
 
+" TODO: check if current line is empty
 nnoremap <silent> <buffer> <LocalLeader>l o\[<CR>\]<Esc>kA
 nnoremap <buffer> <LocalLeader>e :Le 
 nnoremap <buffer> <LocalLeader>f :Lel 

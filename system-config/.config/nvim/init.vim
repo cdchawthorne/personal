@@ -3,6 +3,7 @@
 "
 
 " TODO: diff
+" TODO: close on last exit
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -12,8 +13,6 @@
 call plug#begin('~/.config/nvim/plugged')
 
 " Plug 'benekastah/neomake'
-" Plug 'bling/vim-bufferline'
-" Plug '~/.config/nvim/my_plugged/vim-bufferline'
 Plug '~/.config/nvim/my_plugged/cdc-bufferline'
 Plug 'ciaranm/inkpot'
 Plug 'LaTeX-Box-Team/LaTeX-Box', {'for': 'tex'}
@@ -21,17 +20,14 @@ Plug 'LaTeX-Box-Team/LaTeX-Box', {'for': 'tex'}
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 " Plug 'junegunn/vim-easy-align'
-Plug 'majutsushi/tagbar'
+" Plug 'majutsushi/tagbar'
 " Plug 'mhinz/vim-grepper'
 " Plug 'neovimhaskell/haskell-vim', {'for': 'haskell'}
 " Plug 'pgdouyon/vim-accio'
 Plug 'scrooloose/nerdcommenter'
 " Plug 'Shougo/deoplete.nvim'
 Plug 'sjl/gundo.vim', {'on': 'GundoToggle'}
-" Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-surround'
-" Plug 'vim-airline/vim-airline'
-" Plug 'vim-airline/vim-airline-themes'
 " Plug 'vim-utils/vim-man'
 
 call plug#end()
@@ -60,6 +56,7 @@ set nomodeline
 set number
 set relativenumber
 set ruler
+" set shada=!,'1000,<50,s10,h
 set shiftwidth=4
 set showcmd
 set showmatch
@@ -82,19 +79,11 @@ let g:inkpot_black_background=1
 colorscheme inkpot
 highlight ColorColumn ctermbg=60
 
-" Alternatives: badwolf, dark, raven, lucius, laederon
-" let g:airline_theme='badwolf'
-
-" let g:bufferline_echo = 0
-" augroup BufferLine
-    " autocmd VimEnter *
-    " \ let &statusline='%{bufferline#refresh_status()}'
-    " \ .bufferline#get_status_string()
-" augroup END
 augroup BufferLine
-    autocmd VimEnter *
-        \ let &statusline=
-        \ '%{CdcBufferlineUpdate()}' . CdcBufferlineStatusString()
+    " This is frightening on many levels...
+    " TODO: Do we need bufwinenter?
+    autocmd WinEnter,VimEnter,BufWinEnter *
+                \ execute 'setlocal statusline=%!CdcBufferlineUpdate('.winnr().')'
 augroup END
 
 let g:tex_flavor="latex"
@@ -111,13 +100,13 @@ let g:tagbar_sort=0
 let g:tagbar_compact=1
 
 let g:terminal_scrollback_buffer_size = 100000
-"
+
 " vim-surround options
 " Keys mapped are m, M, n, and N, respectively
 let g:surround_109 = "\\(\r\\)"
 let g:surround_77 = "\\( \r \\)"
-let g:surround_110 = "\\[\r\\]"
-let g:surround_78 = "\\[ \r \\]"
+let g:surround_110 = "\\[\r\n\\]"
+let g:surround_78 = "\\[ \r\n\\]"
 
 " LaTeX Box options
 let g:LatexBox_no_mappings = 1
@@ -335,11 +324,11 @@ vnoremap <LocalLeader> <NOP>
 nnoremap <Leader>f <NOP>
 vnoremap <Leader>f <NOP>
 
-nnoremap <silent> <Leader>fo :Files<CR>
+nnoremap <silent> <Leader>fk :Files<CR>
 nnoremap <Leader>fi :Files 
 nnoremap <silent> <Leader>fb :Buffers<CR>
 nnoremap <silent> <Leader>fl :Lines<CR>
-nnoremap <silent> <Leader>fc :execute 'Files ' . GetBufCwd()<CR>
+nnoremap <silent> <Leader>fo :execute 'Files ' . GetBufCwd()<CR>
 nnoremap <silent> <Leader>ff :History<CR>
 nnoremap <silent> <Leader>fh :Helptags<CR>
 nnoremap <silent> <Leader>f; :History:<CR>
@@ -367,10 +356,6 @@ nnoremap <silent> <Leader>sn :call ToggleNumber()<CR>
 nnoremap <silent> <Leader>sd :filetype detect<CR>
 nnoremap <silent> <Leader>su :GundoToggle<CR>
 nnoremap <silent> <Leader>sU :GundoToggle<CR>:GundoToggle<CR>
-nnoremap <silent> <Leader>st :TagbarToggle<CR>
-nnoremap <silent> <Leader>sT :TagbarToggle<CR>:TagbarToggle<CR>
-nnoremap <silent> <Leader>sf :NERDTreeToggle<CR>
-nnoremap <silent> <Leader>sF :NERDTreeToggle<CR>:NERDTreeToggle<CR>
 nnoremap <silent> <Leader>ss :syntax sync fromstart<CR>
 
 " Buffers
