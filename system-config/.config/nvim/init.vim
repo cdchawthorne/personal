@@ -79,13 +79,6 @@ let g:inkpot_black_background=1
 colorscheme inkpot
 highlight ColorColumn ctermbg=60
 
-augroup BufferLine
-    " This is frightening on many levels...
-    " TODO: Do we need bufwinenter?
-    autocmd WinEnter,VimEnter,BufWinEnter *
-                \ execute 'setlocal statusline=%!CdcBufferlineUpdate('.winnr().')'
-augroup END
-
 let g:tex_flavor="latex"
 
 " Gundo options
