@@ -28,6 +28,3 @@
 [submodule "system-config/.vim/bundle/vim-racket"]
 	path = system-config/.vim/bundle/vim-racket
 	url = https://github.com/wlangstroth/vim-racket
-[submodule "submodules/vim-plug"]
-	path = submodules/vim-plug
-	url = https://github.com/junegunn/vim-plug

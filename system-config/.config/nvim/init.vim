@@ -5,6 +5,7 @@
 " TODO: diff
 " TODO: close on last exit
 " TODO: swap space and leader?
+" TODO: ag?
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
