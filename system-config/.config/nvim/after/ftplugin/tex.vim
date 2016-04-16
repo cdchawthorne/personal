@@ -9,10 +9,10 @@ function! LaTeXCompileAndView()
     silent only
     let &hidden = is_hidden
     let command = "latexmk -cd " . shellescape(expand("%"))
-    let command .= " && (pgrep -f '^zathura --fork "
-    let command .= shellescape(expand("%:p:r")) . ".pdf$' &> /dev/null || "
-    let command .= "zathura --fork " . shellescape(expand("%:p:r"))
-    let command .= ".pdf &> /dev/null)"
+    let command .= " && (pgrep -f "
+    let command .= shellescape('^zathura --fork ' . expand("%:p:r") . '.pdf$')
+    let command .= " &> /dev/null || zathura --fork "
+    let command .= shellescape(expand("%:p:r") . '.pdf') . " &> /dev/null)"
     "TODO: determine the width automatically?
     66vnew
     call termopen(command)

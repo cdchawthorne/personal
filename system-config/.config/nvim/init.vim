@@ -4,6 +4,7 @@
 
 " TODO: diff
 " TODO: close on last exit
+" TODO: swap space and leader?
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -20,7 +21,6 @@ Plug 'LaTeX-Box-Team/LaTeX-Box', {'for': 'tex'}
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 " Plug 'junegunn/vim-easy-align'
-" Plug 'majutsushi/tagbar'
 " Plug 'mhinz/vim-grepper'
 " Plug 'neovimhaskell/haskell-vim', {'for': 'haskell'}
 " Plug 'pgdouyon/vim-accio'
@@ -152,10 +152,10 @@ augroup END
 augroup terminal_autocmds
     autocmd!
 
-    " TODO: autocmd BufLeave * if exists('b:terminal_job_pid') update_name
     " Probably process name if not zsh, else cwd
     " Or not
     autocmd TermOpen * setlocal nocursorline
+    " TODO: has this been fixed?
     " Hack pending https://github.com/neovim/neovim/pull/4296
     autocmd TermClose * call CloseTerminal()
     " autocmd BufEnter zsh[0-9]\\\{1,2\} startinsert
@@ -373,7 +373,7 @@ nnoremap <silent> <Leader>je :qall<CR>
 nnoremap <silent> <Leader>jc :call SpawnShell('enew')<CR>
 nnoremap <silent> <Leader>js :call SpawnShell('new')<CR>
 nnoremap <silent> <Leader>jv :call SpawnShell('vnew')<CR>
-nnoremap <Leader>jo :edit <C-r>=GetBufCwd()<CR>/
+nnoremap <Leader>jo :edit <C-r>=GetBufCwd()<CR>/<C-f>a
 nnoremap <Leader>jk gq
 
 " Window mapping

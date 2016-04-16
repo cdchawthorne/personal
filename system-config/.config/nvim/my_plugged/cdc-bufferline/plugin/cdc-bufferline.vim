@@ -12,14 +12,14 @@ function! GetBufferData(window)
         if bufexists(i) && buflisted(i)
             let modified = getbufvar(i, '&mod')
 
-            " WHY, VIM. WHY
-            let is_term = getbufvar(i, 'terminal_job_pid', 'def') !=# 'def'
-            let fname = bufname(i)
+            let pid = getbufvar(i, 'terminal_job_pid', 'def')
 
-            if is_term
-                " TODO: display program or CWD?
-                call add(shell_buffers, i)
+            " WHY, VIM. WHY
+            if pid !=# 'def'
+                let cwd = system(["realpath",  "/proc/" . pid . "/cwd"])[0:-2]
+                call add(shell_buffers, [i, cwd])
             else
+                let fname = bufname(i)
                 call add(file_buffers, [i, modified, fname])
             endif
         endif
@@ -27,21 +27,18 @@ function! GetBufferData(window)
     endwhile
     let alternate_buffer = a:window ==# winnr() ? bufnr('#') : getwinvar(a:window, 'alternate_buffer', -1)
     let current_buffer = winbufnr(a:window)
-    " TODO: special behaviour here?
-    " if !bufexists(current_buffer) || !buflisted(current_buffer)
-        " let current_buffer = -1
-    " endif
     return [shell_buffers, file_buffers, current_buffer, alternate_buffer]
 endfunction
 
-function! MakeShellName(index, bufnum, current_buffer, alternate_buffer)
-    if a:bufnum ==# a:current_buffer
-        return '%#StatusLine#[' . a:index . ']%#StatusLineNC#'
-    elseif a:bufnum ==# a:alternate_buffer
-        return '(' . a:index . ')'
-    else
-        return a:index
+function! MakeShellName(index, shell_data, current_buffer, alternate_buffer)
+    let [bufnum, cwd] = a:shell_data
+    let line = a:index . ':' . (cwd ==# $HOME ? '~' : fnamemodify(cwd, ':t'))
+    if bufnum ==# a:current_buffer
+        let line = '%#StatusLine#[' . line . ']%#StatusLineNC#'
+    elseif bufnum ==# a:alternate_buffer
+        return '(' . line . ')'
     endif
+    return line
 endfunction
 
 function! MakeFileName(index, file_data, current_buffer, alternate_buffer)
