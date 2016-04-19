@@ -66,7 +66,7 @@ function! CdcBufferlineUpdate(window)
     call UpdateVarsIfNecessary(a:window)
     let [shell_buffers, file_buffers, current_buffer, alternate_buffer] = GetBufferData(a:window)
     call setwinvar(a:window, 'alternate_buffer', alternate_buffer)
-    let g:cbl_bufnummap = map(copy(file_buffers), 'v:val[0]') + shell_buffers
+    let g:cbl_bufnummap = map(file_buffers + shell_buffers, 'v:val[0]')
     return MakeStatusLine(shell_buffers, file_buffers, current_buffer, alternate_buffer)
 endfunction
 

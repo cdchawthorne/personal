@@ -15,19 +15,27 @@
 call plug#begin('~/.config/nvim/plugged')
 
 " Plug 'benekastah/neomake'
+" Plug 'AndrewRadev/sideways.vim'
 Plug '~/.config/nvim/my_plugged/cdc-bufferline'
 Plug 'ciaranm/inkpot'
 Plug 'LaTeX-Box-Team/LaTeX-Box', {'for': 'tex'}
+" Plug 'easymotion/vim-easymotion'
 " Plug 'jalvesaq/vimcmdline'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 " Plug 'junegunn/vim-easy-align'
+Plug 'justinmk/vim-sneak'
+" Plug 'kassio/neoterm'
 " Plug 'mhinz/vim-grepper'
+Plug 'majutsushi/tagbar', {'on' : 'TagbarToggle'}
+Plug 'mhinz/vim-startify'
 " Plug 'neovimhaskell/haskell-vim', {'for': 'haskell'}
 " Plug 'pgdouyon/vim-accio'
-Plug 'scrooloose/nerdcommenter'
 " Plug 'Shougo/deoplete.nvim'
 Plug 'sjl/gundo.vim', {'on': 'GundoToggle'}
+" Plug 'tpope/vim-abolish'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 " Plug 'vim-utils/vim-man'
 
@@ -75,46 +83,50 @@ set undodir=${HOME}/utilities/vim_undo
 
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 1
 
-" Colours
+let g:terminal_scrollback_buffer_size = 100000
+
 let g:inkpot_black_background=1
 colorscheme inkpot
 highlight ColorColumn ctermbg=60
 
-let g:tex_flavor="latex"
+let g:tex_flavor = "latex"
 
-" Gundo options
 let g:gundo_right = 1
 
-" NERDCommenter options
-let NERDSpaceDelims=1
+let g:tagbar_width = 28
+let g:tagbar_sort = 0
+let g:tagbar_compact = 1
 
-" Tagbar options
-let g:tagbar_width=28
-let g:tagbar_sort=0
-let g:tagbar_compact=1
+let g:sneak#s_next = 1
+let g:sneak#use_ic_scs = 1
+" let g:sneak#streak = 1
+let g:sneak#absolute_dir = 1
 
-let g:terminal_scrollback_buffer_size = 100000
+let g:surround_{char2nr('m')} = "\\(\r\\)"
+let g:surround_{char2nr('n')} = "\\[\r\n\\]"
 
-" vim-surround options
-" Keys mapped are m, M, n, and N, respectively
-let g:surround_109 = "\\(\r\\)"
-let g:surround_77 = "\\( \r \\)"
-let g:surround_110 = "\\[\r\n\\]"
-let g:surround_78 = "\\[ \r\n\\]"
-
-" LaTeX Box options
 let g:LatexBox_no_mappings = 1
 let g:LatexBox_custom_indent = 0
-let g:LatexBox_split_side='belowright'
+let g:LatexBox_split_side = 'belowright'
+
+let g:startify_bookmarks = [{'c' : 'foo'}]
 
 " Get rid of annoying & indenting in LaTeX
 let g:tex_indent_and = 0
 
 " LaTeX syntax highlighting customization
-let g:tex_items='\\bibitem\|\\item\|\\plr\|\\prl\|\\case\|\\lit\|\\pss\|'
-let g:tex_items.='\\psps\|\\pip\|\\piff'
-let g:tex_itemize_env='itemize\|description\|enumerate\|thebibliography\|'
-let g:tex_itemize_env.='caselist'
+let g:tex_items = '\\bibitem\|\\item\|\\plr\|\\prl\|\\case\|\\lit\|\\pss\|'
+let g:tex_items .= '\\psps\|\\pip\|\\piff'
+let g:tex_itemize_env = 'itemize\|description\|enumerate\|thebibliography\|'
+let g:tex_itemize_env .= 'caselist'
+
+" Prevent mapping of gx, which interferes with Sneak
+let g:netrw_nogx = 1
+
+" Prevent mapping of g%, which interferes with Sneak
+" Alas...
+" TODO: will this be fixed?
+let loaded_matchit = 1
 
 set diffopt+=iwhite
 set diffopt+=foldcolumn:0
@@ -160,6 +172,15 @@ augroup terminal_autocmds
     " Hack pending https://github.com/neovim/neovim/pull/4296
     autocmd TermClose * call CloseTerminal()
     " autocmd BufEnter zsh[0-9]\\\{1,2\} startinsert
+augroup END
+
+augroup cursorline
+    autocmd!
+
+    autocmd WinEnter    * set cursorline
+    autocmd WinLeave    * set nocursorline
+    autocmd InsertEnter * set nocursorline
+    autocmd InsertLeave * set cursorline
 augroup END
 
 
@@ -239,6 +260,12 @@ nnoremap S m
 nnoremap m <C-b>
 nnoremap <Space> <C-f>
 
+vnoremap < <gv
+vnoremap > >gv
+
+nnoremap <expr> n 'Nn'[v:searchforward]
+nnoremap <expr> N 'nN'[v:searchforward]
+
 nnoremap ) 0
 nnoremap 0 )
 nnoremap ( 9
@@ -296,17 +323,25 @@ inoremap JF <C-]><Esc>
 inoremap <C-u> <C-g>u<C-u>
 
 inoremap fdk <C-k>
-inoremap fdu <C-g>u<C-u>
-inoremap fdn <C-n>
-inoremap fdp <C-p>
 inoremap fds <C-g>u<C-]><Esc>gqgqA
-inoremap fdw <C-w>
 inoremap fdh <Esc>:nohlsearch<CR>a
 inoremap fdd <C-g>u<C-R>=strftime("%Y-%m-%d")<CR>
 
+cnoremap <C-n> <down>
+cnoremap <C-p> <up>
+
+" Sneak mappings
+nmap g <Plug>Sneak_s
+vmap g <Plug>Sneak_s
+omap g <Plug>Sneak_s
+
+nmap G <Plug>Sneak_S
+vmap G <Plug>Sneak_S
+omap G <Plug>Sneak_S
+
 " Leader mappings
 let mapleader = "s"
-let maplocalleader = "sl"
+let maplocalleader = mapleader . "l"
 
 nnoremap <Leader> <NOP>
 vnoremap <Leader> <NOP>
@@ -349,9 +384,20 @@ nnoremap <silent> <Leader>sh :nohlsearch<CR>
 nnoremap <silent> <Leader>sn :call ToggleNumber()<CR>
 nnoremap <silent> <Leader>sd :filetype detect<CR>
 nnoremap <silent> <Leader>su :GundoToggle<CR>
-nnoremap <silent> <Leader>sU :GundoToggle<CR>:GundoToggle<CR>
+nnoremap <silent> <Leader>st :TagbarToggle<CR>
 nnoremap <silent> <Leader>ss :syntax sync fromstart<CR>
+nnoremap <leader>sm :<C-u><C-r><C-r>='let @'. v:register .' = '. string(getreg(v:register))<CR><C-f><left>
 
+" TODO: commentary motion not working?
+" TODO: will auto-mapping in commentary.vim be fixed?
+" Commentary
+xmap <Leader>c  <Plug>Commentary
+nmap <Leader>c  <Plug>Commentary
+omap <Leader>c  <Plug>Commentary
+nmap <Leader>cc <Plug>CommentaryLine
+nmap <Leader>cu <Plug>Commentary<Plug>Commentary
+
+" TODO: ctrl-k?
 " Buffers
 nnoremap <Leader>k <NOP>
 vnoremap <Leader>k <NOP>
@@ -381,13 +427,30 @@ nnoremap <Leader>jk gq
 nnoremap <Leader>d <C-w>
 nnoremap <Leader>dd <C-w><C-w>
 
-" NERD commenter
-nnoremap <Leader>c <NOP>
-vnoremap <Leader>c <NOP>
-
 " Miscellaneous top-level leader mappings
 nnoremap <Leader>; q:i
 vnoremap <Leader>; q:i
+
+nnoremap <Leader>g g
+vnoremap <Leader>g g
+onoremap <Leader>g g
+
+nnoremap <Leader>, gg
+vnoremap <Leader>, gg
+onoremap <Leader>, gg
+
+nnoremap <Leader>. G
+vnoremap <Leader>. G
+onoremap <Leader>. G
+
+" TODO: remap z to something useful
+nnoremap <Leader>z z
+vnoremap <Leader>z z
+onoremap <Leader>z z
+
+nnoremap <Leader>Z Z
+vnoremap <Leader>Z Z
+onoremap <Leader>Z Z
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
