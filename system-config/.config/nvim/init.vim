@@ -4,8 +4,10 @@
 
 " TODO: diff
 " TODO: close on last exit
-" TODO: swap space and leader?
-" TODO: ag?
+" TODO: ag for fzf?
+" TODO: cvim?
+" TODO: replace f with sneak
+" TODO: replace e with scrolling?
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -19,20 +21,20 @@ call plug#begin('~/.config/nvim/plugged')
 Plug '~/.config/nvim/my_plugged/cdc-bufferline'
 Plug 'ciaranm/inkpot'
 Plug 'LaTeX-Box-Team/LaTeX-Box', {'for': 'tex'}
-" Plug 'easymotion/vim-easymotion'
 " Plug 'jalvesaq/vimcmdline'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 " Plug 'junegunn/vim-easy-align'
 Plug 'justinmk/vim-sneak'
 " Plug 'kassio/neoterm'
-" Plug 'mhinz/vim-grepper'
+" Plug 'lervag/vimtex'
+Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
+Plug 'mhinz/vim-grepper'
 Plug 'majutsushi/tagbar', {'on' : 'TagbarToggle'}
-Plug 'mhinz/vim-startify'
 " Plug 'neovimhaskell/haskell-vim', {'for': 'haskell'}
 " Plug 'pgdouyon/vim-accio'
 " Plug 'Shougo/deoplete.nvim'
-Plug 'sjl/gundo.vim', {'on': 'GundoToggle'}
+" Plug 'terryma/vim-expand-region'
 " Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
@@ -97,9 +99,7 @@ let g:tagbar_width = 28
 let g:tagbar_sort = 0
 let g:tagbar_compact = 1
 
-let g:sneak#s_next = 1
 let g:sneak#use_ic_scs = 1
-" let g:sneak#streak = 1
 let g:sneak#absolute_dir = 1
 
 let g:surround_{char2nr('m')} = "\\(\r\\)"
@@ -108,8 +108,6 @@ let g:surround_{char2nr('n')} = "\\[\r\n\\]"
 let g:LatexBox_no_mappings = 1
 let g:LatexBox_custom_indent = 0
 let g:LatexBox_split_side = 'belowright'
-
-let g:startify_bookmarks = [{'c' : 'foo'}]
 
 " Get rid of annoying & indenting in LaTeX
 let g:tex_indent_and = 0
@@ -120,13 +118,10 @@ let g:tex_items .= '\\psps\|\\pip\|\\piff'
 let g:tex_itemize_env = 'itemize\|description\|enumerate\|thebibliography\|'
 let g:tex_itemize_env .= 'caselist'
 
-" Prevent mapping of gx, which interferes with Sneak
-let g:netrw_nogx = 1
+let g:grepper = {'switch':0}
 
-" Prevent mapping of g%, which interferes with Sneak
-" Alas...
-" TODO: will this be fixed?
-let loaded_matchit = 1
+let g:undotree_WindowLayout = 3
+let g:undotree_SetFocusWhenToggle = 1
 
 set diffopt+=iwhite
 set diffopt+=foldcolumn:0
@@ -165,13 +160,9 @@ augroup END
 augroup terminal_autocmds
     autocmd!
 
-    " Probably process name if not zsh, else cwd
-    " Or not
     autocmd TermOpen * setlocal nocursorline
-    " TODO: has this been fixed?
-    " Hack pending https://github.com/neovim/neovim/pull/4296
+    " HACK: pending https://github.com/neovim/neovim/pull/4296
     autocmd TermClose * call CloseTerminal()
-    " autocmd BufEnter zsh[0-9]\\\{1,2\} startinsert
 augroup END
 
 augroup cursorline
@@ -256,15 +247,25 @@ endfunction
 nnoremap / /\v
 nnoremap ? ?\v
 nnoremap <Tab> %
-nnoremap S m
-nnoremap m <C-b>
-nnoremap <Space> <C-f>
+nnoremap G m
+nnoremap x <C-b>
+nnoremap m <C-f>
 
 vnoremap < <gv
 vnoremap > >gv
 
 nnoremap <expr> n 'Nn'[v:searchforward]
 nnoremap <expr> N 'nN'[v:searchforward]
+
+vnoremap <silent> y y`]
+vnoremap <silent> p p`]
+nnoremap <silent> p p`]
+
+let g:semiforward = 1
+nnoremap <silent> f :let g:semiforward=1<CR>f
+nnoremap <silent> F :let g:semiforward=0<CR>F
+nnoremap <silent> t :let g:semiforward=1<CR>t
+nnoremap <silent> T :let g:semiforward=0<CR>T
 
 nnoremap ) 0
 nnoremap 0 )
@@ -299,18 +300,19 @@ onoremap 7 &
 onoremap ^ 6
 onoremap 6 ^
 
-tnoremap <C-k> <C-\><C-n>
+tnoremap ,, <C-\><C-n>
+tnoremap <Space>; <C-\><C-n>
 
 vnoremap <silent> Q gq
 vnoremap / /\v
 vnoremap ? ?\v
 vnoremap <Tab> %
-vnoremap m <C-b>
-vnoremap <Space> <C-f>
+vnoremap x <C-b>
+vnoremap m <C-f>
 
 onoremap <Tab> %
-onoremap m <C-b>
-onoremap <Space> <C-f>
+onoremap x <C-b>
+onoremap m <C-f>
 
 inoremap fj <C-]><Esc>
 inoremap Fj <C-]><Esc>
@@ -322,25 +324,15 @@ inoremap jF <C-]><Esc>
 inoremap JF <C-]><Esc>
 inoremap <C-u> <C-g>u<C-u>
 
+inoremap fdn <C-n>
+inoremap fdp <C-p>
 inoremap fdk <C-k>
 inoremap fds <C-g>u<C-]><Esc>gqgqA
 inoremap fdh <Esc>:nohlsearch<CR>a
 inoremap fdd <C-g>u<C-R>=strftime("%Y-%m-%d")<CR>
 
-cnoremap <C-n> <down>
-cnoremap <C-p> <up>
-
-" Sneak mappings
-nmap g <Plug>Sneak_s
-vmap g <Plug>Sneak_s
-omap g <Plug>Sneak_s
-
-nmap G <Plug>Sneak_S
-vmap G <Plug>Sneak_S
-omap G <Plug>Sneak_S
-
 " Leader mappings
-let mapleader = "s"
+let mapleader = "\<Space>"
 let maplocalleader = mapleader . "l"
 
 nnoremap <Leader> <NOP>
@@ -374,7 +366,7 @@ nnoremap <silent> <Leader>ve :edit $MYVIMRC<CR>
 nnoremap <silent> <Leader>vs :source $MYVIMRC \| filetype detect<CR>
 nnoremap <silent> <Leader>vk :edit $HOME/.config/nvim/skeleton.%:e<CR>
 nnoremap <silent> <Leader>va
-    \ :edit $HOME/.config/nvim/after/ftplugin/<C-R>=&filetype<CR>.vim<CR>
+    \ :edit $HOME/.config/nvim/after/ftplugin/<C-r>=&filetype<CR>.vim<CR>
 
 " Settings and plugins
 nnoremap <Leader>s <NOP>
@@ -383,19 +375,14 @@ vnoremap <Leader>s <NOP>
 nnoremap <silent> <Leader>sh :nohlsearch<CR>
 nnoremap <silent> <Leader>sn :call ToggleNumber()<CR>
 nnoremap <silent> <Leader>sd :filetype detect<CR>
-nnoremap <silent> <Leader>su :GundoToggle<CR>
+nnoremap <silent> <Leader>su :UndotreeToggle<CR>
 nnoremap <silent> <Leader>st :TagbarToggle<CR>
 nnoremap <silent> <Leader>ss :syntax sync fromstart<CR>
 nnoremap <leader>sm :<C-u><C-r><C-r>='let @'. v:register .' = '. string(getreg(v:register))<CR><C-f><left>
-
-" TODO: commentary motion not working?
-" TODO: will auto-mapping in commentary.vim be fixed?
-" Commentary
-xmap <Leader>c  <Plug>Commentary
-nmap <Leader>c  <Plug>Commentary
-omap <Leader>c  <Plug>Commentary
-nmap <Leader>cc <Plug>CommentaryLine
-nmap <Leader>cu <Plug>Commentary<Plug>Commentary
+nnoremap <Leader>sg
+    \ :Grepper -tool ag -grepprg ag --vimgrep $* <C-r>=GetBufCwd()<CR><CR>
+" TODO: allow specifying the directory
+" TODO: figure out how to get it to take a motion and use GetBufCwd
 
 " TODO: ctrl-k?
 " Buffers
@@ -431,26 +418,12 @@ nnoremap <Leader>dd <C-w><C-w>
 nnoremap <Leader>; q:i
 vnoremap <Leader>; q:i
 
-nnoremap <Leader>g g
-vnoremap <Leader>g g
-onoremap <Leader>g g
-
 nnoremap <Leader>, gg
-vnoremap <Leader>, gg
-onoremap <Leader>, gg
-
 nnoremap <Leader>. G
-vnoremap <Leader>. G
+onoremap <Leader>, gg
 onoremap <Leader>. G
-
-" TODO: remap z to something useful
-nnoremap <Leader>z z
-vnoremap <Leader>z z
-onoremap <Leader>z z
-
-nnoremap <Leader>Z Z
-vnoremap <Leader>Z Z
-onoremap <Leader>Z Z
+vnoremap <Leader>, gg
+vnoremap <Leader>. G
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
