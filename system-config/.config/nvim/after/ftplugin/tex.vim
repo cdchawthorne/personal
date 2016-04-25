@@ -1,3 +1,5 @@
+" TODO: should all of this really be in after?
+" TODO: poke harder at vimtex
 setlocal shiftwidth=2
 
 " Functions
@@ -35,8 +37,7 @@ function! PdfView()
 endfunction
 
 function! LaTeXEnvironment(env, labelOrNot)
-    let current_line = getline(".")
-    if current_line =~ '[^ ]'
+    if getline('.') =~ '[^ ]'
         let keys = 'o'
     else
         let keys = 'cc'
@@ -58,6 +59,17 @@ function! LaTeXEnvironment(env, labelOrNot)
         execute "normal! " . keys
         startinsert!
     endif
+endfunction
+
+function! LaTeXDisplayMath()
+    if getline('.') =~ '[^ ]'
+        let keys = 'o'
+    else
+        let keys = 'cc'
+    endif
+    let keys .= "\\[\<CR>\\]\<Esc>k"
+    execute 'normal! ' . keys
+    startinsert!
 endfunction
 
 " TODO: optionally indent
@@ -89,53 +101,45 @@ function! LaTeXEnvironmentAroundOp(type)
     execute "normal! O" . begenv
 endfunction
 
+let g:latex_envs = [
+            \ "pf", "rpf", "lrpf", "ea", "tcd", "equation",
+            \ "caselist", "theorem", "lemma", "proposition", "claim",
+            \ "corollary", "fact", "todo", "definition", "notation",
+            \ "question", "remark", "exercise", "example", "enumerate",
+            \ "itemize", "description", "pmatrix", "verbatim",
+            \ "tabular", "menumerate", "mitemize", "mdescription",
+            \ "cases", "aside", "subclaim", "embedlua", "luacode",
+            \ "tikzcd", "center", "figure", "table", "multline",
+            \ "align", "split" ]
+call sort(g:latex_envs)
+let g:vimtex_env_complete_list = g:latex_envs + ['\[']
 function! LaTeXEnvironmentComplete(ArgLead, CmdLine, CursorPos)
-    let envs = [
-                \ "pf", "rpf", "lrpf", "ea", "tcd", "equation",
-                \ "caselist", "theorem", "lemma", "proposition", "claim",
-                \ "corollary", "fact", "todo", "definition", "notation",
-                \ "question", "remark", "exercise", "example", "enumerate",
-                \ "itemize", "description", "pmatrix", "verbatim",
-                \ "tabular", "menumerate", "mitemize", "mdescription",
-                \ "cases", "aside", "subclaim", "embedlua", "luacode",
-                \ "tikzcd" ]
-    call sort(envs)
-
-    return filter(envs, 'v:val =~# "^' . a:ArgLead . '"')
+    return filter(copy(envs), 'v:val =~# "^' . a:ArgLead . '"')
 endfunction
 
 command! -buffer -nargs=1 -complete=customlist,LaTeXEnvironmentComplete
             \ Le call LaTeXEnvironment("<args>", "no_label")
 command! -buffer -nargs=1 -complete=customlist,LaTeXEnvironmentComplete
             \ Lel call LaTeXEnvironment("<args>", "label")
-command! -buffer -nargs=1 -range -complete=customlist,LaTeXEnvironmentComplete
-            \ Lea call LaTeXEnvironmentAround(<line1>, <line2>, "<args>")
-command! -buffer -nargs=1 -complete=customlist,LaTeXEnvironmentComplete
-            \ Lce execute "normal \<Plug>LatexChangeEnv<args>\<CR>"
 
 " TODO: check if current line is empty
-nnoremap <silent> <buffer> <LocalLeader>l o\[<CR>\]<Esc>kA
+nnoremap <silent> <buffer> <LocalLeader>m :call LaTeXDisplayMath()<CR>
 nnoremap <buffer> <LocalLeader>e :Le 
 nnoremap <buffer> <LocalLeader>f :Lel 
 nnoremap <silent> <buffer> <LocalLeader>a
             \ :set operatorfunc=LaTeXEnvironmentAroundOp<CR>g@
-nnoremap <buffer> <LocalLeader>s :Lce 
 nnoremap <silent> <buffer> <LocalLeader>d
             \ :call search('^\\begin{document}$', 'ws')<CR>
-nnoremap <silent> <buffer> <LocalLeader>t
-            \ A\tfdc{}:<Esc>:Le tcd<CR>
 vnoremap <silent> <buffer> <LocalLeader>a
             \ :<C-u>call LaTeXEnvironmentAroundOp(visualmode())<CR>
 vnoremap <silent> <buffer> <LocalLeader>d
             \ :call search('^\\begin{document}$', 'ws')<CR>
 
 inoremap <buffer> kd \
-" inoremap <buffer> _ -
-" inoremap <buffer> - _
 
 inoremap <buffer> fde <C-]><C-g>u<Esc>:Le 
 inoremap <buffer> fdf <C-]><C-g>u<Esc>:Lel 
-inoremap <buffer> fdl <C-]><C-g>u<Esc>o\[<CR>\]<Esc>kA
+inoremap <silent> <buffer> fdm <C-]><C-g>u<Esc>:call LaTeXDisplayMath()<CR>
 inoremap <buffer> fdt <Space><C-g>u\tfdc{}:<C-]><Esc>gqgq:Le tcd<CR>
 
 " TODO: semigroups
@@ -184,22 +188,9 @@ iabbrev <buffer> (e.g. (e.g.\
 nnoremap <silent> <buffer> <LocalLeader>c
             \ :call LaTeXCompileAndView()<CR>
 nnoremap <silent> <buffer> <LocalLeader>v :call PdfView()<CR>
-nnoremap <silent> <buffer> <LocalLeader>t :call LatexBox_TOC()<CR>
+nnoremap <silent> <buffer> <LocalLeader>t :VimtexTocToggle<CR>
 nnoremap <silent> <buffer> <LocalLeader>r :call LaTeXClean()<CR>
 
-" Because I don't use the default LatexBox mappings
-nmap <buffer> <Tab> <Plug>LatexBox_JumpToMatch
-vmap <buffer> <Tab> <Plug>LatexBox_JumpToMatch
-omap <buffer> <Tab> <Plug>LatexBox_JumpToMatch
-vmap <buffer> ie <Plug>LatexBox_SelectCurrentEnvInner
-vmap <buffer> ae <Plug>LatexBox_SelectCurrentEnvOuter
-onoremap <silent> <buffer> ie :normal vie<CR>
-onoremap <silent> <buffer> ae :normal vae<CR>
-vmap <buffer> i$ <Plug>LatexBox_SelectInlineMathInner
-vmap <buffer> a$ <Plug>LatexBox_SelectInlineMathOuter
-onoremap <silent> <buffer> i$ :normal vi$<CR>
-onoremap <silent> <buffer> a$ :normal va$<CR>
-
-augroup LatexBox_HighlightPairs
-    autocmd!
-augroup END
+nmap <buffer> <Tab> <Plug>(vimtex-%)
+vmap <buffer> <Tab> <Plug>(vimtex-%)
+omap <buffer> <Tab> <Plug>(vimtex-%)

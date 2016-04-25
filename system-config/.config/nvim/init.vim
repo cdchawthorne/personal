@@ -8,6 +8,7 @@
 " TODO: cvim?
 " TODO: replace f with sneak
 " TODO: replace e with scrolling?
+" TODO: shiftwidth 2?
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -20,14 +21,13 @@ call plug#begin('~/.config/nvim/plugged')
 " Plug 'AndrewRadev/sideways.vim'
 Plug '~/.config/nvim/my_plugged/cdc-bufferline'
 Plug 'ciaranm/inkpot'
-Plug 'LaTeX-Box-Team/LaTeX-Box', {'for': 'tex'}
 " Plug 'jalvesaq/vimcmdline'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 " Plug 'junegunn/vim-easy-align'
 Plug 'justinmk/vim-sneak'
 " Plug 'kassio/neoterm'
-" Plug 'lervag/vimtex'
+Plug 'lervag/vimtex', {'for': 'tex'}
 Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
 Plug 'mhinz/vim-grepper'
 Plug 'majutsushi/tagbar', {'on' : 'TagbarToggle'}
@@ -105,9 +105,8 @@ let g:sneak#absolute_dir = 1
 let g:surround_{char2nr('m')} = "\\(\r\\)"
 let g:surround_{char2nr('n')} = "\\[\r\n\\]"
 
-let g:LatexBox_no_mappings = 1
-let g:LatexBox_custom_indent = 0
-let g:LatexBox_split_side = 'belowright'
+let g:vimtex_index_hide_line_numbers = 0
+let g:vimtex_index_split_pos = 'vert rightbelow'
 
 " Get rid of annoying & indenting in LaTeX
 let g:tex_indent_and = 0
@@ -257,10 +256,6 @@ vnoremap > >gv
 nnoremap <expr> n 'Nn'[v:searchforward]
 nnoremap <expr> N 'nN'[v:searchforward]
 
-vnoremap <silent> y y`]
-vnoremap <silent> p p`]
-nnoremap <silent> p p`]
-
 let g:semiforward = 1
 nnoremap <silent> f :let g:semiforward=1<CR>f
 nnoremap <silent> F :let g:semiforward=0<CR>F
@@ -303,16 +298,10 @@ onoremap 6 ^
 tnoremap ,, <C-\><C-n>
 tnoremap <Space>; <C-\><C-n>
 
-vnoremap <silent> Q gq
-vnoremap / /\v
 vnoremap ? ?\v
 vnoremap <Tab> %
 vnoremap x <C-b>
 vnoremap m <C-f>
-
-onoremap <Tab> %
-onoremap x <C-b>
-onoremap m <C-f>
 
 inoremap fj <C-]><Esc>
 inoremap Fj <C-]><Esc>
@@ -337,13 +326,16 @@ let maplocalleader = mapleader . "l"
 
 nnoremap <Leader> <NOP>
 vnoremap <Leader> <NOP>
+onoremap <Leader> <NOP>
 
 nnoremap <LocalLeader> <NOP>
 vnoremap <LocalLeader> <NOP>
+onoremap <LocalLeader> <NOP>
 
 " Navigation and editing
 nnoremap <Leader>f <NOP>
 vnoremap <Leader>f <NOP>
+onoremap <Leader>f <NOP>
 
 nnoremap <silent> <Leader>fk :Files<CR>
 nnoremap <Leader>fi :Files 
@@ -361,6 +353,7 @@ nnoremap <silent> <Leader>fv :vnew<CR>:Files<CR>
 " vimrc and other config
 nnoremap <Leader>v <NOP>
 vnoremap <Leader>v <NOP>
+onoremap <Leader>v <NOP>
 
 nnoremap <silent> <Leader>ve :edit $MYVIMRC<CR>
 nnoremap <silent> <Leader>vs :source $MYVIMRC \| filetype detect<CR>
@@ -371,6 +364,7 @@ nnoremap <silent> <Leader>va
 " Settings and plugins
 nnoremap <Leader>s <NOP>
 vnoremap <Leader>s <NOP>
+onoremap <Leader>s <NOP>
 
 nnoremap <silent> <Leader>sh :nohlsearch<CR>
 nnoremap <silent> <Leader>sn :call ToggleNumber()<CR>
@@ -388,6 +382,7 @@ nnoremap <Leader>sg
 " Buffers
 nnoremap <Leader>k <NOP>
 vnoremap <Leader>k <NOP>
+onoremap <Leader>k <NOP>
 
 nnoremap <silent> <Leader>kl :<C-u>call SwitchBuffer('buffer')<CR>
 nnoremap <silent> <Leader>ks :<C-u>call SwitchBuffer('sbuffer')<CR>
@@ -400,6 +395,7 @@ nnoremap <silent> <Leader>kk :<C-u>call StepBuffer(-1)<CR>
 " Writing, quitting, opening terminals, and formatting
 nnoremap <Leader>j <NOP>
 vnoremap <Leader>j <NOP>
+onoremap <Leader>j <NOP>
 
 nnoremap <silent> <Leader>jf :write<CR>
 nnoremap <silent> <Leader>jw :wall<CR>
@@ -409,6 +405,8 @@ nnoremap <silent> <Leader>js :call SpawnShell('new')<CR>
 nnoremap <silent> <Leader>jv :call SpawnShell('vnew')<CR>
 nnoremap <Leader>jo :edit <C-r>=GetBufCwd()<CR>/<C-f>a
 nnoremap <Leader>jk gq
+
+vnoremap <Leader>jk gq
 
 " Window mapping
 nnoremap <Leader>d <C-w>
