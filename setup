@@ -1,5 +1,8 @@
 #!/usr/bin/env zsh
 
+(builtin cd "$(dirname $0)/st"; make)
+(builtin cd "$(dirname $0)/nvim_st"; make)
+
 builtin cd "$(dirname $0)/system-config"
 
 (find . -type f; find . -type l) | while builtin read file; do

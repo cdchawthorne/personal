@@ -40,25 +40,25 @@
 "pere random"
     m:0x41 + c:56
     Shift+Mod4 + b
-"xterm -class pwsafe get-username-pass"
+"st -c pwsafe get-username-pass"
     m:0x41 + c:46
     Shift+Mod4 + l
-"xterm -class pwsafe get-pass"
+"st -c pwsafe get-pass"
     m:0x40 + c:46
     Mod4 + l
 "zsh -c "synclient touchpadoff=$(synclient -l | grep -c 'TouchpadOff.*=.*0')""
     m:0x40 + c:39
     Mod4 + s
-"xterm -class music ncmpcpp"
+"st -c music ncmpcpp"
     m:0x40 + c:57
     Mod4 + n
-"xterm -class music -e 'mosh cdchawth@nullsleep.csclub.uwaterloo.ca -- screen -DR'"
+"st -c music -e 'mosh cdchawth@nullsleep.csclub.uwaterloo.ca -- screen -DR'"
     m:0x41 + c:57
     Shift+Mod4 + n
 "sudo rw"
     m:0x40 + c:47
     Mod4 + ;
-"xterm"
+"st"
     m:0x40 + c:55
     Mod4 + v
 "gmrun"
@@ -67,10 +67,10 @@
 
 # zsh knows how to do the right thing with respect to colour, so we launch
 # things from within zsh
-"xterm -T xterm-tmux -class terminal -e zsh -c tmux"
+"st -t xterm-tmux -c terminal -e zsh -c tmux"
     m:0x41 + c:40
     Shift+Mod4 + d
-"xterm -T neovim -class terminal -e zsh -c nvim"
+"nvim_st -t neovim -c terminal -e zsh -c nvim"
     m:0x40 + c:40
     Mod4 + d
 "press-z"

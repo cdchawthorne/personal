@@ -27,23 +27,18 @@ alias ocaml='rlwrap ocaml'
 alias sudo='sudo '
 alias xargs='xargs '
 
-alias e='nvim' #nvim-terminal-edit.py
-alias ed='nvim -d'
-alias vim='return 0'
-alias tim='vim -t'
-alias er='nvim -c ''edit $MYVIMRC'''
-alias ez='nvim ~/.zsh_aliases'
+alias e='nvr'
+alias er='nvr -c ''edit $MYVIMRC'''
+alias ez='nvr ~/.zsh_aliases'
 alias sz='source ~/.zsh_aliases'
+function ed { nvr $1; nvr -c diffthis; nvr -O $2; nvr -c diffthis }
 function en {
     (
         [[ -r course_material/notes.tex ]] && builtin cd course_material
-        nvim -d notes.tex ~/.vim/skeleton.tex
-        nvim-terminal-edit.py notes.tex
+        ed notes.tex ~/.config/nvim/skeleton.tex
     )
 }
-function fim {
-    vim -c "cs f f $1"
-}
+
 alias man='man -i'
 alias less='less -i'
 

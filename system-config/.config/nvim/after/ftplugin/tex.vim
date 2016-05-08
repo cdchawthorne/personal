@@ -114,7 +114,7 @@ let g:latex_envs = [
 call sort(g:latex_envs)
 let g:vimtex_env_complete_list = g:latex_envs + ['\[']
 function! LaTeXEnvironmentComplete(ArgLead, CmdLine, CursorPos)
-    return filter(copy(envs), 'v:val =~# "^' . a:ArgLead . '"')
+    return filter(copy(g:latex_envs), 'v:val =~# "^' . a:ArgLead . '"')
 endfunction
 
 command! -buffer -nargs=1 -complete=customlist,LaTeXEnvironmentComplete

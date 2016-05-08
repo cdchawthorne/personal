@@ -2,13 +2,13 @@
 " Mappings and functions are allowed to clobber the z mark or buffer.
 "
 
-" TODO: diff
+" TODO: window manager
 " TODO: close on last exit
 " TODO: ag for fzf?
 " TODO: cvim?
-" TODO: replace f with sneak
-" TODO: replace e with scrolling?
 " TODO: shiftwidth 2?
+" TODO: async grep
+" TODO: highlighted colour in LaTeX files
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -17,28 +17,30 @@
 
 call plug#begin('~/.config/nvim/plugged')
 
-" Plug 'benekastah/neomake'
-" Plug 'AndrewRadev/sideways.vim'
 Plug '~/.config/nvim/my_plugged/cdc-bufferline'
+
+Plug 'AndrewRadev/sideways.vim'
 Plug 'ciaranm/inkpot'
-" Plug 'jalvesaq/vimcmdline'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-" Plug 'junegunn/vim-easy-align'
 Plug 'justinmk/vim-sneak'
-" Plug 'kassio/neoterm'
 Plug 'lervag/vimtex', {'for': 'tex'}
-Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
-Plug 'mhinz/vim-grepper'
 Plug 'majutsushi/tagbar', {'on' : 'TagbarToggle'}
-" Plug 'neovimhaskell/haskell-vim', {'for': 'haskell'}
-" Plug 'pgdouyon/vim-accio'
-" Plug 'Shougo/deoplete.nvim'
-" Plug 'terryma/vim-expand-region'
-" Plug 'tpope/vim-abolish'
+Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
+
+" Plug 'Shougo/deoplete.nvim'
+" Plug 'benekastah/neomake'
+" Plug 'jalvesaq/vimcmdline'
+" Plug 'junegunn/vim-easy-align'
+" Plug 'kassio/neoterm'
+" Plug 'mhinz/vim-grepper', {'on': 'Grepper'}
+" Plug 'neovimhaskell/haskell-vim', {'for': 'haskell'}
+" Plug 'pgdouyon/vim-accio'
+" Plug 'terryma/vim-expand-region'
+" Plug 'tpope/vim-abolish'
 " Plug 'vim-utils/vim-man'
 
 call plug#end()
@@ -100,7 +102,6 @@ let g:tagbar_sort = 0
 let g:tagbar_compact = 1
 
 let g:sneak#use_ic_scs = 1
-let g:sneak#absolute_dir = 1
 
 let g:surround_{char2nr('m')} = "\\(\r\\)"
 let g:surround_{char2nr('n')} = "\\[\r\n\\]"
@@ -117,17 +118,15 @@ let g:tex_items .= '\\psps\|\\pip\|\\piff'
 let g:tex_itemize_env = 'itemize\|description\|enumerate\|thebibliography\|'
 let g:tex_itemize_env .= 'caselist'
 
-let g:grepper = {'switch':0}
-
 let g:undotree_WindowLayout = 3
 let g:undotree_SetFocusWhenToggle = 1
 
+set grepprg=ag\ --vimgrep\ $*
+set grepformat=%f:%l:%c:%m
+
 set diffopt+=iwhite
 set diffopt+=foldcolumn:0
-set diffopt+=context:20
-if &diff
-    set foldminlines=99999
-endif
+set diffopt+=context:1000000
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -138,13 +137,8 @@ endif
 augroup skeleton_files
     autocmd!
 
-    autocmd BufNewFile *.pl
-      \ 0r ${HOME}/.vim/skeleton.pl |
-      \ normal G
-
     autocmd BufNewFile *.tex
-      \ 0r ${HOME}/.vim/skeleton.tex |
-      \ normal! Gdd6k$
+      \ 0r ${HOME}/.config/nvim/skeleton.tex | normal! Gdd6k$
 augroup END
 
 augroup restore_cursor_pos
@@ -207,7 +201,7 @@ function! CloseTerminal()
 endfunction
 
 function! SwitchBuffer(buffer_command)
-    if v:count
+    if v:count && v:count <= len(g:cbl_bufnummap)
         execute a:buffer_command . ' ' . g:cbl_bufnummap[v:count-1]
     else
         buffers
@@ -219,16 +213,6 @@ function! StepBuffer(multiplier)
     let steps = (v:count ? v:count : 1) * a:multiplier
     let idx = (index(g:cbl_bufnummap, bufnr('%')) + steps)
     execute 'buffer ' . g:cbl_bufnummap[idx % len(g:cbl_bufnummap)]
-endfunction
-
-function! ToggleNumber()
-    if (&number == 1 || &relativenumber == 1)
-        set nonumber
-        set norelativenumber
-    else
-        set number
-        set relativenumber
-    endif
 endfunction
 
 function! SelectedLines()
@@ -243,65 +227,38 @@ endfunction
 
 
 " Non-leader mappings
-nnoremap / /\v
-nnoremap ? ?\v
-nnoremap <Tab> %
-nnoremap G m
-nnoremap x <C-b>
-nnoremap m <C-f>
+noremap / /\v
+noremap ? ?\v
+noremap <Tab> %
+noremap G m
+noremap v <C-b>
+noremap m <C-f>
+
+nnoremap <silent> <Left> :SidewaysLeft<CR>
+nnoremap <silent> <Right> :SidewaysRight<CR>
+nnoremap <silent> <Up> :m.-2<CR>
+nnoremap <silent> <Down> :m.+1<CR>
+
+omap aa <Plug>SidewaysArgumentTextobjA
+xmap aa <Plug>SidewaysArgumentTextobjA
+omap ia <Plug>SidewaysArgumentTextobjI
+xmap ia <Plug>SidewaysArgumentTextobjI
 
 vnoremap < <gv
 vnoremap > >gv
 
-nnoremap <expr> n 'Nn'[v:searchforward]
-nnoremap <expr> N 'nN'[v:searchforward]
+noremap ) 0
+noremap 0 )
+noremap ( 9
+noremap 9 (
+noremap * 8
+noremap 8 *
+noremap & 7
+noremap 7 &
+noremap ^ 6
+noremap 6 ^
 
-let g:semiforward = 1
-nnoremap <silent> f :let g:semiforward=1<CR>f
-nnoremap <silent> F :let g:semiforward=0<CR>F
-nnoremap <silent> t :let g:semiforward=1<CR>t
-nnoremap <silent> T :let g:semiforward=0<CR>T
-
-nnoremap ) 0
-nnoremap 0 )
-nnoremap ( 9
-nnoremap 9 (
-nnoremap * 8
-nnoremap 8 *
-nnoremap & 7
-nnoremap 7 &
-nnoremap ^ 6
-nnoremap 6 ^
-
-vnoremap ) 0
-vnoremap 0 )
-vnoremap ( 9
-vnoremap 9 (
-vnoremap * 8
-vnoremap 8 *
-vnoremap & 7
-vnoremap 7 &
-vnoremap ^ 6
-vnoremap 6 ^
-
-onoremap ) 0
-onoremap 0 )
-onoremap ( 9
-onoremap 9 (
-onoremap * 8
-onoremap 8 *
-onoremap & 7
-onoremap 7 &
-onoremap ^ 6
-onoremap 6 ^
-
-tnoremap ,, <C-\><C-n>
-tnoremap <Space>; <C-\><C-n>
-
-vnoremap ? ?\v
-vnoremap <Tab> %
-vnoremap x <C-b>
-vnoremap m <C-f>
+tnoremap ,. <C-\><C-n>
 
 inoremap fj <C-]><Esc>
 inoremap Fj <C-]><Esc>
@@ -324,18 +281,12 @@ inoremap fdd <C-g>u<C-R>=strftime("%Y-%m-%d")<CR>
 let mapleader = "\<Space>"
 let maplocalleader = mapleader . "l"
 
-nnoremap <Leader> <NOP>
-vnoremap <Leader> <NOP>
-onoremap <Leader> <NOP>
+noremap <Leader> <NOP>
 
-nnoremap <LocalLeader> <NOP>
-vnoremap <LocalLeader> <NOP>
-onoremap <LocalLeader> <NOP>
+noremap <LocalLeader> <NOP>
 
 " Navigation and editing
-nnoremap <Leader>f <NOP>
-vnoremap <Leader>f <NOP>
-onoremap <Leader>f <NOP>
+noremap <Leader>f <NOP>
 
 nnoremap <silent> <Leader>fk :Files<CR>
 nnoremap <Leader>fi :Files 
@@ -350,39 +301,28 @@ nnoremap <silent> <Leader>f? :History?<CR>
 nnoremap <silent> <Leader>fs :new<CR>:Files<CR>
 nnoremap <silent> <Leader>fv :vnew<CR>:Files<CR>
 
-" vimrc and other config
-nnoremap <Leader>v <NOP>
-vnoremap <Leader>v <NOP>
-onoremap <Leader>v <NOP>
+" config files
+noremap <Leader>r <NOP>
 
-nnoremap <silent> <Leader>ve :edit $MYVIMRC<CR>
-nnoremap <silent> <Leader>vs :source $MYVIMRC \| filetype detect<CR>
-nnoremap <silent> <Leader>vk :edit $HOME/.config/nvim/skeleton.%:e<CR>
-nnoremap <silent> <Leader>va
+nnoremap <silent> <Leader>re :edit $MYVIMRC<CR>
+nnoremap <silent> <Leader>rs :source $MYVIMRC \| filetype detect<CR>
+nnoremap <silent> <Leader>rk :edit $HOME/.config/nvim/skeleton.%:e<CR>
+nnoremap <silent> <Leader>ra
     \ :edit $HOME/.config/nvim/after/ftplugin/<C-r>=&filetype<CR>.vim<CR>
 
 " Settings and plugins
-nnoremap <Leader>s <NOP>
-vnoremap <Leader>s <NOP>
-onoremap <Leader>s <NOP>
+noremap <Leader>s <NOP>
 
 nnoremap <silent> <Leader>sh :nohlsearch<CR>
-nnoremap <silent> <Leader>sn :call ToggleNumber()<CR>
-nnoremap <silent> <Leader>sd :filetype detect<CR>
+nnoremap <silent> <Leader>sd :windo diffoff<CR>:bdelete<CR>
 nnoremap <silent> <Leader>su :UndotreeToggle<CR>
+nnoremap <silent> <Leader>sn :set number! \| set relativenumber!<CR>
 nnoremap <silent> <Leader>st :TagbarToggle<CR>
 nnoremap <silent> <Leader>ss :syntax sync fromstart<CR>
 nnoremap <leader>sm :<C-u><C-r><C-r>='let @'. v:register .' = '. string(getreg(v:register))<CR><C-f><left>
-nnoremap <Leader>sg
-    \ :Grepper -tool ag -grepprg ag --vimgrep $* <C-r>=GetBufCwd()<CR><CR>
-" TODO: allow specifying the directory
-" TODO: figure out how to get it to take a motion and use GetBufCwd
 
-" TODO: ctrl-k?
 " Buffers
-nnoremap <Leader>k <NOP>
-vnoremap <Leader>k <NOP>
-onoremap <Leader>k <NOP>
+noremap <Leader>k <NOP>
 
 nnoremap <silent> <Leader>kl :<C-u>call SwitchBuffer('buffer')<CR>
 nnoremap <silent> <Leader>ks :<C-u>call SwitchBuffer('sbuffer')<CR>
@@ -393,13 +333,12 @@ nnoremap <silent> <Leader>kj :<C-u>call StepBuffer(1)<CR>
 nnoremap <silent> <Leader>kk :<C-u>call StepBuffer(-1)<CR>
 
 " Writing, quitting, opening terminals, and formatting
-nnoremap <Leader>j <NOP>
-vnoremap <Leader>j <NOP>
-onoremap <Leader>j <NOP>
+noremap <Leader>j <NOP>
 
 nnoremap <silent> <Leader>jf :write<CR>
 nnoremap <silent> <Leader>jw :wall<CR>
 nnoremap <silent> <Leader>je :qall<CR>
+nnoremap <silent> <Leader>jE :qall!<CR>
 nnoremap <silent> <Leader>jc :call SpawnShell('enew')<CR>
 nnoremap <silent> <Leader>js :call SpawnShell('new')<CR>
 nnoremap <silent> <Leader>jv :call SpawnShell('vnew')<CR>
@@ -409,19 +348,16 @@ nnoremap <Leader>jk gq
 vnoremap <Leader>jk gq
 
 " Window mapping
-nnoremap <Leader>d <C-w>
-nnoremap <Leader>dd <C-w><C-w>
+noremap <Leader>d <C-w>
+noremap <Leader>dd <C-w><C-w>
 
 " Miscellaneous top-level leader mappings
 nnoremap <Leader>; q:i
 vnoremap <Leader>; q:i
 
-nnoremap <Leader>, gg
-nnoremap <Leader>. G
-onoremap <Leader>, gg
-onoremap <Leader>. G
-vnoremap <Leader>, gg
-vnoremap <Leader>. G
+noremap <Leader>, gg
+noremap <Leader>. G
+noremap <Leader>v v
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -429,7 +365,7 @@ vnoremap <Leader>. G
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
-command! DiffOrig vertical new | set bt=nofile | r # | 0d_ | diffthis
-      \ | wincmd p | diffthis
+command! DiffOrig vertical new | set buftype=nofile | read # | 0delete_
+        \ | diffthis | wincmd p | diffthis
 
 command! -nargs=0 Sexe execute SelectedLines()
