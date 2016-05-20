@@ -10,7 +10,7 @@ alias liesl='ls'
 alias s='ls'
 alias sl='ls'
 
-alias freedom!=free
+alias freedom!='free -h'
 
 function cd {
     builtin cd $@ && ls
@@ -43,7 +43,7 @@ alias man='man -i'
 alias less='less -i'
 
 alias rh='rehash'
-alias u='sudo zsh -c ''aura -Syu; aura -Akua; ntpd -q; hwclock -w'''
+alias u='sudo zsh -c ''pacman -Syu; aura -Akua; ntpd -q; hwclock -w'''
 alias fix-steam='find ~/.steam/root/ \( -name "libgcc_s.so*" -o -name "libstdc++.so*" -o -name "libxcb.so*" \) -print -delete'
 alias gpg='DISPLAY= gpg'
 

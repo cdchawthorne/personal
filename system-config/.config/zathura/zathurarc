@@ -1,6 +1,6 @@
 map r navigate next
 map e navigate previous
-map d scroll full-up
+map v scroll full-up
 map <PageUp> scroll full-up
 map <PageDown> scroll full-down
 map ; focus_inputbar

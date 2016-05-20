@@ -36,5 +36,23 @@ xscreensaver -no-splash &
 # Get rid of those thrice-damnèd beeps
 xset b off
 
-exec xmonad
+firefox &
+
+muteExp1='s_^.*\[on\]$_Unmuted_g'
+muteExp2='s_^.*\[off\]$_Muted_g'
+while true; do
+    time="$(date +%H:%M)"
+    free_ram="$(free -h | awk '/Mem/ {print $4;}')"
+    bat="$(acpi -b | awk '{print $4 " " $5;}' | tr -d ',')"
+    date="$(date +%Y-%m-%d)"
+    vol="$(amixer get Master | tail -1 | sed 's/.*\[\([0-9]*%\)\].*/\1/')"
+    muted="$(amixer get Master | tail -1 | sed -re ${muteExp1} -e ${muteExp2})"
+
+    right="${bat} | ${free_ram} | ${vol} (${muted}) | ${date}"
+    xsetroot -name "$(printf "%s %80s" ${time} "${right}")"
+    sleep 1s
+done &
+
+exec ~/scratch/dwm/dwm
 # exec i3
+# exec xmonad

@@ -194,3 +194,142 @@ nnoremap <silent> <buffer> <LocalLeader>r :call LaTeXClean()<CR>
 nmap <buffer> <Tab> <Plug>(vimtex-%)
 vmap <buffer> <Tab> <Plug>(vimtex-%)
 omap <buffer> <Tab> <Plug>(vimtex-%)
+
+let font_leader = 'vk'
+let command_leader = 'vm'
+let letter_leader = 'vl'
+
+let upper_font_maps = {'b' : 'bf', 'c': 'cal', 'd': 'bb', 'k': 'frak',
+            \ 's': 'scr'}
+let lower_font_maps = {'t' : 'bf', 'l': 'frak'}
+for c in range(char2nr('a'),char2nr('z'))
+    for [key, fontspec] in items(upper_font_maps)
+        call vimtex#imaps#add_map({
+            \ 'lhs' : key . nr2char(c),
+            \ 'rhs' : '\math' . fontspec . '{' . toupper(nr2char(c)) . '}',
+            \ 'leader' : font_leader,
+            \ 'wrapper' : 'vimtex#imaps#wrap_math'
+        \})
+    endfor
+    for [key, fontspec] in items(lower_font_maps)
+        call vimtex#imaps#add_map({
+            \ 'lhs' : key . nr2char(c),
+            \ 'rhs' : '\math' . fontspec . '{' . toupper(nr2char(c)) . '}',
+            \ 'leader' : font_leader,
+            \ 'wrapper' : 'vimtex#imaps#wrap_math'
+        \})
+    endfor
+endfor
+
+let command_maps = {
+            \ '(' : 'subseteq',
+            \ '9' : 'subsetneqq',
+            \ ')' : 'supseteq',
+            \ '0' : 'supsetneqq',
+            \ 'e' : 'emptyset',
+            \ '*' : 'otimes',
+            \ '+' : 'oplus',
+            \ 'c' : 'colon',
+            \ 'o' : 'circ',
+            \ 'm' : 'mapsto',
+            \ '-' : 'setminus',
+            \ 'x' : 'times',
+            \ ',' : 'preceq',
+            \ '.' : 'succeq',
+            \ '<' : 'prec',
+            \ '>' : 'succ',
+            \ '=' : 'equiv',
+            \ '^' : 'partial',
+            \ '&' : 'infty',
+            \ 'w' : 'wedge',
+            \ 'r' : 'restriction',
+            \ 'n' : 'notin',
+            \ 'i' : 'implies',
+            \ 's' : 'substack{',
+            \ 'd' : 'models',
+            \ 'A' : 'forall',
+            \ 'E' : 'exists',
+            \ 'z' : 'operatorname{',
+            \ 'b+' : 'bigoplus',
+            \ 'b*' : 'bigotimes',
+            \ 'bx' : 'bigtimes',
+            \ 'bu' : 'bigcup',
+            \ 'bi' : 'bigcap',
+            \ 'bw' : 'bigwedge',
+            \ 'bv' : 'bigvee',
+            \ 'bs' : 'bigsqcup',
+            \ 'al' : 'overline{',
+            \ 'at' : 'widetilde{',
+            \ 'ah' : 'widehat{',
+            \ 'ab' : 'overbrace{',
+            \ 'aa' : 'overrightarrow{',
+            \ 'ul' : 'underline{',
+            \ 'ub' : 'underbrace{',
+            \ 'qu' : 'uparrow',
+            \ 'qr' : 'rightarrow',
+            \ 'qd' : 'downarrow',
+            \ 'ql' : 'leftarrow',
+            \ 'qb' : 'leftrightarrow',
+            \ 'qtr' : 'twoheadrightarrow',
+            \ 'qtl' : 'twoheadleftarrow',
+            \ 'qhr' : 'hookrightarrow',
+            \ 'qhl' : 'hookleftarrow',
+            \ 'qxr' : 'xrightarrow{',
+            \ 'qxl' : 'xleftarrow{',
+            \ 'qxhr' : 'xhookrightarrow{',
+            \ 'qxhl' : 'xhookleftarrow{',
+            \ }
+for [key, mapping] in items(command_maps)
+    call vimtex#imaps#add_map({
+                \ 'lhs' : key,
+                \ 'rhs' : '\' . mapping,
+                \ 'leader' : command_leader,
+                \ 'wrapper' : 'vimtex#imaps#wrap_math',
+                \ })
+endfor
+
+let letter_maps = {
+            \ 'a': 'alpha',
+            \ 'b': 'beta',
+            \ 'c': 'chi',
+            \ 'd': 'delta',
+            \ 'e': 'epsilon',
+            \ 'f': 'phi',
+            \ 'g': 'gamma',
+            \ 'h': 'eta',
+            \ 'i': 'iota',
+            \ 'k': 'kappa',
+            \ 'l': 'lambda',
+            \ 'm': 'mu',
+            \ 'n': 'nu',
+            \ 'p': 'pi',
+            \ 'q': 'theta',
+            \ 'r': 'rho',
+            \ 's': 'sigma',
+            \ 't': 'tau',
+            \ 'y': 'psi',
+            \ 'u': 'upsilon',
+            \ 'w': 'omega',
+            \ 'z': 'zeta',
+            \ 'x': 'xi',
+            \ 'G': 'Gamma',
+            \ 'D': 'Delta',
+            \ 'F': 'Phi',
+            \ 'L': 'Lambda',
+            \ 'P': 'Pi',
+            \ 'Q': 'Theta',
+            \ 'S': 'Sigma',
+            \ 'U': 'Upsilon',
+            \ 'W': 'Omega',
+            \ 'X': 'Xi',
+            \ 'Y': 'Psi',
+            \ 'N': 'aleph',
+            \ }
+for [key, mapping] in items(letter_maps)
+    call vimtex#imaps#add_map({
+                \ 'lhs' : key,
+                \ 'rhs' : '\' . mapping,
+                \ 'leader' : letter_leader,
+                \ 'wrapper' : 'vimtex#imaps#wrap_math',
+                \ })
+endfor

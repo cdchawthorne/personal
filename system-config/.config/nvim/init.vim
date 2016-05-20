@@ -2,10 +2,8 @@
 " Mappings and functions are allowed to clobber the z mark or buffer.
 "
 
-" TODO: window manager
 " TODO: close on last exit
 " TODO: ag for fzf?
-" TODO: cvim?
 " TODO: shiftwidth 2?
 " TODO: async grep
 " TODO: highlighted colour in LaTeX files
@@ -108,6 +106,8 @@ let g:surround_{char2nr('n')} = "\\[\r\n\\]"
 
 let g:vimtex_index_hide_line_numbers = 0
 let g:vimtex_index_split_pos = 'vert rightbelow'
+let g:vimtex_indent_enabled = 0
+let g:vimtex_imaps_enabled = 0
 
 " Get rid of annoying & indenting in LaTeX
 let g:tex_indent_and = 0
@@ -154,8 +154,7 @@ augroup terminal_autocmds
     autocmd!
 
     autocmd TermOpen * setlocal nocursorline
-    " HACK: pending https://github.com/neovim/neovim/pull/4296
-    autocmd TermClose * call CloseTerminal()
+    autocmd TermClose * execute 'bdelete! ' . expand('<abuf>')
 augroup END
 
 augroup cursorline
@@ -190,14 +189,6 @@ function! SpawnShell(layout_cmd)
     call termopen([$SHELL])
     execute 'cd ' . nvim_cwd
     startinsert
-endfunction
-
-function! CloseTerminal()
-    if exists('b:terminal_job_pid')
-        call feedkeys("l\<BS>")
-    else
-        only
-    endif
 endfunction
 
 function! SwitchBuffer(buffer_command)
@@ -328,7 +319,8 @@ nnoremap <silent> <Leader>kl :<C-u>call SwitchBuffer('buffer')<CR>
 nnoremap <silent> <Leader>ks :<C-u>call SwitchBuffer('sbuffer')<CR>
 nnoremap <silent> <Leader>kv :<C-u>call SwitchBuffer('vertical sbuffer')<CR>
 nnoremap <Leader>kf <C-^>
-nnoremap <silent> <Leader>kd :bdelete<CR>
+nnoremap <silent> <Leader>kc :bdelete<CR>
+nnoremap <silent> <Leader>kd :bprevious \| bdelete #<CR>
 nnoremap <silent> <Leader>kj :<C-u>call StepBuffer(1)<CR>
 nnoremap <silent> <Leader>kk :<C-u>call StepBuffer(-1)<CR>
 

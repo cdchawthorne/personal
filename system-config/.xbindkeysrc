@@ -1,16 +1,16 @@
-"change-volume toggleMute"
+"amixer set Master toggle"
     m:0x40 + c:31
     Mod4 + i
-"change-volume raise 2"
+"amixer set Master playback 2+"
     m:0x40 + c:32
     Mod4 + o
-"change-volume lower 2"
+"amixer set Master playback 2-"
     m:0x40 + c:30
     Mod4 + u
-"change-volume raise 10"
+"amixer set Master playback 10+"
     m:0x41 + c:32
     Shift+Mod4 + o
-"change-volume lower 10"
+"amixer set Master playback 10-"
     m:0x41 + c:30
     Shift+Mod4 + u
 "sudo poweroff"
@@ -22,7 +22,7 @@
 "xscreensaver-command -lock"
     m:0x40 + c:52
     Mod4 + z
-"chromium"
+"firefox"
     m:0x40 + c:43
     Mod4 + h
 "tor-browser-en"
@@ -52,7 +52,7 @@
 "st -c music ncmpcpp"
     m:0x40 + c:57
     Mod4 + n
-"st -c music -e 'mosh cdchawth@nullsleep.csclub.uwaterloo.ca -- screen -DR'"
+"st -c music mosh cdchawth@nullsleep.csclub.uwaterloo.ca -- screen -DR"
     m:0x41 + c:57
     Shift+Mod4 + n
 "sudo rw"
@@ -67,10 +67,10 @@
 
 # zsh knows how to do the right thing with respect to colour, so we launch
 # things from within zsh
-"st -t xterm-tmux -c terminal -e zsh -c tmux"
+"st -t xterm-tmux -c terminal zsh -c tmux"
     m:0x41 + c:40
     Shift+Mod4 + d
-"nvim_st -t neovim -c terminal -e zsh -c nvim"
+"nvim_st -t neovim -c terminal zsh -c nvim"
     m:0x40 + c:40
     Mod4 + d
 "press-z"
