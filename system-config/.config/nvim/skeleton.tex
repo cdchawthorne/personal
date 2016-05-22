@@ -74,22 +74,6 @@
 
 % Macros
 
-\embedlua
-  local upper_names = {b=[[bf]], c=[[cal]], d=[[bb]], k=[[frak]], s=[[scr]]}
-  local lower_names = {t=[[bf]], l=[[frak]]}
-  -- Portability be damned
-  for i = string.byte('a'), string.byte('z') do
-    for name,font in pairs(upper_names) do
-      tex.sprint(string.format([[\newcommand\j%s%c{{\math%s{%c}}}]],
-          name, i,font, i-32));
-    end
-    for name,font in pairs(lower_names) do
-      tex.sprint(string.format([[\newcommand\j%s%c{{\math%s{%c}}}]],
-          name, i,font, i));
-    end
-  end
-\endembedlua
-
 \newcommand{\plr}{\item[\((\implies)\)]}
 \newcommand{\prl}{\item[\((\impliedby)\)]}
 \newcommand{\pss}{\item[\((\subseteq)\)]}
@@ -153,92 +137,6 @@
 \renewcommand \epsilon \varepsilon
 \renewcommand \phi \varphi
 
-\let \sharps \ss
-\renewcommand \ss \subseteq
-\newcommand \ssne \subsetneqq
-\newcommand \sps \supseteq
-\newcommand \spsne \supsetneqq
-\newcommand \fss {\subseteq_{\mathrm{fin}}}
-\newcommand \es \emptyset
-\newcommand \rs \restriction
-\newcommand \ip \implies
-\newcommand \pe \preceq
-\newcommand \se \succeq
-\newcommand \ra \rightarrow
-\newcommand \la \leftarrow
-\newcommand \hra \hookrightarrow
-\newcommand \hla \hookleftarrow
-\newcommand \xra \xrightarrow
-\newcommand \xla \xleftarrow
-\newcommand \tra \twoheadrightarrow
-\newcommand \tla \twoheadleftarrow
-\newcommand \xhra \xhookrightarrow
-\newcommand \xhla \xhookleftarrow
-\newcommand \lra \leftrightarrow
-\newcommand \lras \leftrightarrows
-\newcommand \rlas \rightleftarrows
-\newcommand \ua \uparrow
-\newcommand \da \downarrow
-\newcommand \cnot \centernot
-\newcommand \co \colon
-\newcommand \sm \setminus
-\newcommand \mt \mapsto
-\newcommand \mdl \models
-\newcommand \ts \times
-\newcommand \bts \bigtimes
-\newcommand \opl \oplus
-\newcommand \ots \otimes
-\newcommand \bopl \bigoplus
-\newcommand \bots \bigotimes
-\newcommand \xst \exists
-\newcommand \frl \forall
-\newcommand \tle \trianglelefteq
-\newcommand \tlne \triangleleft
-\newcommand \tre \trianglerighteq
-\newcommand \trne \triangleright
-\newcommand \nn \notin
-\newcommand \bcap \bigcap
-\newcommand \bcup \bigcup
-\newcommand \wdg \wedge
-\newcommand \bwdg \bigwedge
-\newcommand \bvee \bigvee
-\newcommand \cm \circ
-\newcommand \plm \varprojlim
-\newcommand \ilm \varinjlim
-\newcommand \cpd \coprod
-\newcommand \sq \sqcup
-\newcommand \bsq \bigsqcup
-\newcommand \bul \bullet
-
-\newcommand \on  \operatorname
-\newcommand \wh  \widehat
-\newcommand \ol  \overline
-\newcommand \ul  \underline
-\newcommand \sst \substack
-\newcommand \wt \widetilde
-\newcommand \ora \overrightarrow
-\newcommand \ub \underbrace
-\newcommand \ob \overbrace
-
-\newcommand \ala \alpha
-\newcommand \bt \beta
-\newcommand \gm \gamma
-\newcommand \dl \delta
-\newcommand \ep \epsilon
-\newcommand \io \iota
-\newcommand \kp \kappa
-\newcommand \lb \lambda
-\newcommand \sg \sigma
-\newcommand \om \omega
-\newcommand \tht \theta
-\newcommand \ale \aleph
-
-\newcommand \Dl \Delta
-\newcommand \Gm \Gamma
-\newcommand \Lb \Lambda
-\newcommand \Sg \Sigma
-\newcommand \Tht \Theta
-\newcommand \Om \Omega
 
 \let \thorn \th
 \renewcommand \th {^\mathrm{th}}

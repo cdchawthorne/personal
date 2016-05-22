@@ -208,7 +208,7 @@ for c in range(char2nr('a'),char2nr('z'))
             \ 'lhs' : key . nr2char(c),
             \ 'rhs' : '\math' . fontspec . '{' . toupper(nr2char(c)) . '}',
             \ 'leader' : font_leader,
-            \ 'wrapper' : 'vimtex#imaps#wrap_math'
+            \ 'wrapper' : 'vimtex#imaps#wrap_trivial'
         \})
     endfor
     for [key, fontspec] in items(lower_font_maps)
@@ -216,16 +216,16 @@ for c in range(char2nr('a'),char2nr('z'))
             \ 'lhs' : key . nr2char(c),
             \ 'rhs' : '\math' . fontspec . '{' . toupper(nr2char(c)) . '}',
             \ 'leader' : font_leader,
-            \ 'wrapper' : 'vimtex#imaps#wrap_math'
+            \ 'wrapper' : 'vimtex#imaps#wrap_trivial'
         \})
     endfor
 endfor
 
 let command_maps = {
-            \ '(' : 'subseteq',
-            \ '9' : 'subsetneqq',
-            \ ')' : 'supseteq',
-            \ '0' : 'supsetneqq',
+            \ ',' : 'subseteq',
+            \ '<' : 'subsetneqq',
+            \ '.' : 'supseteq',
+            \ '>' : 'supsetneqq',
             \ 'e' : 'emptyset',
             \ '*' : 'otimes',
             \ '+' : 'oplus',
@@ -234,10 +234,10 @@ let command_maps = {
             \ 'm' : 'mapsto',
             \ '-' : 'setminus',
             \ 'x' : 'times',
-            \ ',' : 'preceq',
-            \ '.' : 'succeq',
-            \ '<' : 'prec',
-            \ '>' : 'succ',
+            \ '(' : 'preceq',
+            \ ')' : 'succeq',
+            \ '9' : 'prec',
+            \ '0' : 'succ',
             \ '=' : 'equiv',
             \ '^' : 'partial',
             \ '&' : 'infty',
@@ -247,8 +247,8 @@ let command_maps = {
             \ 'i' : 'implies',
             \ 's' : 'substack{',
             \ 'd' : 'models',
-            \ 'A' : 'forall',
-            \ 'E' : 'exists',
+            \ 'v' : 'forall',
+            \ 't' : 'exists',
             \ 'z' : 'operatorname{',
             \ 'b+' : 'bigoplus',
             \ 'b*' : 'bigotimes',
@@ -284,7 +284,7 @@ for [key, mapping] in items(command_maps)
                 \ 'lhs' : key,
                 \ 'rhs' : '\' . mapping,
                 \ 'leader' : command_leader,
-                \ 'wrapper' : 'vimtex#imaps#wrap_math',
+                \ 'wrapper' : 'vimtex#imaps#wrap_trivial',
                 \ })
 endfor
 
@@ -330,6 +330,6 @@ for [key, mapping] in items(letter_maps)
                 \ 'lhs' : key,
                 \ 'rhs' : '\' . mapping,
                 \ 'leader' : letter_leader,
-                \ 'wrapper' : 'vimtex#imaps#wrap_math',
+                \ 'wrapper' : 'vimtex#imaps#wrap_trivial',
                 \ })
 endfor

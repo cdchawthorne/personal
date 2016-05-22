@@ -7,6 +7,7 @@
 " TODO: shiftwidth 2?
 " TODO: async grep
 " TODO: highlighted colour in LaTeX files
+" TODO: vimtex#imaps#wrap_math doesn't work with ea
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

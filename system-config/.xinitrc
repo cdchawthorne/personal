@@ -53,6 +53,6 @@ while true; do
     sleep 1s
 done &
 
-exec ~/scratch/dwm/dwm
+exec dwm
 # exec i3
 # exec xmonad
