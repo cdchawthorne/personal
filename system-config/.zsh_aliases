@@ -21,6 +21,7 @@ alias c='cd'
 alias dc='cd'
 alias dcd='cd'
 
+alias r='cd ~/documents/education/masters/research'
 alias rlwrap='rlwrap -s 1000000'
 alias math='rlwrap math'
 alias ocaml='rlwrap ocaml'

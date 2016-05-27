@@ -28,3 +28,12 @@
 [submodule "system-config/.vim/bundle/vim-racket"]
 	path = system-config/.vim/bundle/vim-racket
 	url = https://github.com/wlangstroth/vim-racket
+[submodule "submodules/cdc_dwm"]
+	path = submodules/cdc_dwm
+	url = https://github.com/cdchawthorne/cdc_dwm
+[submodule "submodules/cdc_st"]
+	path = submodules/cdc_st
+	url = https://github.com/cdchawthorne/cdc_st
+[submodule "submodules/nvim_st"]
+	path = submodules/nvim_st
+	url = https://github.com/cdchawthorne/nvim_st

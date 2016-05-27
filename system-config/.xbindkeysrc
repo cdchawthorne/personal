@@ -47,8 +47,8 @@
     m:0x40 + c:46
     Mod4 + l
 "zsh -c "synclient touchpadoff=$(synclient -l | grep -c 'TouchpadOff.*=.*0')""
-    m:0x40 + c:39
-    Mod4 + s
+    m:0x41 + c:41
+    Shift+Mod4 + f
 "st -c music ncmpcpp"
     m:0x40 + c:57
     Mod4 + n
@@ -79,3 +79,9 @@
 "killall xbindkeys; xbindkeys"
     m:0x41 + c:39
     Shift+Mod4 + s
+"mpc -h ~/.mpd/socket toggle"
+    m:0x40 + c:20
+    Mod4 + -
+"mpc -h ~/.mpd/socket next"
+    m:0x40 + c:21
+    Mod4 + =

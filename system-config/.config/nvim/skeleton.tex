@@ -149,6 +149,28 @@
 \newcommand \pdif [2] {\frac{\partial #1}{\partial #2}}
 \newcommand \dif [2] {\frac{\mathrm{d} #1}{\mathrm{d} #2}}
 
+% Independence symbol
+% From http://tex.stackexchange.com/a/229826/106594
+\def\Ind#1#2{#1\setbox0=\hbox{$#1x$}\kern\wd0\hbox to 0pt{\hss$#1\mid$\hss}
+\lower.9\ht0\hbox to 0pt{\hss$#1\smile$\hss}\kern\wd0}
+
+\def\ind{\mathop{\mathpalette\Ind{}}}
+
+\def\notind#1#2{#1\setbox0=\hbox{$#1x$}\kern\wd0
+\hbox to 0pt{\mathchardef\nn=12854\hss$#1\nn$\kern1.4\wd0\hss}
+\hbox to
+0pt{\hss$#1\mid$\hss}\lower.9\ht0 \hbox to 0pt{\hss$#1\smile$\hss}\kern\wd0}
+
+\def\nind{\mathop{\mathpalette\notind{}}}
+
+\newcommand \tfdc {the following diagram commutes}
+\newcommand \Tfdc {The following diagram commutes}
+\newcommand \tfsc {the following diagrams commute}
+\newcommand \Tfsc {The following diagrams commute}
+
+\newcommand \tfae {the following are equivalent}
+\newcommand \Tfae {The following are equivalent}
+
 \newenvironment{menumerate}{\mbox{}\begin{enumerate}}{\end{enumerate}}
 \newenvironment{mitemize}{\mbox{}\begin{itemize}}{\end{itemize}}
 \newenvironment{mdescription}{\mbox{}\begin{description}}{\end{description}}
@@ -165,6 +187,9 @@
 
 \DeclarePairedDelimiterX{\set}[1]{\{}{\}}{\, #1 \,}
 
+\newcommand \lhs {\mathrm{LHS}}
+\newcommand \rhs {\mathrm{RHS}}
+
 \DeclareMathOperator \fchar {char}
 \DeclareMathOperator \imag {Im}
 \DeclareMathOperator \real {Re}
@@ -175,7 +200,7 @@
 \DeclareMathOperator \ran {Ran}
 \DeclareMathOperator \sign {sgn}
 \DeclareMathOperator \rank {rank}
-\DeclareMathOperator \trc {tr}
+\DeclareMathOperator \tr {tr}
 \DeclareMathOperator \dist {dist}
 \DeclareMathOperator \ord {ord}
 \DeclareMathOperator \ann {Ann}
@@ -184,17 +209,6 @@
 \DeclareMathOperator \spec {Spec}
 \DeclareMathOperator \ndm {End}
 \DeclareMathOperator \ffrac {Frac}
-
-\newcommand \lhs {\mathrm{LHS}}
-\newcommand \rhs {\mathrm{RHS}}
-
-\newcommand \tfdc {the following diagram commutes}
-\newcommand \Tfdc {The following diagram commutes}
-\newcommand \tfsc {the following diagrams commute}
-\newcommand \Tfsc {The following diagrams commute}
-
-\newcommand \tfae {the following are equivalent}
-\newcommand \Tfae {The following are equivalent}
 
 \title{}
 \author{Christopher Hawthorne}

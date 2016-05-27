@@ -8,6 +8,9 @@
 " TODO: async grep
 " TODO: highlighted colour in LaTeX files
 " TODO: vimtex#imaps#wrap_math doesn't work with ea
+" TODO: dwm better mappings for switching layouts
+" TODO: add a mapping to delete up to previous v
+" TODO: add a mapping for \emph
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -35,6 +38,7 @@ Plug 'tpope/vim-surround'
 " Plug 'jalvesaq/vimcmdline'
 " Plug 'junegunn/vim-easy-align'
 " Plug 'kassio/neoterm'
+" Plug 'justinmk/vim-dirvish'
 " Plug 'mhinz/vim-grepper', {'on': 'Grepper'}
 " Plug 'neovimhaskell/haskell-vim', {'for': 'haskell'}
 " Plug 'pgdouyon/vim-accio'
