@@ -3,17 +3,12 @@ setopt NO_FUNCTION_ARG_ZERO EXTENDED_GLOB PROMPT_SUBST TRANSIENT_RPROMPT
 typeset -U path fpath
 path=(${HOME}/bin ${path})
 fpath=(${HOME}/.zsh/autoloads ${HOME}/.zsh/completion ${fpath})
-EDITOR=vim
-VISUAL=vim
+EDITOR=nvim
+VISUAL=nvim
 CSCOPE_DB=${HOME}/utilities/databases/cscope.out
 TERM=xterm-256color
 TEXMFHOME=${HOME}/.texmf
-FZF_DEFAULT_COMMAND='find * .* -regextype posix-extended \( -regex '
-FZF_DEFAULT_COMMAND+='''.local|builds|.cache'' -o -regex ''.*/\.git'' \) '
-FZF_DEFAULT_COMMAND+='-prune -o \( -type f -o -type l'
-FZF_DEFAULT_COMMAND+=' \) -a \! -regex ''.*\.(pdf|mp3|m4a|flac|png|jpg|gif|'
-FZF_DEFAULT_COMMAND+='class|o|hi|localstorage|localstorage-journal|svn-base|'
-FZF_DEFAULT_COMMAND+='dyn_hi)$'' -print 2>/dev/null'
+FZF_DEFAULT_COMMAND='cat ~/utilities/fzf_db'
 FZF_ALT_C_COMMAND='find * .* -regextype posix-extended \( -regex '
 FZF_ALT_C_COMMAND+='''.local|builds|.cache'' -o -regex ''.*/\.git'' \) -prune '
 FZF_ALT_C_COMMAND+='-o -type d -print 2>/dev/null'

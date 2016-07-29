@@ -110,7 +110,7 @@ let g:latex_envs = [
             \ "tabular", "menumerate", "mitemize", "mdescription",
             \ "cases", "aside", "subclaim", "embedlua", "luacode",
             \ "tikzcd", "center", "figure", "table", "multline",
-            \ "align", "split" ]
+            \ "align", "split", "conjecture" ]
 call sort(g:latex_envs)
 let g:vimtex_env_complete_list = g:latex_envs + ['\[']
 function! LaTeXEnvironmentComplete(ArgLead, CmdLine, CursorPos)
@@ -134,6 +134,16 @@ vnoremap <silent> <buffer> <LocalLeader>a
             \ :<C-u>call LaTeXEnvironmentAroundOp(visualmode())<CR>
 vnoremap <silent> <buffer> <LocalLeader>d
             \ :call search('^\\begin{document}$', 'ws')<CR>
+nnoremap <silent> <buffer> <LocalLeader>c
+            \ :call LaTeXCompileAndView()<CR>
+nnoremap <silent> <buffer> <LocalLeader>v :call PdfView()<CR>
+nnoremap <silent> <buffer> <LocalLeader>t :VimtexTocToggle<CR>
+nnoremap <silent> <buffer> <LocalLeader>r :call LaTeXClean()<CR>
+
+nmap <buffer> <Tab> <Plug>(vimtex-%)
+vmap <buffer> <Tab> <Plug>(vimtex-%)
+omap <buffer> <Tab> <Plug>(vimtex-%)
+
 
 inoremap <buffer> kd \
 
@@ -141,6 +151,9 @@ inoremap <buffer> fde <C-]><C-g>u<Esc>:Le
 inoremap <buffer> fdf <C-]><C-g>u<Esc>:Lel 
 inoremap <silent> <buffer> fdm <C-]><C-g>u<Esc>:call LaTeXDisplayMath()<CR>
 inoremap <buffer> fdt <Space><C-g>u\tfdc{}:<C-]><Esc>gqgq:Le tcd<CR>
+imap <buffer> fdl <C-]><C-g>u<Esc>cac
+inoremap <buffer> fdv <C-]><C-g>u<Esc>dFvxa
+inoremap <buffer> fdc <C-]><C-g>u<C-o>:call LaTeXCompileAndView()<CR>
 
 " TODO: semigroups
 iabbrev <buffer> group grape
@@ -167,6 +180,10 @@ iabbrev <buffer> groupoid: grape-oid:
 iabbrev <buffer> groupoids: grape-oids:
 iabbrev <buffer> Groupoid: Grape-oid:
 iabbrev <buffer> Groupoids: Grape-oids:
+iabbrev <buffer> semigroup semigrape
+iabbrev <buffer> semigroups semigrapes
+iabbrev <buffer> Semigroup Semigrape
+iabbrev <buffer> Semigroups Semigrapes
 iabbrev <buffer> == &=&
 iabbrev <buffer> tfdc tfdc{}
 iabbrev <buffer> tfdc: tfdc{}:
@@ -185,39 +202,24 @@ iabbrev <buffer> (i.e. (i.e.\
 iabbrev <buffer> e.g. e.g.\
 iabbrev <buffer> (e.g. (e.g.\
 
-nnoremap <silent> <buffer> <LocalLeader>c
-            \ :call LaTeXCompileAndView()<CR>
-nnoremap <silent> <buffer> <LocalLeader>v :call PdfView()<CR>
-nnoremap <silent> <buffer> <LocalLeader>t :VimtexTocToggle<CR>
-nnoremap <silent> <buffer> <LocalLeader>r :call LaTeXClean()<CR>
-
-nmap <buffer> <Tab> <Plug>(vimtex-%)
-vmap <buffer> <Tab> <Plug>(vimtex-%)
-omap <buffer> <Tab> <Plug>(vimtex-%)
-
 let font_leader = 'vk'
 let command_leader = 'vm'
 let letter_leader = 'vl'
 
-let upper_font_maps = {'b' : 'bf', 'c': 'cal', 'd': 'bb', 'k': 'frak',
+" NOTE: DO NOT BIND vkd
+let upper_font_maps = {'b' : 'bf', 'c': 'cal', 'l': 'bb', 'f': 'frak',
             \ 's': 'scr'}
-let lower_font_maps = {'t' : 'bf', 'l': 'frak'}
+let lower_font_maps = {'t' : 'bf', 'k': 'frak'}
 for c in range(char2nr('a'),char2nr('z'))
     for [key, fontspec] in items(upper_font_maps)
-        call vimtex#imaps#add_map({
-            \ 'lhs' : key . nr2char(c),
-            \ 'rhs' : '\math' . fontspec . '{' . toupper(nr2char(c)) . '}',
-            \ 'leader' : font_leader,
-            \ 'wrapper' : 'vimtex#imaps#wrap_trivial'
-        \})
+        execute printf('inoremap <buffer> %s \math%s{%s}',
+                    \ font_leader . key . nr2char(c),
+                    \ fontspec, toupper(nr2char(c)))
     endfor
     for [key, fontspec] in items(lower_font_maps)
-        call vimtex#imaps#add_map({
-            \ 'lhs' : key . nr2char(c),
-            \ 'rhs' : '\math' . fontspec . '{' . toupper(nr2char(c)) . '}',
-            \ 'leader' : font_leader,
-            \ 'wrapper' : 'vimtex#imaps#wrap_trivial'
-        \})
+        execute printf('inoremap <buffer> %s \math%s{%s}',
+                    \ font_leader . key . nr2char(c),
+                    \ fontspec, nr2char(c))
     endfor
 endfor
 
@@ -244,12 +246,25 @@ let command_maps = {
             \ 'w' : 'wedge',
             \ 'r' : 'restriction',
             \ 'n' : 'notin',
-            \ 'i' : 'implies',
-            \ 's' : 'substack{',
-            \ 'd' : 'models',
-            \ 'v' : 'forall',
-            \ 't' : 'exists',
-            \ 'z' : 'operatorname{',
+            \ 'i' : 'emph{',
+            \ ';' : 'models',
+            \ 'l' : 'ell',
+            \ 't' : 'item',
+            \ 'g' : 'lit{',
+            \ 'v' : 'vdash',
+            \ "'" : 'enquote{',
+            \ 'si' : 'implies',
+            \ 'ss' : 'substack{',
+            \ 'sf' : 'forall',
+            \ 'se' : 'exists',
+            \ 'so' : 'operatorname{',
+            \ 'sd' : 'mathrm{d}',
+            \ 'st' : 'text{',
+            \ 'dl' : 'ldots',
+            \ 'dc' : 'cdots',
+            \ 'dv' : 'vdots',
+            \ 'dd' : 'ddots',
+            \ 'ds' : 'cdot',
             \ 'b+' : 'bigoplus',
             \ 'b*' : 'bigotimes',
             \ 'bx' : 'bigtimes',
@@ -270,6 +285,7 @@ let command_maps = {
             \ 'qd' : 'downarrow',
             \ 'ql' : 'leftarrow',
             \ 'qb' : 'leftrightarrow',
+            \ 'qsr' : 'rightsquigarrow',
             \ 'qtr' : 'twoheadrightarrow',
             \ 'qtl' : 'twoheadleftarrow',
             \ 'qhr' : 'hookrightarrow',
@@ -280,12 +296,7 @@ let command_maps = {
             \ 'qxhl' : 'xhookleftarrow{',
             \ }
 for [key, mapping] in items(command_maps)
-    call vimtex#imaps#add_map({
-                \ 'lhs' : key,
-                \ 'rhs' : '\' . mapping,
-                \ 'leader' : command_leader,
-                \ 'wrapper' : 'vimtex#imaps#wrap_trivial',
-                \ })
+    execute printf('inoremap <buffer> %s \%s', command_leader . key, mapping)
 endfor
 
 let letter_maps = {
@@ -323,13 +334,8 @@ let letter_maps = {
             \ 'W': 'Omega',
             \ 'X': 'Xi',
             \ 'Y': 'Psi',
-            \ 'N': 'aleph',
+            \ ';': 'aleph',
             \ }
 for [key, mapping] in items(letter_maps)
-    call vimtex#imaps#add_map({
-                \ 'lhs' : key,
-                \ 'rhs' : '\' . mapping,
-                \ 'leader' : letter_leader,
-                \ 'wrapper' : 'vimtex#imaps#wrap_trivial',
-                \ })
+    execute printf('inoremap <buffer> %s \%s', letter_leader . key, mapping)
 endfor

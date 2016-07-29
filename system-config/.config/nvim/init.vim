@@ -3,14 +3,10 @@
 "
 
 " TODO: close on last exit
-" TODO: ag for fzf?
 " TODO: shiftwidth 2?
 " TODO: async grep
-" TODO: highlighted colour in LaTeX files
-" TODO: vimtex#imaps#wrap_math doesn't work with ea
 " TODO: dwm better mappings for switching layouts
-" TODO: add a mapping to delete up to previous v
-" TODO: add a mapping for \emph
+" TODO: swap s and m?
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -21,27 +17,28 @@ call plug#begin('~/.config/nvim/plugged')
 
 Plug '~/.config/nvim/my_plugged/cdc-bufferline'
 
-Plug 'AndrewRadev/sideways.vim'
 Plug 'ciaranm/inkpot'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'justinmk/vim-sneak'
 Plug 'lervag/vimtex', {'for': 'tex'}
 Plug 'majutsushi/tagbar', {'on' : 'TagbarToggle'}
 Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
+Plug 'neovimhaskell/haskell-vim', {'for': 'haskell'}
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 
-" Plug 'Shougo/deoplete.nvim'
+Plug 'AndrewRadev/sideways.vim'
+Plug 'justinmk/vim-dirvish'
+Plug 'justinmk/vim-sneak'
+
 " Plug 'benekastah/neomake'
 " Plug 'jalvesaq/vimcmdline'
 " Plug 'junegunn/vim-easy-align'
 " Plug 'kassio/neoterm'
-" Plug 'justinmk/vim-dirvish'
 " Plug 'mhinz/vim-grepper', {'on': 'Grepper'}
-" Plug 'neovimhaskell/haskell-vim', {'for': 'haskell'}
 " Plug 'pgdouyon/vim-accio'
+" Plug 'Shougo/deoplete.nvim'
 " Plug 'terryma/vim-expand-region'
 " Plug 'tpope/vim-abolish'
 " Plug 'vim-utils/vim-man'
@@ -230,10 +227,8 @@ noremap G m
 noremap v <C-b>
 noremap m <C-f>
 
-nnoremap <silent> <Left> :SidewaysLeft<CR>
-nnoremap <silent> <Right> :SidewaysRight<CR>
-nnoremap <silent> <Up> :m.-2<CR>
-nnoremap <silent> <Down> :m.+1<CR>
+nnoremap <silent> <Up> :.m-2<CR>
+nnoremap <silent> <Down> :.m+1<CR>
 
 omap aa <Plug>SidewaysArgumentTextobjA
 xmap aa <Plug>SidewaysArgumentTextobjA
@@ -306,7 +301,7 @@ nnoremap <silent> <Leader>rk :edit $HOME/.config/nvim/skeleton.%:e<CR>
 nnoremap <silent> <Leader>ra
     \ :edit $HOME/.config/nvim/after/ftplugin/<C-r>=&filetype<CR>.vim<CR>
 
-" Settings and plugins
+" Settings and one-off plugins
 noremap <Leader>s <NOP>
 
 nnoremap <silent> <Leader>sh :nohlsearch<CR>
@@ -343,6 +338,10 @@ nnoremap <Leader>jo :edit <C-r>=GetBufCwd()<CR>/<C-f>a
 nnoremap <Leader>jk gq
 
 vnoremap <Leader>jk gq
+
+" Sideways
+nnoremap <silent> <Leader>ah :SidewaysLeft<CR>
+nnoremap <silent> <Leader>al :SidewaysRight<CR>
 
 " Window mapping
 noremap <Leader>d <C-w>

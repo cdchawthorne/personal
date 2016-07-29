@@ -74,8 +74,8 @@
     m:0x40 + c:40
     Mod4 + d
 "press-z"
-    m:0x40 + c:41
-    Mod4 + f
+    m:0x41 + c:52
+    Shift+Mod4 + z
 "killall xbindkeys; xbindkeys"
     m:0x41 + c:39
     Shift+Mod4 + s

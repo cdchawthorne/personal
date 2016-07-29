@@ -154,14 +154,14 @@
 \def\Ind#1#2{#1\setbox0=\hbox{$#1x$}\kern\wd0\hbox to 0pt{\hss$#1\mid$\hss}
 \lower.9\ht0\hbox to 0pt{\hss$#1\smile$\hss}\kern\wd0}
 
-\def\ind{\mathop{\mathpalette\Ind{}}}
+\def\ind{\mathbin{\mathpalette\Ind{}}}
 
 \def\notind#1#2{#1\setbox0=\hbox{$#1x$}\kern\wd0
 \hbox to 0pt{\mathchardef\nn=12854\hss$#1\nn$\kern1.4\wd0\hss}
 \hbox to
 0pt{\hss$#1\mid$\hss}\lower.9\ht0 \hbox to 0pt{\hss$#1\smile$\hss}\kern\wd0}
 
-\def\nind{\mathop{\mathpalette\notind{}}}
+\def\nind{\mathbin{\mathpalette\notind{}}}
 
 \newcommand \tfdc {the following diagram commutes}
 \newcommand \Tfdc {The following diagram commutes}
@@ -209,6 +209,8 @@
 \DeclareMathOperator \spec {Spec}
 \DeclareMathOperator \ndm {End}
 \DeclareMathOperator \ffrac {Frac}
+\DeclareMathOperator \aut {Aut}
+\DeclareMathOperator \tp {tp}
 
 \title{}
 \author{Christopher Hawthorne}

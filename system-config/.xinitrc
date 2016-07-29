@@ -55,4 +55,4 @@ done &
 
 exec dwm
 # exec i3
-# exec xmonad
+#exec xmonad
