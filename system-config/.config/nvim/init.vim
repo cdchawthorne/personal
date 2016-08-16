@@ -316,11 +316,15 @@ nnoremap <leader>sm :<C-u><C-r><C-r>='let @'. v:register .' = '. string(getreg(v
 noremap <Leader>k <NOP>
 
 nnoremap <silent> <Leader>kl :<C-u>call SwitchBuffer('buffer')<CR>
-nnoremap <silent> <Leader>ks :<C-u>call SwitchBuffer('sbuffer')<CR>
-nnoremap <silent> <Leader>kv :<C-u>call SwitchBuffer('vertical sbuffer')<CR>
+nnoremap <silent> <Leader>kc :call SpawnShell('enew')<CR>
 nnoremap <Leader>kf <C-^>
-nnoremap <silent> <Leader>kc :bdelete<CR>
-nnoremap <silent> <Leader>kd :bprevious \| bdelete #<CR>
+nnoremap <silent> <Leader>ksl :<C-u>call SwitchBuffer('sbuffer')<CR>
+nnoremap <silent> <Leader>ksc :call SpawnShell('new')<CR>
+nnoremap <silent> <Leader>ksf :<C-u>sbuffer #<CR>
+nnoremap <silent> <Leader>kvl :<C-u>call SwitchBuffer('vertical sbuffer')<CR>
+nnoremap <silent> <Leader>kvc :call SpawnShell('vnew')<CR>
+nnoremap <silent> <Leader>kvf :<C-u>vertical sbuffer #<CR>
+nnoremap <silent> <Leader>kd :bdelete<CR>
 nnoremap <silent> <Leader>kj :<C-u>call StepBuffer(1)<CR>
 nnoremap <silent> <Leader>kk :<C-u>call StepBuffer(-1)<CR>
 
@@ -331,9 +335,6 @@ nnoremap <silent> <Leader>jf :write<CR>
 nnoremap <silent> <Leader>jw :wall<CR>
 nnoremap <silent> <Leader>je :qall<CR>
 nnoremap <silent> <Leader>jE :qall!<CR>
-nnoremap <silent> <Leader>jc :call SpawnShell('enew')<CR>
-nnoremap <silent> <Leader>js :call SpawnShell('new')<CR>
-nnoremap <silent> <Leader>jv :call SpawnShell('vnew')<CR>
 nnoremap <Leader>jo :edit <C-r>=GetBufCwd()<CR>/<C-f>a
 nnoremap <Leader>jk gq
 

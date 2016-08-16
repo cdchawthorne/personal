@@ -255,7 +255,7 @@ let command_maps = {
             \ "'" : 'enquote{',
             \ 'si' : 'implies',
             \ 'ss' : 'substack{',
-            \ 'sf' : 'forall',
+            \ 'sa' : 'forall',
             \ 'se' : 'exists',
             \ 'so' : 'operatorname{',
             \ 'sd' : 'mathrm{d}',
