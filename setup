@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-for sub in {cdc_st,nvim_st,cdc_dwm}; do
+for sub in {cdc_st,nvim_st,cdc_dwm,cdc_ii}; do
     (builtin cd "$(dirname $0)/submodules/$sub"; make)
 done
 

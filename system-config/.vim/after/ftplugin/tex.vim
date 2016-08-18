@@ -1,34 +1,31 @@
-setlocal shiftwidth=2
 setlocal iskeyword+=:
 
 
 command! -buffer -nargs=1 -complete=customlist,LaTeXEnvironmentComplete
-            \ Le call LaTeXEnvironment("<args>", "no_label")
+    \ Le call LaTeXEnvironment("<args>", "no_label")
 command! -buffer -nargs=1 -complete=customlist,LaTeXEnvironmentComplete
-            \ Lel call LaTeXEnvironment("<args>", "label")
+    \ Lel call LaTeXEnvironment("<args>", "label")
 command! -buffer -nargs=1 -range -complete=customlist,LaTeXEnvironmentComplete
-            \ Lea call LaTeXEnvironmentAround(<line1>, <line2>, "<args>")
+    \ Lea call LaTeXEnvironmentAround(<line1>, <line2>, "<args>")
 command! -buffer -nargs=1 -complete=customlist,LaTeXEnvironmentComplete
-            \ Lce execute "normal \<Plug>LatexChangeEnv<args>\<CR>"
+    \ Lce execute "normal \<Plug>LatexChangeEnv<args>\<CR>"
 
 nnoremap <silent> <buffer> <LocalLeader>l o\[<CR>\]<Esc>kA
 nnoremap <buffer> <LocalLeader>e :Le 
 nnoremap <buffer> <LocalLeader>f :Lel 
 nnoremap <silent> <buffer> <LocalLeader>a
-            \ :set operatorfunc=LaTeXEnvironmentAroundOp<CR>g@
+    \ :set operatorfunc=LaTeXEnvironmentAroundOp<CR>g@
 nnoremap <buffer> <LocalLeader>s :Lce 
 nnoremap <silent> <buffer> <LocalLeader>d
-            \ :call search('^\\begin{document}$', 'ws')<CR>
+    \ :call search('^\\begin{document}$', 'ws')<CR>
 nnoremap <silent> <buffer> <LocalLeader>t
-            \ A\tfdc{}:<Esc>:Le tcd<CR>
+    \ A\tfdc{}:<Esc>:Le tcd<CR>
 vnoremap <silent> <buffer> <LocalLeader>a
-            \ :<C-u>call LaTeXEnvironmentAroundOp(visualmode())<CR>
+    \ :<C-u>call LaTeXEnvironmentAroundOp(visualmode())<CR>
 vnoremap <silent> <buffer> <LocalLeader>d
-            \ :call search('^\\begin{document}$', 'ws')<CR>
+    \ :call search('^\\begin{document}$', 'ws')<CR>
 
 inoremap <buffer> kd \
-" inoremap <buffer> _ -
-" inoremap <buffer> - _
 
 inoremap <buffer> fde <C-]><C-g>u<Esc>:Le 
 inoremap <buffer> fdf <C-]><C-g>u<Esc>:Lel 
@@ -78,8 +75,7 @@ iabbrev <buffer> (i.e. (i.e.\
 iabbrev <buffer> e.g. e.g.\
 iabbrev <buffer> (e.g. (e.g.\
 
-nnoremap <silent> <buffer> <LocalLeader>c
-            \ :call LaTeXCompileAndView()<CR>
+nnoremap <silent> <buffer> <LocalLeader>c :call LaTeXCompileAndView()<CR>
 nnoremap <silent> <buffer> <LocalLeader>v :call PdfView()<CR>
 nnoremap <silent> <buffer> <LocalLeader>t :call LatexBox_TOC()<CR>
 nnoremap <silent> <buffer> <LocalLeader>r :call LaTeXClean()<CR>

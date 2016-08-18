@@ -37,3 +37,6 @@
 [submodule "submodules/nvim_st"]
 	path = submodules/nvim_st
 	url = https://github.com/cdchawthorne/nvim_st
+[submodule "submodules/cdc_ii"]
+	path = submodules/cdc_ii
+	url = https://github.com/cdchawthorne/cdc_ii

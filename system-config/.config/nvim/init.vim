@@ -7,6 +7,9 @@
 " TODO: async grep
 " TODO: dwm better mappings for switching layouts
 " TODO: swap s and m?
+" TODO: finish up cdc-bufferline
+" TODO: read https://google.github.io/styleguide/vimscriptfull.xml#Style_Guide
+" TODO: why is the NOP mapping messing up what comes after?
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -70,15 +73,15 @@ set number
 set relativenumber
 set ruler
 " set shada=!,'1000,<50,s10,h
-set shiftwidth=4
+set shiftwidth=2
 set showcmd
 set showmatch
 set smartcase
-set softtabstop=4
+set softtabstop=2
 set spelllang=en_ca
 set splitbelow
 set splitright
-set tabstop=4
+set tabstop=2
 set tags=${HOME}/utilities/databases/tags
 set tildeop
 set timeoutlen=1000
@@ -137,35 +140,35 @@ set diffopt+=context:1000000
 
 
 augroup skeleton_files
-    autocmd!
+  autocmd!
 
-    autocmd BufNewFile *.tex
+  autocmd BufNewFile *.tex
       \ 0r ${HOME}/.config/nvim/skeleton.tex | normal! Gdd6k$
 augroup END
 
 augroup restore_cursor_pos
-    autocmd!
+  autocmd!
 
-    autocmd BufReadPost *
-    \ if line("'\"") > 1 && line("'\"") <= line("$") |
-    \   exe "normal! g`\"" |
-    \ endif
+  autocmd BufReadPost *
+      \ if line("'\"") > 1 && line("'\"") <= line("$")
+      \|  execute "normal! g`\""
+      \|endif
 augroup END
 
 augroup terminal_autocmds
-    autocmd!
+  autocmd!
 
-    autocmd TermOpen * setlocal nocursorline
-    autocmd TermClose * execute 'bdelete! ' . expand('<abuf>')
+  autocmd TermOpen * setlocal nocursorline
+  autocmd TermClose * execute 'bdelete! ' . expand('<abuf>')
 augroup END
 
 augroup cursorline
-    autocmd!
+  autocmd!
 
-    autocmd WinEnter    * set cursorline
-    autocmd WinLeave    * set nocursorline
-    autocmd InsertEnter * set nocursorline
-    autocmd InsertLeave * set cursorline
+  autocmd WinEnter * set cursorline
+  autocmd WinLeave * set nocursorline
+  autocmd InsertEnter * set nocursorline
+  autocmd InsertLeave * set cursorline
 augroup END
 
 
@@ -174,44 +177,43 @@ augroup END
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
-function! GetBufCwd()
-    if exists("b:terminal_job_pid")
-        let dir = system(["realpath",  "/proc/" . b:terminal_job_pid . "/cwd"])
-        " Get rid of trailing newline
-        return dir[0:-2]
-    else
-        return expand("%:p:h")
-    endif
+function! GetBufCwd() abort
+  if exists("b:terminal_job_pid")
+    let dir = system(["realpath",  "/proc/" . b:terminal_job_pid . "/cwd"])
+    " Get rid of trailing newline
+    return dir[0:-2]
+  else
+    return expand("%:p:h")
+  endif
 endfunction
 
-function! SpawnShell(layout_cmd)
-    let nvim_cwd = getcwd()
-    execute 'cd ' . GetBufCwd()
-    silent execute a:layout_cmd
-    call termopen([$SHELL])
-    execute 'cd ' . nvim_cwd
-    startinsert
+function! SpawnShell(layout_cmd) abort
+  let nvim_cwd = getcwd()
+  execute 'cd ' . GetBufCwd()
+  silent execute a:layout_cmd
+  call termopen([$SHELL])
+  execute 'cd ' . nvim_cwd
+  startinsert
 endfunction
 
-function! SwitchBuffer(buffer_command)
-    if v:count && v:count <= len(g:cbl_bufnummap)
-        execute a:buffer_command . ' ' . g:cbl_bufnummap[v:count-1]
-    else
-        buffers
-        call feedkeys(':' . a:buffer_command . ' ')
-    endif
+function! SwitchBuffer(buffer_command) abort
+  if v:count && v:count <= len(g:cbl_bufnummap)
+    execute a:buffer_command . ' ' . g:cbl_bufnummap[v:count-1]
+  else
+    buffers
+    call feedkeys(':' . a:buffer_command . ' ')
+  endif
 endfunction
 
-function! StepBuffer(multiplier)
-    let steps = (v:count ? v:count : 1) * a:multiplier
-    let idx = (index(g:cbl_bufnummap, bufnr('%')) + steps)
-    execute 'buffer ' . g:cbl_bufnummap[idx % len(g:cbl_bufnummap)]
+function! StepBuffer(multiplier) abort
+  let steps = (v:count ? v:count : 1) * a:multiplier
+  let idx = (index(g:cbl_bufnummap, bufnr('%')) + steps)
+  execute 'buffer ' . g:cbl_bufnummap[idx % len(g:cbl_bufnummap)]
 endfunction
 
-function! SelectedLines()
-    return join(getline(line("'<"), line("'>")), "\n")
+function! SelectedLines() abort
+  return join(getline(line("'<"), line("'>")), "\n")
 endfunction
-
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -310,23 +312,24 @@ nnoremap <silent> <Leader>su :UndotreeToggle<CR>
 nnoremap <silent> <Leader>sn :set number! \| set relativenumber!<CR>
 nnoremap <silent> <Leader>st :TagbarToggle<CR>
 nnoremap <silent> <Leader>ss :syntax sync fromstart<CR>
-nnoremap <leader>sm :<C-u><C-r><C-r>='let @'. v:register .' = '. string(getreg(v:register))<CR><C-f><left>
+nnoremap <leader>sm :<C-u><C-r><C-r>='let @'. v:register .' = '.
+    \ string(getreg(v:register))<CR><C-f><left>
 
 " Buffers
 noremap <Leader>k <NOP>
 
-nnoremap <silent> <Leader>kl :<C-u>call SwitchBuffer('buffer')<CR>
+nmap <silent> <Leader>kl <Plug>CdcBufferlineBuffer
 nnoremap <silent> <Leader>kc :call SpawnShell('enew')<CR>
 nnoremap <Leader>kf <C-^>
-nnoremap <silent> <Leader>ksl :<C-u>call SwitchBuffer('sbuffer')<CR>
+nmap <silent> <Leader>ksl <Plug>CdcBufferlineSplitBuffer
 nnoremap <silent> <Leader>ksc :call SpawnShell('new')<CR>
 nnoremap <silent> <Leader>ksf :<C-u>sbuffer #<CR>
-nnoremap <silent> <Leader>kvl :<C-u>call SwitchBuffer('vertical sbuffer')<CR>
+nmap <silent> <Leader>kvl <Plug>CdcBufferlineVSplitBuffer
 nnoremap <silent> <Leader>kvc :call SpawnShell('vnew')<CR>
 nnoremap <silent> <Leader>kvf :<C-u>vertical sbuffer #<CR>
 nnoremap <silent> <Leader>kd :bdelete<CR>
-nnoremap <silent> <Leader>kj :<C-u>call StepBuffer(1)<CR>
-nnoremap <silent> <Leader>kk :<C-u>call StepBuffer(-1)<CR>
+nmap <silent> <Leader>kj <Plug>CdcBufferlineStepForward
+nmap <silent> <Leader>kk <Plug>CdcBufferlineStepBack
 
 " Writing, quitting, opening terminals, and formatting
 noremap <Leader>j <NOP>
@@ -363,6 +366,6 @@ noremap <Leader>v v
 
 
 command! DiffOrig vertical new | set buftype=nofile | read # | 0delete_
-        \ | diffthis | wincmd p | diffthis
+    \| diffthis | wincmd p | diffthis
 
 command! -nargs=0 Sexe execute SelectedLines()
