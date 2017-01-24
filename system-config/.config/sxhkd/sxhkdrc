@@ -1,0 +1,45 @@
+mod4 + {u,i,o}
+  amixer set Master {playback 2-,toggle,playback 2+}
+mod4 + shift + {u,o}
+  amixer set Master playback 10{-,+}
+
+mod4 + z
+  xscreensaver-command -lock
+
+mod4 + p
+  gmrun
+
+mod4 + {minus,equal,BackSpace}
+  mpc -h ~/.mpd/socket {toggle,next,prev}
+
+mod4 + comma; {e,r}
+  sudo {poweroff,reboot}
+
+mod4 + comma; {h,t,g}
+  {firefox,tor-browser-en,google-chrome-stable}
+
+mod4 + comma; b
+  pere random
+
+mod4 + comma; f
+  synclient touchpadoff=$(synclient -l | grep -c 'TouchpadOff.*=.*0')
+
+mod4 + comma; {_, shift +} l
+  xterm -class pwsafe -e {get-username-pass,get-pass}
+
+mod4 + comma; n
+  xterm -class music -e ncmpcpp
+
+mod4 + comma; shift + n
+  xterm -class music -e mosh cdchawth@nullsleep.csclub.uwaterloo.ca -- screen -DR
+
+mod4 + comma; d
+  xterm -title neovim -class terminal -e zsh -c nvim
+mod4 + comma; shift + d
+  xterm -title xterm-tmux -class terminal -e zsh -c tmux
+
+mod4 + comma; c
+  chromium --app-id=bikioccmkafdpakkkcpdbppfkghcmihk
+
+mod4 + comma; s
+  steam-native

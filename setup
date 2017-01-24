@@ -1,9 +1,5 @@
 #!/usr/bin/env zsh
 
-for sub in {cdc_st,nvim_st,cdc_dwm,cdc_ii}; do
-    (builtin cd "$(dirname $0)/submodules/$sub"; make)
-done
-
 builtin cd "$(dirname $0)/system-config"
 
 (find . -type f; find . -type l) | while builtin read file; do
@@ -11,5 +7,5 @@ builtin cd "$(dirname $0)/system-config"
     ln -Trfs ${file} ~/${file}
 done
 
-curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs \
+curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim

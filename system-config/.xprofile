@@ -1,3 +1,1 @@
 synclient MinSpeed=5 MaxSpeed=5.75
-SCREENSHOTS_DIR=${HOME}/media/pictures/screenshots
-export SCREENSHOTS_DIR

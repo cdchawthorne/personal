@@ -1,15 +1,17 @@
 "
-" Mappings and functions are allowed to clobber the z mark or buffer.
+" Mappings and functions are allowed to clobber the z mark or register.
 "
 
 " TODO: close on last exit
 " TODO: shiftwidth 2?
 " TODO: async grep
 " TODO: dwm better mappings for switching layouts
-" TODO: swap s and m?
-" TODO: finish up cdc-bufferline
-" TODO: read https://google.github.io/styleguide/vimscriptfull.xml#Style_Guide
 " TODO: why is the NOP mapping messing up what comes after?
+" TODO: set up an autocmd that checks the current mode and sets StatusLine and
+"       StatusLineNC accordingly
+" TODO: map <Tab> to something useful? Maybe switch buffers?
+" TODO: vim-surround appears to be disabling some <leader> operator mappings
+" TODO: check out xkb instead of xmodmap
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -18,8 +20,7 @@
 
 call plug#begin('~/.config/nvim/plugged')
 
-Plug '~/.config/nvim/my_plugged/cdc-bufferline'
-
+Plug 'cdchawthorne/nvim-tbufferline'
 Plug 'ciaranm/inkpot'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
@@ -45,6 +46,7 @@ Plug 'justinmk/vim-sneak'
 " Plug 'terryma/vim-expand-region'
 " Plug 'tpope/vim-abolish'
 " Plug 'vim-utils/vim-man'
+" Plug 'machakann/vim-highlightedyank'
 
 call plug#end()
 
@@ -53,26 +55,22 @@ call plug#end()
 " Options
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-
-syntax on
-filetype plugin indent on
-
 " Builtin options
 set backup
-set backupdir=${HOME}/utilities/vim_backups
+set backupdir=${HOME}/utilities/nvim_backups
 set colorcolumn=80
 set cursorline
 set expandtab
 set nofoldenable
 set hidden
 set ignorecase
+set inccommand=split
 set matchtime=1
 set mouse=
 set nomodeline
 set number
 set relativenumber
 set ruler
-" set shada=!,'1000,<50,s10,h
 set shiftwidth=2
 set showcmd
 set showmatch
@@ -86,7 +84,7 @@ set tags=${HOME}/utilities/databases/tags
 set tildeop
 set timeoutlen=1000
 set undofile
-set undodir=${HOME}/utilities/vim_undo
+set undodir=${HOME}/utilities/nvim_undo
 
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 1
 
@@ -98,7 +96,7 @@ highlight ColorColumn ctermbg=60
 
 let g:tex_flavor = "latex"
 
-let g:gundo_right = 1
+let g:tbufferline_enable_on_startup = 1
 
 let g:tagbar_width = 28
 let g:tagbar_sort = 0
@@ -189,26 +187,12 @@ endfunction
 
 function! SpawnShell(layout_cmd) abort
   let nvim_cwd = getcwd()
+  " TODO: escape spaces and stuff
   execute 'cd ' . GetBufCwd()
   silent execute a:layout_cmd
   call termopen([$SHELL])
   execute 'cd ' . nvim_cwd
   startinsert
-endfunction
-
-function! SwitchBuffer(buffer_command) abort
-  if v:count && v:count <= len(g:cbl_bufnummap)
-    execute a:buffer_command . ' ' . g:cbl_bufnummap[v:count-1]
-  else
-    buffers
-    call feedkeys(':' . a:buffer_command . ' ')
-  endif
-endfunction
-
-function! StepBuffer(multiplier) abort
-  let steps = (v:count ? v:count : 1) * a:multiplier
-  let idx = (index(g:cbl_bufnummap, bufnr('%')) + steps)
-  execute 'buffer ' . g:cbl_bufnummap[idx % len(g:cbl_bufnummap)]
 endfunction
 
 function! SelectedLines() abort
@@ -225,12 +209,21 @@ endfunction
 noremap / /\v
 noremap ? ?\v
 noremap <Tab> %
-noremap G m
+nmap <Space> <Plug>tbufferline#Buffer
+nnoremap S m
+nnoremap <silent> x :write<CR>
+nmap t <Plug>Sneak_s
+nmap T <Plug>Sneak_S
+vmap t <Plug>Sneak_s
+vmap T <Plug>Sneak_S
 noremap v <C-b>
 noremap m <C-f>
 
 nnoremap <silent> <Up> :.m-2<CR>
 nnoremap <silent> <Down> :.m+1<CR>
+nnoremap <silent> <Left> :SidewaysLeft<CR>
+nnoremap <silent> <Right> :SidewaysRight<CR>
+
 
 omap aa <Plug>SidewaysArgumentTextobjA
 xmap aa <Plug>SidewaysArgumentTextobjA
@@ -263,22 +256,28 @@ inoremap jF <C-]><Esc>
 inoremap JF <C-]><Esc>
 inoremap <C-u> <C-g>u<C-u>
 
+inoremap fdk <Space>
+inoremap ,d <Space>
+tnoremap ,d <Space>
+inoremap fdo <C-o>
 inoremap fdn <C-n>
 inoremap fdp <C-p>
-inoremap fdk <C-k>
+inoremap fdu <C-k>
+inoremap fd. <C-]><Esc>>>A
+inoremap fd, <C-]><Esc><<A
 inoremap fds <C-g>u<C-]><Esc>gqgqA
 inoremap fdh <Esc>:nohlsearch<CR>a
 inoremap fdd <C-g>u<C-R>=strftime("%Y-%m-%d")<CR>
 
 " Leader mappings
-let mapleader = "\<Space>"
+let mapleader = "s"
 let maplocalleader = mapleader . "l"
 
 noremap <Leader> <NOP>
 
 noremap <LocalLeader> <NOP>
 
-" Navigation and editing
+" fzf
 noremap <Leader>f <NOP>
 
 nnoremap <silent> <Leader>fk :Files<CR>
@@ -317,43 +316,34 @@ nnoremap <leader>sm :<C-u><C-r><C-r>='let @'. v:register .' = '.
 
 " Buffers
 noremap <Leader>k <NOP>
+noremap <Leader>ks <NOP>
+noremap <Leader>kv <NOP>
 
-nmap <silent> <Leader>kl <Plug>CdcBufferlineBuffer
 nnoremap <silent> <Leader>kc :call SpawnShell('enew')<CR>
 nnoremap <Leader>kf <C-^>
-nmap <silent> <Leader>ksl <Plug>CdcBufferlineSplitBuffer
+nmap <silent> <Leader>ksl <Plug>tbufferline#SplitBuffer
 nnoremap <silent> <Leader>ksc :call SpawnShell('new')<CR>
 nnoremap <silent> <Leader>ksf :<C-u>sbuffer #<CR>
-nmap <silent> <Leader>kvl <Plug>CdcBufferlineVSplitBuffer
+nmap <silent> <Leader>kvl <Plug>tbufferline#VSplitBuffer
 nnoremap <silent> <Leader>kvc :call SpawnShell('vnew')<CR>
 nnoremap <silent> <Leader>kvf :<C-u>vertical sbuffer #<CR>
 nnoremap <silent> <Leader>kd :bdelete<CR>
-nmap <silent> <Leader>kj <Plug>CdcBufferlineStepForward
-nmap <silent> <Leader>kk <Plug>CdcBufferlineStepBack
-
-" Writing, quitting, opening terminals, and formatting
-noremap <Leader>j <NOP>
-
-nnoremap <silent> <Leader>jf :write<CR>
-nnoremap <silent> <Leader>jw :wall<CR>
-nnoremap <silent> <Leader>je :qall<CR>
-nnoremap <silent> <Leader>jE :qall!<CR>
-nnoremap <Leader>jo :edit <C-r>=GetBufCwd()<CR>/<C-f>a
-nnoremap <Leader>jk gq
-
-vnoremap <Leader>jk gq
-
-" Sideways
-nnoremap <silent> <Leader>ah :SidewaysLeft<CR>
-nnoremap <silent> <Leader>al :SidewaysRight<CR>
+nmap <silent> <Leader>kj <Plug>tbufferline#StepForward
+nmap <silent> <Leader>kk <Plug>tbufferline#StepBack
+nnoremap <Leader>ko :edit <C-r>=GetBufCwd()<CR>/<C-f>a
 
 " Window mapping
 noremap <Leader>d <C-w>
 noremap <Leader>dd <C-w><C-w>
 
 " Miscellaneous top-level leader mappings
+nnoremap <Leader>j gq
+vnoremap <Leader>j gq
+
 nnoremap <Leader>; q:i
 vnoremap <Leader>; q:i
+
+nnoremap <silent> <Leader>a :qa<CR>
 
 noremap <Leader>, gg
 noremap <Leader>. G

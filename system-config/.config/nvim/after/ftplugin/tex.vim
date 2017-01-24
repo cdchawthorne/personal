@@ -137,7 +137,7 @@ vnoremap <silent> <buffer> <LocalLeader>d
 nnoremap <silent> <buffer> <LocalLeader>c
             \ :call LaTeXCompileAndView()<CR>
 nnoremap <silent> <buffer> <LocalLeader>v :call PdfView()<CR>
-nnoremap <silent> <buffer> <LocalLeader>t :VimtexTocToggle<CR>
+nnoremap <silent> <buffer> <LocalLeader>t :VimtexTocOpen<CR>
 nnoremap <silent> <buffer> <LocalLeader>r :call LaTeXClean()<CR>
 
 nmap <buffer> <Tab> <Plug>(vimtex-%)
@@ -151,7 +151,7 @@ inoremap <buffer> fde <C-]><C-g>u<Esc>:Le
 inoremap <buffer> fdf <C-]><C-g>u<Esc>:Lel 
 inoremap <silent> <buffer> fdm <C-]><C-g>u<Esc>:call LaTeXDisplayMath()<CR>
 inoremap <buffer> fdt <Space><C-g>u\tfdc{}:<C-]><Esc>gqgq:Le tcd<CR>
-imap <buffer> fdl <C-]><C-g>u<Esc>cac
+imap <buffer> fdl <C-]><C-g>u<Esc>hcac
 inoremap <buffer> fdv <C-]><C-g>u<Esc>dFvxa
 inoremap <buffer> fdc <C-]><C-g>u<C-o>:call LaTeXCompileAndView()<CR>
 
@@ -168,6 +168,14 @@ iabbrev <buffer> groupoid grape-oid
 iabbrev <buffer> groupoids grape-oids
 iabbrev <buffer> Groupoid Grape-oid
 iabbrev <buffer> Groupoids Grape-oids
+iabbrev <buffer> semigroup semigrape
+iabbrev <buffer> semigroups semigrapes
+iabbrev <buffer> Semigroup Semigrape
+iabbrev <buffer> Semigroups Semigrapes
+iabbrev <buffer> groupification grape-ification
+iabbrev <buffer> groupifications grape-ifications
+iabbrev <buffer> Groupification Grape-ification
+iabbrev <buffer> Groupifications Grape-ifications
 iabbrev <buffer> group: grape:
 iabbrev <buffer> groups: grapes:
 iabbrev <buffer> Group: Grape:
@@ -180,10 +188,14 @@ iabbrev <buffer> groupoid: grape-oid:
 iabbrev <buffer> groupoids: grape-oids:
 iabbrev <buffer> Groupoid: Grape-oid:
 iabbrev <buffer> Groupoids: Grape-oids:
-iabbrev <buffer> semigroup semigrape
-iabbrev <buffer> semigroups semigrapes
-iabbrev <buffer> Semigroup Semigrape
-iabbrev <buffer> Semigroups Semigrapes
+iabbrev <buffer> semigroup: semigrape:
+iabbrev <buffer> semigroups: semigrapes:
+iabbrev <buffer> Semigroup: Semigrape:
+iabbrev <buffer> Semigroups: Semigrapes:
+iabbrev <buffer> groupification: grape-ification:
+iabbrev <buffer> groupifications: grape-ifications:
+iabbrev <buffer> Groupification: Grape-ification:
+iabbrev <buffer> Groupifications: Grape-ifications:
 iabbrev <buffer> == &=&
 iabbrev <buffer> tfdc tfdc{}
 iabbrev <buffer> tfdc: tfdc{}:
@@ -224,55 +236,55 @@ for c in range(char2nr('a'),char2nr('z'))
 endfor
 
 let command_maps = {
-            \ ',' : 'subseteq',
-            \ '<' : 'subsetneqq',
-            \ '.' : 'supseteq',
-            \ '>' : 'supsetneqq',
-            \ 'e' : 'emptyset',
-            \ '*' : 'otimes',
-            \ '+' : 'oplus',
-            \ 'c' : 'colon',
-            \ 'o' : 'circ',
-            \ 'm' : 'mapsto',
-            \ '-' : 'setminus',
-            \ 'x' : 'times',
-            \ '(' : 'preceq',
-            \ ')' : 'succeq',
-            \ '9' : 'prec',
-            \ '0' : 'succ',
-            \ '=' : 'equiv',
-            \ '^' : 'partial',
-            \ '&' : 'infty',
-            \ 'w' : 'wedge',
-            \ 'r' : 'restriction',
-            \ 'n' : 'notin',
+            \  ',' : 'subseteq ',
+            \ '<' : 'subsetneqq ',
+            \ '.' : 'supseteq ',
+            \ '>' : 'supsetneqq ',
+            \ 'e' : 'emptyset ',
+            \ '*' : 'otimes ',
+            \ '+' : 'oplus ',
+            \ 'c' : 'colon ',
+            \ 'o' : 'circ ',
+            \ 'm' : 'mapsto ',
+            \ '-' : 'setminus ',
+            \ 'x' : 'times ',
+            \ '(' : 'preceq ',
+            \ ')' : 'succeq ',
+            \ '9' : 'prec ',
+            \ '0' : 'succ ',
+            \ '=' : 'equiv ',
+            \ '^' : 'partial ',
+            \ '&' : 'infty ',
+            \ 'w' : 'wedge ',
+            \ 'r' : 'restriction ',
+            \ 'n' : 'notin ',
             \ 'i' : 'emph{',
-            \ ';' : 'models',
-            \ 'l' : 'ell',
-            \ 't' : 'item',
+            \ ';' : 'models ',
+            \ 'l' : 'ell ',
             \ 'g' : 'lit{',
-            \ 'v' : 'vdash',
+            \ 'v' : 'vee ',
             \ "'" : 'enquote{',
-            \ 'si' : 'implies',
+            \ 'si' : 'implies ',
             \ 'ss' : 'substack{',
-            \ 'sa' : 'forall',
-            \ 'se' : 'exists',
+            \ 'sa' : 'forall ',
+            \ 'se' : 'exists ',
             \ 'so' : 'operatorname{',
             \ 'sd' : 'mathrm{d}',
             \ 'st' : 'text{',
-            \ 'dl' : 'ldots',
-            \ 'dc' : 'cdots',
-            \ 'dv' : 'vdots',
-            \ 'dd' : 'ddots',
-            \ 'ds' : 'cdot',
-            \ 'b+' : 'bigoplus',
-            \ 'b*' : 'bigotimes',
-            \ 'bx' : 'bigtimes',
-            \ 'bu' : 'bigcup',
-            \ 'bi' : 'bigcap',
-            \ 'bw' : 'bigwedge',
-            \ 'bv' : 'bigvee',
-            \ 'bs' : 'bigsqcup',
+            \ 'dl' : 'ldots ',
+            \ 'dc' : 'cdots ',
+            \ 'dv' : 'vdots ',
+            \ 'dd' : 'ddots ',
+            \ 'ds' : 'cdot ',
+            \ 'b+' : 'bigoplus ',
+            \ 'b*' : 'bigotimes ',
+            \ 'bx' : 'bigtimes ',
+            \ 'bu' : 'bigcup ',
+            \ 'bi' : 'bigcap ',
+            \ 'ba' : 'bigcap ',
+            \ 'bw' : 'bigwedge ',
+            \ 'bv' : 'bigvee ',
+            \ 'bs' : 'bigsqcup ',
             \ 'al' : 'overline{',
             \ 'at' : 'widetilde{',
             \ 'ah' : 'widehat{',
@@ -280,16 +292,16 @@ let command_maps = {
             \ 'aa' : 'overrightarrow{',
             \ 'ul' : 'underline{',
             \ 'ub' : 'underbrace{',
-            \ 'qu' : 'uparrow',
-            \ 'qr' : 'rightarrow',
-            \ 'qd' : 'downarrow',
-            \ 'ql' : 'leftarrow',
-            \ 'qb' : 'leftrightarrow',
-            \ 'qsr' : 'rightsquigarrow',
-            \ 'qtr' : 'twoheadrightarrow',
-            \ 'qtl' : 'twoheadleftarrow',
-            \ 'qhr' : 'hookrightarrow',
-            \ 'qhl' : 'hookleftarrow',
+            \ 'qu' : 'uparrow ',
+            \ 'qr' : 'rightarrow ',
+            \ 'qd' : 'downarrow ',
+            \ 'ql' : 'leftarrow ',
+            \ 'qb' : 'leftrightarrow ',
+            \ 'qsr' : 'rightsquigarrow ',
+            \ 'qtr' : 'twoheadrightarrow ',
+            \ 'qtl' : 'twoheadleftarrow ',
+            \ 'qhr' : 'hookrightarrow ',
+            \ 'qhl' : 'hookleftarrow ',
             \ 'qxr' : 'xrightarrow{',
             \ 'qxl' : 'xleftarrow{',
             \ 'qxhr' : 'xhookrightarrow{',
@@ -298,43 +310,44 @@ let command_maps = {
 for [key, mapping] in items(command_maps)
     execute printf('inoremap <buffer> %s \%s', command_leader . key, mapping)
 endfor
+execute printf('inoremap <buffer> %s %s', command_leader . 't', '<CR>\item<CR>')
 
 let letter_maps = {
-            \ 'a': 'alpha',
-            \ 'b': 'beta',
-            \ 'c': 'chi',
-            \ 'd': 'delta',
-            \ 'e': 'epsilon',
-            \ 'f': 'phi',
-            \ 'g': 'gamma',
-            \ 'h': 'eta',
-            \ 'i': 'iota',
-            \ 'k': 'kappa',
-            \ 'l': 'lambda',
-            \ 'm': 'mu',
-            \ 'n': 'nu',
-            \ 'p': 'pi',
-            \ 'q': 'theta',
-            \ 'r': 'rho',
-            \ 's': 'sigma',
-            \ 't': 'tau',
-            \ 'y': 'psi',
-            \ 'u': 'upsilon',
-            \ 'w': 'omega',
-            \ 'z': 'zeta',
-            \ 'x': 'xi',
-            \ 'G': 'Gamma',
-            \ 'D': 'Delta',
-            \ 'F': 'Phi',
-            \ 'L': 'Lambda',
-            \ 'P': 'Pi',
-            \ 'Q': 'Theta',
-            \ 'S': 'Sigma',
-            \ 'U': 'Upsilon',
-            \ 'W': 'Omega',
-            \ 'X': 'Xi',
-            \ 'Y': 'Psi',
-            \ ';': 'aleph',
+            \ 'a': 'alpha ',
+            \ 'b': 'beta ',
+            \ 'c': 'chi ',
+            \ 'd': 'delta ',
+            \ 'e': 'epsilon ',
+            \ 'f': 'phi ',
+            \ 'g': 'gamma ',
+            \ 'h': 'eta ',
+            \ 'i': 'iota ',
+            \ 'k': 'kappa ',
+            \ 'l': 'lambda ',
+            \ 'm': 'mu ',
+            \ 'n': 'nu ',
+            \ 'p': 'pi ',
+            \ 'q': 'theta ',
+            \ 'r': 'rho ',
+            \ 's': 'sigma ',
+            \ 't': 'tau ',
+            \ 'y': 'psi ',
+            \ 'u': 'upsilon ',
+            \ 'w': 'omega ',
+            \ 'z': 'zeta ',
+            \ 'x': 'xi ',
+            \ 'G': 'Gamma ',
+            \ 'D': 'Delta ',
+            \ 'F': 'Phi ',
+            \ 'L': 'Lambda ',
+            \ 'P': 'Pi ',
+            \ 'Q': 'Theta ',
+            \ 'S': 'Sigma ',
+            \ 'U': 'Upsilon ',
+            \ 'W': 'Omega ',
+            \ 'X': 'Xi ',
+            \ 'Y': 'Psi ',
+            \ ';': 'aleph ',
             \ }
 for [key, mapping] in items(letter_maps)
     execute printf('inoremap <buffer> %s \%s', letter_leader . key, mapping)

@@ -10,34 +10,40 @@ alias liesl='ls'
 alias s='ls'
 alias sl='ls'
 
-alias freedom!='free -h'
-
 function cd {
     builtin cd $@ && ls
 }
-alias scd='cd'
 alias d='cd'
 alias c='cd'
 alias dc='cd'
-alias dcd='cd'
 
 alias r='cd ~/documents/education/masters/research'
 alias rlwrap='rlwrap -s 1000000'
 alias math='rlwrap math'
 alias ocaml='rlwrap ocaml'
+alias sbcl='rlwrap sbcl'
 alias sudo='sudo '
 alias xargs='xargs '
 
-alias e='nvr'
-alias er='nvr -c ''edit $MYVIMRC'''
-alias ez='nvr ~/.zsh_aliases'
+function e {
+    if [[ -n ${NVIM_LISTEN_ADDRESS} ]]; then
+        nvr $@
+    else
+        nvim $@
+    fi
+}
+alias er='e -c ''edit $MYVIMRC'''
+alias ez='e ~/.zsh_aliases'
 alias sz='source ~/.zsh_aliases'
-function ed { nvr $1; nvr -c diffthis; nvr -O $2; nvr -c diffthis }
-function en {
-    (
-        [[ -r course_material/notes.tex ]] && builtin cd course_material
-        ed notes.tex ~/.config/nvim/skeleton.tex
-    )
+function ed {
+    if [[ -n ${NVIM_LISTEN_ADDRESS} ]]; then
+        nvr $1
+        nvr -c diffthis
+        nvr -O $2
+        nvr -c diffthis 
+    else
+        nvim -d $@
+    fi
 }
 
 alias man='man -i'
@@ -45,7 +51,6 @@ alias less='less -i'
 
 alias rh='rehash'
 alias u='sudo zsh -c ''pacman -Syu; aura -Akua; ntpd -q; hwclock -w'''
-alias fix-steam='find ~/.steam/root/ \( -name "libgcc_s.so*" -o -name "libstdc++.so*" -o -name "libxcb.so*" \) -print -delete'
 alias gpg='DISPLAY= gpg'
 
 function timestamp {
@@ -64,11 +69,6 @@ function pa {
         dest=${dest}/..
     done
     cd ${dest}
-}
-
-function find-grep {
-    find . -regex $1 | xargs egrep --colour=auto $2 |
-            sed -re 's_^([^:]*):.*$_\1_g' | uniq
 }
 
 function to {
@@ -109,22 +109,6 @@ function python {
     )
 }
 
-function perms {
-    target_dir=/music/cdchawth
-    find ${target_dir} -type f | read-lines-array files
-    for file in ${files}; do
-        chmod 640 ${file}
-        setfacl -m u:mpd:r ${file}
-    done
-    find ${target_dir} -type d | read-lines-array dirs
-    for dir in ${dirs}; do
-        chmod 750 ${dir}
-        setfacl -m u:mpd:rx ${dir}
-    done
-    setfacl -b ${target_dir}/README
-    chmod a+r ${target_dir}/README
-}
-
 function usb-backup {
     if [[ $# -ne 1 ]]; then
         echo "USAGE: usb-backup target" 1>&2
@@ -154,6 +138,7 @@ function m {
 function ruw {
     target='cdchawth@taurine.csclub.uwaterloo.ca:~/utilities/rsync_backups'
     rsync -avz --delete ~/documents/education/masters ${target}
+    rsync -avz --delete ~/documents/education/phd ${target}
 }
 function rbooks {
     target='cdchawth@taurine.csclub.uwaterloo.ca:~/utilities/rsync_backups'
