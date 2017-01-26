@@ -2,6 +2,7 @@
 usermodmap=${HOME}/.Xmodmap-ext
 # usermodmap=${HOME}/.Xmodmap-gaming
 userprofile=${HOME}/.xprofile
+userresources=${HOME}/.Xresources
 
 if [ -d /etc/X11/xinit/xinitrc.d ]; then
   for f in /etc/X11/xinit/xinitrc.d/*; do
@@ -11,10 +12,8 @@ if [ -d /etc/X11/xinit/xinitrc.d ]; then
 fi
 
 [[ -r ${userprofile} ]] && . ${userprofile}
-
-if [ -r "${usermodmap}" ]; then
-    xmodmap "${usermodmap}"
-fi
+[[ -r ${usermodmap} ]] && xmodmap ${usermodmap}
+[[ -r ${userresources} ]] && xrdb -merge ${userresources}
 
 pere random
 
