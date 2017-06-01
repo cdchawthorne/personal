@@ -143,9 +143,11 @@ bar {
         position top
 }
 
-for_window [class="^Firefox$"] move container to workspace 1, workspace 1
-for_window [class="^terminal$"] move container to workspace 2, workspace 2
-for_window [class="^music$"] move container to workspace 10, workspace 10
-for_window [class="^pwsafe$"] floating enable
+assign [class="^Firefox$"] 1
+assign [class="^Chromium$"] 1
+assign [class="^Google-chrome$"] 1
+assign [class="^terminal$"] 2
+assign [class="^Keepassx2$"] 8
+assign [class="^music$"] 10
 
 workspace_layout tabbed

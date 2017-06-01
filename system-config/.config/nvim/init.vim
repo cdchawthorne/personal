@@ -2,16 +2,10 @@
 " Mappings and functions are allowed to clobber the z mark or register.
 "
 
-" TODO: close on last exit
-" TODO: shiftwidth 2?
 " TODO: async grep
-" TODO: dwm better mappings for switching layouts
-" TODO: why is the NOP mapping messing up what comes after?
 " TODO: set up an autocmd that checks the current mode and sets StatusLine and
 "       StatusLineNC accordingly
-" TODO: map <Tab> to something useful? Maybe switch buffers?
 " TODO: vim-surround appears to be disabling some <leader> operator mappings
-" TODO: check out xkb instead of xmodmap
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -24,7 +18,6 @@ Plug 'cdchawthorne/nvim-tbufferline'
 Plug 'ciaranm/inkpot'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'lervag/vimtex', {'for': 'tex'}
 Plug 'majutsushi/tagbar', {'on' : 'TagbarToggle'}
 Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
 Plug 'neovimhaskell/haskell-vim', {'for': 'haskell'}
@@ -55,9 +48,13 @@ call plug#end()
 " Options
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+if empty($XDG_DATA_HOME)
+  let $XDG_DATA_HOME=$HOME . '/.local/share'
+endif
+
 " Builtin options
 set backup
-set backupdir=${HOME}/utilities/nvim_backups
+set backupdir=$XDG_DATA_HOME/nvim/backup
 set colorcolumn=80
 set cursorline
 set expandtab
@@ -80,11 +77,11 @@ set spelllang=en_ca
 set splitbelow
 set splitright
 set tabstop=2
-set tags=${HOME}/utilities/databases/tags
+set tags=$XDG_DATA_HOME/nvim/tags
 set tildeop
 set timeoutlen=1000
 set undofile
-set undodir=${HOME}/utilities/nvim_undo
+set undodir=$XDG_DATA_HOME/nvim/undo
 
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 1
 
@@ -256,16 +253,23 @@ inoremap jF <C-]><Esc>
 inoremap JF <C-]><Esc>
 inoremap <C-u> <C-g>u<C-u>
 
-inoremap fdk <Space>
-inoremap ,d <Space>
-tnoremap ,d <Space>
+inoremap ek <C-]><Space>
+inoremap dj <C-]><Space>
+inoremap sj <C-]><Space>
+inoremap ls <C-]><Space>
+inoremap vj <C-]><Space>
+inoremap fdk <C-]><Space>
+" caps lock?
+inoremap ; <C-]><Space>
+inoremap fd; ;<Space>
+inoremap z <C-]><Space>
+inoremap fdz z
 inoremap fdo <C-o>
 inoremap fdn <C-n>
 inoremap fdp <C-p>
 inoremap fdu <C-k>
 inoremap fd. <C-]><Esc>>>A
 inoremap fd, <C-]><Esc><<A
-inoremap fds <C-g>u<C-]><Esc>gqgqA
 inoremap fdh <Esc>:nohlsearch<CR>a
 inoremap fdd <C-g>u<C-R>=strftime("%Y-%m-%d")<CR>
 
@@ -345,8 +349,8 @@ vnoremap <Leader>; q:i
 
 nnoremap <silent> <Leader>a :qa<CR>
 
-noremap <Leader>, gg
-noremap <Leader>. G
+nnoremap <Leader>. G
+nnoremap <Leader>, gg
 noremap <Leader>v v
 
 

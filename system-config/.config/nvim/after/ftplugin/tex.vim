@@ -1,6 +1,6 @@
 " TODO: should all of this really be in after?
-" TODO: poke harder at vimtex
-setlocal shiftwidth=2
+
+setlocal tw=79
 
 " Functions
 
@@ -16,7 +16,7 @@ function! LaTeXCompileAndView()
     let command .= " &> /dev/null || zathura --fork "
     let command .= shellescape(expand("%:p:r") . '.pdf') . " &> /dev/null)"
     "TODO: determine the width automatically?
-    66vnew
+    27vnew
     call termopen(command)
     setlocal nobuflisted
     execute "normal \<C-w>h"
@@ -112,7 +112,6 @@ let g:latex_envs = [
             \ "tikzcd", "center", "figure", "table", "multline",
             \ "align", "split", "conjecture" ]
 call sort(g:latex_envs)
-let g:vimtex_env_complete_list = g:latex_envs + ['\[']
 function! LaTeXEnvironmentComplete(ArgLead, CmdLine, CursorPos)
     return filter(copy(g:latex_envs), 'v:val =~# "^' . a:ArgLead . '"')
 endfunction
@@ -137,13 +136,7 @@ vnoremap <silent> <buffer> <LocalLeader>d
 nnoremap <silent> <buffer> <LocalLeader>c
             \ :call LaTeXCompileAndView()<CR>
 nnoremap <silent> <buffer> <LocalLeader>v :call PdfView()<CR>
-nnoremap <silent> <buffer> <LocalLeader>t :VimtexTocOpen<CR>
 nnoremap <silent> <buffer> <LocalLeader>r :call LaTeXClean()<CR>
-
-nmap <buffer> <Tab> <Plug>(vimtex-%)
-vmap <buffer> <Tab> <Plug>(vimtex-%)
-omap <buffer> <Tab> <Plug>(vimtex-%)
-
 
 inoremap <buffer> kd \
 
@@ -151,7 +144,7 @@ inoremap <buffer> fde <C-]><C-g>u<Esc>:Le
 inoremap <buffer> fdf <C-]><C-g>u<Esc>:Lel 
 inoremap <silent> <buffer> fdm <C-]><C-g>u<Esc>:call LaTeXDisplayMath()<CR>
 inoremap <buffer> fdt <Space><C-g>u\tfdc{}:<C-]><Esc>gqgq:Le tcd<CR>
-imap <buffer> fdl <C-]><C-g>u<Esc>hcac
+inoremap <buffer> fdl <C-]><C-g>u<Esc>vF\c
 inoremap <buffer> fdv <C-]><C-g>u<Esc>dFvxa
 inoremap <buffer> fdc <C-]><C-g>u<C-o>:call LaTeXCompileAndView()<CR>
 
@@ -236,7 +229,8 @@ for c in range(char2nr('a'),char2nr('z'))
 endfor
 
 let command_maps = {
-            \  ',' : 'subseteq ',
+            \ ',' : 'subseteq ',
+            \ 't' : 'item',
             \ '<' : 'subsetneqq ',
             \ '.' : 'supseteq ',
             \ '>' : 'supsetneqq ',
@@ -310,7 +304,6 @@ let command_maps = {
 for [key, mapping] in items(command_maps)
     execute printf('inoremap <buffer> %s \%s', command_leader . key, mapping)
 endfor
-execute printf('inoremap <buffer> %s %s', command_leader . 't', '<CR>\item<CR>')
 
 let letter_maps = {
             \ 'a': 'alpha ',

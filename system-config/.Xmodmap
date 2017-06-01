@@ -1,15 +1,11 @@
 ! Make capslock a shift, make shift mode_switch
-remove mod5 = Mode_switch
-add mod3 = Mode_switch
-keycode 66 = Shift_L Shift_L Caps_Lock Caps_Lock
-keycode 50 = Mode_switch
+clear lock
+clear mod3
 
 ! Make right command a control key
-remove control = Control_R
-remove mod4 = Super_R
-keycode 134 = Control_R
-add control = Control_R
-add mod4 = Super_R
+keycode 66 = Mode_switch Caps_Lock
+
+add mod3 = Mode_switch
 
 keycode 29 = y Y Home Home
 keycode 30 = u U End End
@@ -47,17 +43,19 @@ keycode 35 = braceright bracketright
 keycode 169 = Insert
 
 ! Nobody likes the XF86 keys
-keycode 123 = Next Next F12
-keycode 122 = Prior Prior F11
-keycode 121 = End End F10
-keycode 171 = Home Home F9
-keycode 172 = F8
-keycode 173 = F7
-keycode 238 = F6
-keycode 237 = F5
-keycode 212 = F4
-keycode 128 = F3
-keycode 233 = F2
-keycode 232 = F1
+keycode 225 = Home Home F9
+keycode 76 = End End F10
+keycode 232 = Prior Prior F11
+keycode 233 = Next Next F12
+!keycode 123 = Next Next F12
+!keycode 122 = Prior Prior F11
+!keycode 121 = End End F10
+!keycode 171 = Home Home F9
+!keycode 172 = F8
+!keycode 173 = F7
+!keycode 238 = F6
+!keycode 237 = F5
+!keycode 212 = F4
+!keycode 128 = F3
 
 pointer = 1 3 2 4 5 6

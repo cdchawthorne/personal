@@ -4,7 +4,7 @@ mod4 + shift + {u,o}
   amixer set Master playback 10{-,+}
 
 mod4 + z
-  xscreensaver-command -lock
+  slock
 
 mod4 + p
   gmrun
@@ -16,7 +16,7 @@ mod4 + comma; {e,r}
   sudo {poweroff,reboot}
 
 mod4 + comma; {h,t,g}
-  {firefox,tor-browser-en,google-chrome-stable}
+  i3-msg 'workspace 1'; {chromium,tor-browser-en,google-chrome-stable}
 
 mod4 + comma; b
   pere random
@@ -24,22 +24,20 @@ mod4 + comma; b
 mod4 + comma; f
   synclient touchpadoff=$(synclient -l | grep -c 'TouchpadOff.*=.*0')
 
-mod4 + comma; {_, shift +} l
-  xterm -class pwsafe -e {get-username-pass,get-pass}
+mod4 + comma; l
+  i3-msg 'workspace 8'; keepassx2 ~/passwords.kdbx
 
 mod4 + comma; n
-  xterm -class music -e ncmpcpp
+  i3-msg 'workspace 10'; gnome-terminal -e ncmpcpp
 
 mod4 + comma; shift + n
-  xterm -class music -e mosh cdchawth@nullsleep.csclub.uwaterloo.ca -- screen -DR
+  i3-msg 'workspace 10'; gnome-terminal -e 'mosh cdchawth@nullsleep.csclub.uwaterloo.ca -- screen -DR'
 
-mod4 + comma; d
-  xterm -title neovim -class terminal -e zsh -c nvim
-mod4 + comma; shift + d
-  xterm -title xterm-tmux -class terminal -e zsh -c tmux
+mod4 + comma; {_, shift +} d
+  i3-msg 'workspace 2'; gnome-terminal -e {nvim,tmux}
 
 mod4 + comma; c
-  chromium --app-id=bikioccmkafdpakkkcpdbppfkghcmihk
+  i3-msg 'workspace 7'; chromium --app-id=bikioccmkafdpakkkcpdbppfkghcmihk
 
 mod4 + comma; s
   steam-native

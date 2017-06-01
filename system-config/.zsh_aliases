@@ -27,7 +27,7 @@ alias xargs='xargs '
 
 function e {
     if [[ -n ${NVIM_LISTEN_ADDRESS} ]]; then
-        nvr $@
+        ~/.local/bin/nvr $@
     else
         nvim $@
     fi
@@ -37,10 +37,10 @@ alias ez='e ~/.zsh_aliases'
 alias sz='source ~/.zsh_aliases'
 function ed {
     if [[ -n ${NVIM_LISTEN_ADDRESS} ]]; then
-        nvr $1
-        nvr -c diffthis
-        nvr -O $2
-        nvr -c diffthis 
+        ~/.local/bin/nvr $1
+        ~/.local/bin/nvr -c diffthis
+        ~/.local/bin/nvr -O $2
+        ~/.local/bin/nvr -c diffthis 
     else
         nvim -d $@
     fi
@@ -50,7 +50,7 @@ alias man='man -i'
 alias less='less -i'
 
 alias rh='rehash'
-alias u='sudo zsh -c ''pacman -Syu; aura -Akua; ntpd -q; hwclock -w'''
+alias u='pacaur -Syu; sudo zsh -c ''ntpd -q; hwclock -w'''
 alias gpg='DISPLAY= gpg'
 
 function timestamp {
