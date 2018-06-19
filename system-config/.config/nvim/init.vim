@@ -216,10 +216,10 @@ vmap T <Plug>Sneak_S
 noremap v <C-b>
 noremap m <C-f>
 
-nnoremap <silent> <Up> :.m-2<CR>
-nnoremap <silent> <Down> :.m+1<CR>
-nnoremap <silent> <Left> :SidewaysLeft<CR>
-nnoremap <silent> <Right> :SidewaysRight<CR>
+nnoremap <silent> <Up> <Cmd>.m-2<CR>
+nnoremap <silent> <Down> <Cmd>.m+1<CR>
+nnoremap <silent> <Left> <Cmd>SidewaysLeft<CR>
+nnoremap <silent> <Right> <Cmd>SidewaysRight<CR>
 
 
 omap aa <Plug>SidewaysArgumentTextobjA
@@ -253,25 +253,16 @@ inoremap jF <C-]><Esc>
 inoremap JF <C-]><Esc>
 inoremap <C-u> <C-g>u<C-u>
 
-inoremap ek <C-]><Space>
-inoremap dj <C-]><Space>
-inoremap sj <C-]><Space>
-inoremap ls <C-]><Space>
-inoremap vj <C-]><Space>
-inoremap fdk <C-]><Space>
-" caps lock?
-inoremap ; <C-]><Space>
-inoremap fd; ;<Space>
-inoremap z <C-]><Space>
-inoremap fdz z
 inoremap fdo <C-o>
 inoremap fdn <C-n>
 inoremap fdp <C-p>
 inoremap fdu <C-k>
 inoremap fd. <C-]><Esc>>>A
 inoremap fd, <C-]><Esc><<A
-inoremap fdh <Esc>:nohlsearch<CR>a
+inoremap fdh <C-]><Cmd>nohlsearch<CR>
 inoremap fdd <C-g>u<C-R>=strftime("%Y-%m-%d")<CR>
+
+foo 
 
 " Leader mappings
 let mapleader = "s"
@@ -284,37 +275,37 @@ noremap <LocalLeader> <NOP>
 " fzf
 noremap <Leader>f <NOP>
 
-nnoremap <silent> <Leader>fk :Files<CR>
+nnoremap <silent> <Leader>fk <Cmd>Files<CR>
 nnoremap <Leader>fi :Files 
-nnoremap <silent> <Leader>fb :Buffers<CR>
-nnoremap <silent> <Leader>fl :Lines<CR>
-nnoremap <silent> <Leader>fo :execute 'Files ' . GetBufCwd()<CR>
-nnoremap <silent> <Leader>ff :History<CR>
-nnoremap <silent> <Leader>fh :Helptags<CR>
-nnoremap <silent> <Leader>f; :History:<CR>
-nnoremap <silent> <Leader>f/ :History/<CR>
-nnoremap <silent> <Leader>f? :History?<CR>
-nnoremap <silent> <Leader>fs :new<CR>:Files<CR>
-nnoremap <silent> <Leader>fv :vnew<CR>:Files<CR>
+nnoremap <silent> <Leader>fb <Cmd>Buffers<CR>
+nnoremap <silent> <Leader>fl <Cmd>Lines<CR>
+nnoremap <silent> <Leader>fo <Cmd>execute 'Files ' . GetBufCwd()<CR>
+nnoremap <silent> <Leader>ff <Cmd>History<CR>
+nnoremap <silent> <Leader>fh <Cmd>Helptags<CR>
+nnoremap <silent> <Leader>f; <Cmd>History:<CR>
+nnoremap <silent> <Leader>f/ <Cmd>History/<CR>
+nnoremap <silent> <Leader>f? <Cmd>History?<CR>
+nnoremap <silent> <Leader>fs <Cmd>new<CR>:Files<CR>
+nnoremap <silent> <Leader>fv <Cmd>vnew<CR>:Files<CR>
 
 " config files
 noremap <Leader>r <NOP>
 
-nnoremap <silent> <Leader>re :edit $MYVIMRC<CR>
-nnoremap <silent> <Leader>rs :source $MYVIMRC \| filetype detect<CR>
-nnoremap <silent> <Leader>rk :edit $HOME/.config/nvim/skeleton.%:e<CR>
+nnoremap <silent> <Leader>re <Cmd>edit $MYVIMRC<CR>
+nnoremap <silent> <Leader>rs <Cmd>source $MYVIMRC \| filetype detect<CR>
+nnoremap <silent> <Leader>rk <Cmd>edit $HOME/.config/nvim/skeleton.%:e<CR>
 nnoremap <silent> <Leader>ra
     \ :edit $HOME/.config/nvim/after/ftplugin/<C-r>=&filetype<CR>.vim<CR>
 
 " Settings and one-off plugins
 noremap <Leader>s <NOP>
 
-nnoremap <silent> <Leader>sh :nohlsearch<CR>
-nnoremap <silent> <Leader>sd :windo diffoff<CR>:bdelete<CR>
-nnoremap <silent> <Leader>su :UndotreeToggle<CR>
-nnoremap <silent> <Leader>sn :set number! \| set relativenumber!<CR>
-nnoremap <silent> <Leader>st :TagbarToggle<CR>
-nnoremap <silent> <Leader>ss :syntax sync fromstart<CR>
+nnoremap <silent> <Leader>sh <Cmd>nohlsearch<CR>
+nnoremap <silent> <Leader>sd <Cmd>windo diffoff<CR>:bdelete<CR>
+nnoremap <silent> <Leader>su <Cmd>UndotreeToggle<CR>
+nnoremap <silent> <Leader>sn <Cmd>set number! \| set relativenumber!<CR>
+nnoremap <silent> <Leader>st <Cmd>TagbarToggle<CR>
+nnoremap <silent> <Leader>ss <Cmd>syntax sync fromstart<CR>
 nnoremap <leader>sm :<C-u><C-r><C-r>='let @'. v:register .' = '.
     \ string(getreg(v:register))<CR><C-f><left>
 
@@ -323,15 +314,15 @@ noremap <Leader>k <NOP>
 noremap <Leader>ks <NOP>
 noremap <Leader>kv <NOP>
 
-nnoremap <silent> <Leader>kc :call SpawnShell('enew')<CR>
+nnoremap <silent> <Leader>kc <Cmd>call SpawnShell('enew')<CR>
 nnoremap <Leader>kf <C-^>
 nmap <silent> <Leader>ksl <Plug>tbufferline#SplitBuffer
-nnoremap <silent> <Leader>ksc :call SpawnShell('new')<CR>
-nnoremap <silent> <Leader>ksf :<C-u>sbuffer #<CR>
+nnoremap <silent> <Leader>ksc <Cmd>call SpawnShell('new')<CR>
+nnoremap <silent> <Leader>ksf <Cmd>sbuffer #<CR>
 nmap <silent> <Leader>kvl <Plug>tbufferline#VSplitBuffer
-nnoremap <silent> <Leader>kvc :call SpawnShell('vnew')<CR>
-nnoremap <silent> <Leader>kvf :<C-u>vertical sbuffer #<CR>
-nnoremap <silent> <Leader>kd :bdelete<CR>
+nnoremap <silent> <Leader>kvc <Cmd>call SpawnShell('vnew')<CR>
+nnoremap <silent> <Leader>kvf <Cmd>vertical sbuffer #<CR>
+nnoremap <silent> <Leader>kd <Cmd>bdelete<CR>
 nmap <silent> <Leader>kj <Plug>tbufferline#StepForward
 nmap <silent> <Leader>kk <Plug>tbufferline#StepBack
 nnoremap <Leader>ko :edit <C-r>=GetBufCwd()<CR>/<C-f>a

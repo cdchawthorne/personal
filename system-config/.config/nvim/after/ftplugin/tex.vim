@@ -122,31 +122,31 @@ command! -buffer -nargs=1 -complete=customlist,LaTeXEnvironmentComplete
             \ Lel call LaTeXEnvironment("<args>", "label")
 
 " TODO: check if current line is empty
-nnoremap <silent> <buffer> <LocalLeader>m :call LaTeXDisplayMath()<CR>
+nnoremap <silent> <buffer> <LocalLeader>m <Cmd>call LaTeXDisplayMath()<CR>
 nnoremap <buffer> <LocalLeader>e :Le 
 nnoremap <buffer> <LocalLeader>f :Lel 
 nnoremap <silent> <buffer> <LocalLeader>a
             \ :set operatorfunc=LaTeXEnvironmentAroundOp<CR>g@
 nnoremap <silent> <buffer> <LocalLeader>d
-            \ :call search('^\\begin{document}$', 'ws')<CR>
+            \ <Cmd>call search('^\\begin{document}$', 'ws')<CR>
 vnoremap <silent> <buffer> <LocalLeader>a
-            \ :<C-u>call LaTeXEnvironmentAroundOp(visualmode())<CR>
+            \ <Cmd><C-u>call LaTeXEnvironmentAroundOp(visualmode())<CR>
 vnoremap <silent> <buffer> <LocalLeader>d
-            \ :call search('^\\begin{document}$', 'ws')<CR>
+            \ <Cmd>call search('^\\begin{document}$', 'ws')<CR>
 nnoremap <silent> <buffer> <LocalLeader>c
-            \ :call LaTeXCompileAndView()<CR>
-nnoremap <silent> <buffer> <LocalLeader>v :call PdfView()<CR>
-nnoremap <silent> <buffer> <LocalLeader>r :call LaTeXClean()<CR>
+            \ <Cmd>call LaTeXCompileAndView()<CR>
+nnoremap <silent> <buffer> <LocalLeader>v <Cmd>call PdfView()<CR>
+nnoremap <silent> <buffer> <LocalLeader>r <Cmd>call LaTeXClean()<CR>
 
 inoremap <buffer> kd \
 
 inoremap <buffer> fde <C-]><C-g>u<Esc>:Le 
 inoremap <buffer> fdf <C-]><C-g>u<Esc>:Lel 
-inoremap <silent> <buffer> fdm <C-]><C-g>u<Esc>:call LaTeXDisplayMath()<CR>
-inoremap <buffer> fdt <Space><C-g>u\tfdc{}:<C-]><Esc>gqgq:Le tcd<CR>
+inoremap <silent> <buffer> fdm <C-]><C-g>u<Cmd>:call LaTeXDisplayMath()<CR>
+inoremap <buffer> fdt <Space><C-g>u\tfdc{}:<C-]><Esc>gqgq<Cmd>Le tcd<CR>
 inoremap <buffer> fdl <C-]><C-g>u<Esc>vF\c
 inoremap <buffer> fdv <C-]><C-g>u<Esc>dFvxa
-inoremap <buffer> fdc <C-]><C-g>u<C-o>:call LaTeXCompileAndView()<CR>
+inoremap <buffer> fdc <C-]><C-g>u<Cmd>call LaTeXCompileAndView()<CR>
 
 " TODO: semigroups
 iabbrev <buffer> group grape
