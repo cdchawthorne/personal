@@ -262,8 +262,6 @@ inoremap fd, <C-]><Esc><<A
 inoremap fdh <C-]><Cmd>nohlsearch<CR>
 inoremap fdd <C-g>u<C-R>=strftime("%Y-%m-%d")<CR>
 
-foo 
-
 " Leader mappings
 let mapleader = "s"
 let maplocalleader = mapleader . "l"
