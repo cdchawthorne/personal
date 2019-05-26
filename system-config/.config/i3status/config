@@ -14,26 +14,12 @@ general {
 
 order += "volume master"
 order += "wireless _first_"
-order += "battery 0"
 order += "time"
 
 wireless _first_ {
         format_up = "| W: %essid |"
         format_down = "| W: down |"
         color_good = "#FFFFFF"
-}
-
-battery 0 {
-        format = "%status %percentage %remaining |"
-        format_down = "No battery |"
-        status_chr = "⚇"
-        status_bat = "⚡"
-        status_full = "☻"
-        low_threshold = 10
-        threshold_type = "time"
-        last_full_capacity = true
-        hide_seconds = true
-        integer_battery_capacity = true
 }
 
 time {

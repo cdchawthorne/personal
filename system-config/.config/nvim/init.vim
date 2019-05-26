@@ -83,8 +83,6 @@ set timeoutlen=1000
 set undofile
 set undodir=$XDG_DATA_HOME/nvim/undo
 
-let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 1
-
 let g:terminal_scrollback_buffer_size = 100000
 
 let g:inkpot_black_background=1
@@ -183,12 +181,10 @@ function! GetBufCwd() abort
 endfunction
 
 function! SpawnShell(layout_cmd) abort
-  let nvim_cwd = getcwd()
+  let cwd = GetBufCwd()
   " TODO: escape spaces and stuff
-  execute 'cd ' . GetBufCwd()
   silent execute a:layout_cmd
-  call termopen([$SHELL])
-  execute 'cd ' . nvim_cwd
+  call termopen([$SHELL], {'cwd': cwd})
   startinsert
 endfunction
 

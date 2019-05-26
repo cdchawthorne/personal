@@ -1,6 +1,6 @@
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:hack 14
+font pango:hack 27
 new_window pixel
 
 set $up k
@@ -144,10 +144,13 @@ bar {
 }
 
 assign [class="^Firefox$"] 1
-assign [class="^Chromium$"] 1
-assign [class="^Google-chrome$"] 1
 assign [class="^terminal$"] 2
-assign [class="^Keepassx2$"] 8
-assign [class="^music$"] 10
+assign [class="^discord$"] 6
+assign [class="^skype$"] 6
+# Use title to allow auto-type window in any desktop
+assign [title="^KeePassXC"] 7
+assign [class="^music$"] 8
+assign [class="^calendar$"] 9
+assign [class="^Sylpheed$"] 10
 
 workspace_layout tabbed

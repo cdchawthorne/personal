@@ -16,7 +16,8 @@ fi
 pere random
 
 sxhkd &
-chromium &
+firefox &
+keepassxc shared/passwords/passwords.kdbx &
 xinput set-prop 10 250 1
 xset s off
 

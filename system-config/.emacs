@@ -1,8 +1,8 @@
 (setq
   ;; Automatically follow symlinks to version-controlled files
   vc-follow-symlinks t
-  backup-directory-alist `((".*" . ,(concat (getenv "HOME") "/utilities/emacs_backups")))
-  auto-save-file-name-transforms `((".*" ,(concat (getenv "HOME") "/utilities/emacs_autosaves/\\1") t))
+  backup-directory-alist `((".*" . ,(concat (getenv "XDG_DATA_HOME") "/emacs/backups")))
+  auto-save-file-name-transforms `((".*" ,(concat (getenv "XDG_DATA_HOME") "emacs/autosaves") t))
   show-paren-delay 0
 )
 

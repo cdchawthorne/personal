@@ -11,9 +11,10 @@ if [[ $# -ne 2 ]]; then
 fi
 
 WPA_OUTFILE="$(mktemp)"
-INTERFACE=wlp1s0
+# INTERFACE=wlp1s0
 # INTERFACE=wlp0s20u1
 # INTERFACE=wlp3s0b1
+INTERFACE=wlp0s20f0u9
 
 function kill_things {
     dhclient -x &> /dev/null

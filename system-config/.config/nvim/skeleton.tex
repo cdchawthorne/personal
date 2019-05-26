@@ -4,6 +4,7 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{amsmath, amssymb, tikz-cd, centernot, mathtools, csquotes,
             mathrsfs, hyperref, amsthm, xparse, microtype}
+\usepackage[utf8]{inputenc}
 \usepackage[nameinlink]{cleveref}
 \usepackage{IEEEtrantools}
 
@@ -87,11 +88,11 @@
 }
 
 \NewDocumentEnvironment{tcd}{s}{
-  \IfBooleanTF{#1}{\begin{equation}}{\[}
+  \IfBooleanTF{#1}{\begin{equation}}{\begin{equation*}}
     \begin{tikzcd}
 }{
     \end{tikzcd}
-  \IfBooleanTF{#1}{\end{equation}}{\]}
+  \IfBooleanTF{#1}{\end{equation}}{\end{equation*}}
   \ignorespacesafterend
 }
 
@@ -145,10 +146,11 @@
 \newcommand \tif {\text{if }}
 
 \newcommand \lit [1] {\item[#1]}
-\newcommand \pip [2] {\item[\underline{(#1)\(\implies\)(#2)}]}
-\newcommand \piff [2] {\item[\underline{(#1)\(\iff\)(#2)}]}
+\newcommand \pip [2] {\item[\underline{(#1)$\implies$(#2)}]}
+\newcommand \piff [2] {\item[\underline{(#1)$\iff$(#2)}]}
 \newcommand \pdif [2] {\frac{\partial #1}{\partial #2}}
 \newcommand \dif [2] {\frac{\mathrm{d} #1}{\mathrm{d} #2}}
+\newcommand \symdif {\mathbin\triangle}
 
 % Independence symbol
 % From http://tex.stackexchange.com/a/229826/106594
@@ -186,7 +188,7 @@
 \DeclarePairedDelimiter \floor \lfloor \rfloor
 \DeclarePairedDelimiter \ceil \lceil \rceil
 
-\DeclarePairedDelimiterX{\set}[1]{\{}{\}}{\, #1 \,}
+\DeclarePairedDelimiterX \set [1] \{ \} {\, #1 \,}
 
 \newcommand \lhs {\mathrm{LHS}}
 \newcommand \rhs {\mathrm{RHS}}

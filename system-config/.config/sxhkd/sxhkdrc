@@ -12,32 +12,35 @@ mod4 + p
 mod4 + {minus,equal,BackSpace}
   mpc -h ~/.mpd/socket {toggle,next,prev}
 
-mod4 + comma; {e,r}
+mod4 + comma; {q,w}
   sudo {poweroff,reboot}
 
-mod4 + comma; {h,t,g}
-  i3-msg 'workspace 1'; {chromium,tor-browser-en,google-chrome-stable}
+mod4 + comma; {f,g}
+  i3-msg 'workspace 1'; firefox -P {default, foo}
 
 mod4 + comma; b
   pere random
 
-mod4 + comma; f
-  synclient touchpadoff=$(synclient -l | grep -c 'TouchpadOff.*=.*0')
+mod4 + comma; t
+  i3-msg 'workspace 2'; gnome-terminal --title terminal -- nvim
 
-mod4 + comma; l
-  i3-msg 'workspace 8'; keepassx2 ~/passwords.kdbx
+mod4 + comma; m
+  i3-msg 'workspace 8'; gnome-terminal --title music -- ncmpcpp
 
-mod4 + comma; n
-  i3-msg 'workspace 10'; gnome-terminal -e ncmpcpp
-
-mod4 + comma; shift + n
-  i3-msg 'workspace 10'; gnome-terminal -e 'mosh cdchawth@nullsleep.csclub.uwaterloo.ca -- screen -DR'
-
-mod4 + comma; {_, shift +} d
-  i3-msg 'workspace 2'; gnome-terminal -e {nvim,tmux}
+mod4 + comma; shift + m
+  i3-msg 'workspace 8'; gnome-terminal --title music -- mosh cdchawth@nullsleep.csclub.uwaterloo.ca -- screen -DR
 
 mod4 + comma; c
-  i3-msg 'workspace 7'; chromium --app-id=bikioccmkafdpakkkcpdbppfkghcmihk
+  i3-msg 'workspace 9'; gnome-terminal --title calendar -- calcurse
+
+mod4 + comma; e
+  i3-msg 'workspace 10'; sylpheed
 
 mod4 + comma; s
-  steam-native
+  skypeforlinux
+
+mod4 + comma; a
+  asoundconf-gtk
+
+mod4 + comma; d
+  discord

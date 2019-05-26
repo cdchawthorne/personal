@@ -17,7 +17,7 @@ alias d='cd'
 alias c='cd'
 alias dc='cd'
 
-alias r='cd ~/documents/education/masters/research'
+alias r='cd ~/documents/education/phd/research'
 alias rlwrap='rlwrap -s 1000000'
 alias math='rlwrap math'
 alias ocaml='rlwrap ocaml'
@@ -76,23 +76,31 @@ function to {
 }
 
 function backup {
-    home_excludes=(media/music media/videos media/hgttg .local builds
-                   downloads .cache)
-    exclude_flags=()
-    for dir in ${home_excludes}; do
-        exclude_flags=(${exclude_flags} --exclude ${HOME}/${dir})
+    if [[ $# -ge 2 ]]; then
+        echo "USAGE: backup [full|incremental]" 1>&2
+        return 1
+    fi
+    targets=(~/shared/media ~/data/documents ~/data/scratch \
+             ~/.ssh ~/.gnupg /etc/fstab)
+    include_flags=()
+    for dir in ${targets}; do
+        include_flags=(${include_flags} --include ${dir})
     done
 
-    remote_machine=cdchawth@linux.math.uwaterloo.ca
-    remote_path="utilities/remote_backups/$(hostname)"
-    pwsafe_db=${HOME}/.pwsafe.dat
+    remote_machine=backups@cdchawthorne.com
+    remote_path=backups/"$(hostname)"
+    staging_path=${HOME}/data/backup_staging/duplicity
+    password_db=${HOME}/shared/passwords/passwords.kdbx
     [[ $# -eq 1 && $1 == full ]] && mode=full || mode=incremental
 
-    scp ${pwsafe_db} "${remote_machine}:~/${remote_path}"
+    scp ${password_db} ${remote_machine}:${remote_path}
 
-    duplicity ${mode} --ssh-askpass --progress \
-        --include /etc ${exclude_flags} --include ${HOME} --exclude '**' / \
-        sftp://${remote_machine}/${remote_path}/duplicity
+    # duplicity ${mode} --ssh-askpass --progress \
+    #     ${include_flags} --exclude '**' / \
+    #     sftp://${remote_machine}/${remote_path}/duplicity
+    duplicity ${mode} --progress ${include_flags} --exclude '**' / \
+      file://${staging_path}
+    rsync -avP ${staging_path}/ ${remote_machine}:${remote_path}/duplicity
 }
 
 function x {
