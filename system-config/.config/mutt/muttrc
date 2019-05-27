@@ -1,5 +1,9 @@
-#TODO: downloads directory
-unset imap_passive
+#TODO: keybindings
+#TODO: password hygiene in mbsync
+#TODO: color old unreads differently?
+#TODO: notification for new email?
+#TODO: all mail instead of inbox for protonmail?
+
 set mailcap_path=~/.config/mutt/mailcap
 set header_cache=~/.cache/mutt
 set message_cachedir=~/.cache/mutt
@@ -20,6 +24,7 @@ set include='yes'
 set beep='no'
 set uncollapse_jump='yes' #TODO: ?
 set pager_context=3
+set wait_key='no'
 # set uncollapse_new='yes'?
 
 source "~/.config/mutt/sidebar"
@@ -28,6 +33,7 @@ source "~/.config/mutt/sidebar"
 folder-hook .* 'exec collapse-all'
 
 macro attach 'V' "<pipe-entry>cat >~/.cache/mutt/mail.html && firefox ~/.cache/mutt/mail.html<enter>"
+macro index '$' '<sync-mailbox><shell-escape>mbsync -a &>/dev/null &<enter>'
 
 alternates cdchawthorne@gmail.com|the.sesquipedalian.polyglot@gmail.com
 alternates cdchawthorne@protonmail.com|anzweldt@protonmail.com
@@ -46,10 +52,11 @@ macro index 'c' '<change-folder>?<change-dir><home>^K=<enter>'
 source "~/.config/mutt/dracula.muttrc"
 
 uncolor index "~(~N)"
+uncolor index "~(~O)"
+uncolor index "~N"
+uncolor index "~O"
 # TODO: different colour
 color index brightblue default "~(~N)"
-uncolor index "~N"
+color index brightblue default "~(~O)"
 color index color117 default "~N"
-
-#TODO: keybindings
-#TODO: password hygiene
+color index color117 default "~O"

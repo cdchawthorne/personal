@@ -22,7 +22,7 @@ mod4 + comma; b
   pere random
 
 mod4 + comma; t
-  i3-msg 'workspace 2'; gnome-terminal --title terminal -- nvim
+  i3-msg 'workspace 2'; gnome-terminal -- nvim
 
 mod4 + comma; m
   i3-msg 'workspace 8'; gnome-terminal --title music -- ncmpcpp
@@ -34,7 +34,7 @@ mod4 + comma; c
   i3-msg 'workspace 9'; gnome-terminal --title calendar -- calcurse
 
 mod4 + comma; e
-  i3-msg 'workspace 10'; sylpheed
+  i3-msg 'workspace 10'; gnome-terminal --title email -- zsh -c 'cd ~/downloads; mutt'
 
 mod4 + comma; s
   skypeforlinux

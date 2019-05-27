@@ -144,13 +144,10 @@ bar {
 }
 
 assign [class="^Firefox$"] 1
-assign [class="^terminal$"] 2
 assign [class="^discord$"] 6
-assign [class="^skype$"] 6
+assign [class="^Skype$"] 6
 # Use title to allow auto-type window in any desktop
 assign [title="^KeePassXC"] 7
-assign [class="^music$"] 8
-assign [class="^calendar$"] 9
-assign [class="^Sylpheed$"] 10
 
+hide_edge_borders smart
 workspace_layout tabbed
