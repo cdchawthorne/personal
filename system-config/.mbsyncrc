@@ -1,0 +1,42 @@
+IMAPAccount protonmail
+Host 127.0.0.1
+Port 1143
+User cdchawthorne@protonmail.com
+PassCmd "cat ~/.mbsync-pm-pass"
+SSLType None
+
+IMAPStore protonmail-remote
+Account protonmail
+
+MaildirStore protonmail-local
+Subfolders Verbatim
+Path ~/.mail/protonmail/
+Inbox ~/.mail/protonmail/INBOX
+
+Channel protonmail
+Master :protonmail-remote:
+Slave :protonmail-local:
+Patterns *
+Create Both
+SyncState *
+
+IMAPAccount uwaterloo
+Host connect.uwaterloo.ca
+User cdchawth
+PassCmd "cat ~/.mbsync-uw-pass"
+SSLType STARTTLS
+
+IMAPStore uwaterloo-remote
+Account uwaterloo
+
+MaildirStore uwaterloo-local
+Subfolders Verbatim
+Path ~/.mail/uwaterloo/
+Inbox ~/.mail/uwaterloo/Inbox
+
+Channel uwaterloo
+Master :uwaterloo-remote:
+Slave :uwaterloo-local:
+Patterns *
+Create Both
+SyncState *
