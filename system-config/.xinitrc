@@ -16,8 +16,8 @@ fi
 pere random
 
 sxhkd &
-firefox &
-keepassxc shared/passwords/passwords.kdbx &
+keepassxc .passwords/passwords.kdbx &
+protonmail-bridge --no-window &
 xinput set-prop 10 250 1
 xset s off
 

@@ -1,6 +1,6 @@
 " TODO: should all of this really be in after?
 
-setlocal tw=79
+setlocal textwidth=79
 
 " Functions
 
@@ -101,16 +101,30 @@ function! LaTeXEnvironmentAroundOp(type)
     execute "normal! O" . begenv
 endfunction
 
+function! LaTeXChunkToFormat()
+  let break_pattern =  '\m\C^ *\(\\\[\|\\\]\|\\begin\|\\end\|\\item\|\\lit{'
+  let break_pattern .= '\|\\case\|\\label{\|$\)'
+  call search(break_pattern, 'bWc')
+  if getline(".") !~# '\m\C^ *\\['
+    normal! j
+  endif
+  normal! V
+  " Disallow current position to force cursor to actually move
+  let break_below = search(break_pattern, 'W')
+  normal! k
+endfunction
+
 let g:latex_envs = [
             \ "pf", "rpf", "lrpf", "ea", "tcd", "equation",
             \ "caselist", "theorem", "lemma", "proposition", "claim",
             \ "corollary", "fact", "todo", "definition", "notation",
             \ "question", "remark", "exercise", "example", "enumerate",
-            \ "itemize", "description", "pmatrix", "verbatim",
+            \ "itemize", "description", "pmatrix", "vmatrix", "verbatim",
             \ "tabular", "menumerate", "mitemize", "mdescription",
             \ "cases", "aside", "subclaim", "embedlua", "luacode",
             \ "tikzcd", "center", "figure", "table", "multline",
-            \ "align", "split", "conjecture" ]
+            \ "align", "split", "conjecture", "ytableau", "ydiagram", "yt",
+            \ "yd", "scratch" ]
 call sort(g:latex_envs)
 function! LaTeXEnvironmentComplete(ArgLead, CmdLine, CursorPos)
     return filter(copy(g:latex_envs), 'v:val =~# "^' . a:ArgLead . '"')
@@ -124,7 +138,7 @@ command! -buffer -nargs=1 -complete=customlist,LaTeXEnvironmentComplete
 " TODO: check if current line is empty
 nnoremap <silent> <buffer> <LocalLeader>m <Cmd>call LaTeXDisplayMath()<CR>
 nnoremap <buffer> <LocalLeader>e :Le 
-nnoremap <buffer> <LocalLeader>f :Lel 
+nnoremap <buffer> <LocalLeader>l :Lel 
 nnoremap <silent> <buffer> <LocalLeader>a
             \ :set operatorfunc=LaTeXEnvironmentAroundOp<CR>g@
 nnoremap <silent> <buffer> <LocalLeader>d
@@ -137,6 +151,7 @@ nnoremap <silent> <buffer> <LocalLeader>c
             \ <Cmd>call LaTeXCompileAndView()<CR>
 nnoremap <silent> <buffer> <LocalLeader>v <Cmd>call PdfView()<CR>
 nnoremap <silent> <buffer> <LocalLeader>r <Cmd>call LaTeXClean()<CR>
+nnoremap <silent> <buffer> <LocalLeader>f gw<Cmd>call LaTeXChunkToFormat()<CR>
 
 inoremap <buffer> kd \
 
@@ -147,6 +162,10 @@ inoremap <buffer> fdt <Space><C-g>u\tfdc{}:<C-]><Esc>gqgq<Cmd>Le tcd<CR>
 inoremap <buffer> fdl <C-]><C-g>u<Esc>vF\c
 inoremap <buffer> fdv <C-]><C-g>u<Esc>dFvxa
 inoremap <buffer> fdc <C-]><C-g>u<Cmd>call LaTeXCompileAndView()<CR>
+inoremap <buffer> fds <C-]><C-g>u<Esc>gw<Cmd>call LaTeXChunkToFormat()<CR>a
+
+onoremap <silent> <buffer> ic <Cmd>call LaTeXChunkToFormat()<CR>
+vnoremap <silent> <buffer> ic <Cmd>call LaTeXChunkToFormat()<CR>
 
 " TODO: semigroups
 iabbrev <buffer> group grape
@@ -157,6 +176,10 @@ iabbrev <buffer> subgroup subgrape
 iabbrev <buffer> subgroups subgrapes
 iabbrev <buffer> Subgroup Subgrape
 iabbrev <buffer> Subgroups Subgrapes
+iabbrev <buffer> hypergroup hypergrape
+iabbrev <buffer> hypergroups hypergrapes
+iabbrev <buffer> Hypergroup Hypergrape
+iabbrev <buffer> Hypergroups Hypergrapes
 iabbrev <buffer> groupoid grape-oid
 iabbrev <buffer> groupoids grape-oids
 iabbrev <buffer> Groupoid Grape-oid
@@ -177,6 +200,10 @@ iabbrev <buffer> subgroup: subgrape:
 iabbrev <buffer> subgroups: subgrapes:
 iabbrev <buffer> Subgroup: Subgrape:
 iabbrev <buffer> Subgroups: Subgrapes:
+iabbrev <buffer> hypergroup: hypergrape:
+iabbrev <buffer> hypergroups: hypergrapes:
+iabbrev <buffer> Hypergroup: Hypergrape:
+iabbrev <buffer> Hypergroups: Hypergrapes:
 iabbrev <buffer> groupoid: grape-oid:
 iabbrev <buffer> groupoids: grape-oids:
 iabbrev <buffer> Groupoid: Grape-oid:
@@ -255,8 +282,8 @@ let command_maps = {
             \ 'i' : 'emph{',
             \ ';' : 'models ',
             \ 'l' : 'ell ',
-            \ 'g' : 'lit{',
             \ 'v' : 'vee ',
+            \ 'g' : 'displaystyle ',
             \ "'" : 'enquote{',
             \ 'si' : 'implies ',
             \ 'ss' : 'substack{',
@@ -264,7 +291,13 @@ let command_maps = {
             \ 'se' : 'exists ',
             \ 'so' : 'operatorname{',
             \ 'sd' : 'mathrm{d}',
+            \ 'sr' : 'relax ',
             \ 'st' : 'text{',
+            \ 'sl' : 'lit{',
+            \ 's,' : 'trianglelefteq ',
+            \ 's.' : 'trianglerighteq ',
+            \ 's<' : 'triangleleft ',
+            \ 's>' : 'triangleright ',
             \ 'dl' : 'ldots ',
             \ 'dc' : 'cdots ',
             \ 'dv' : 'vdots ',
@@ -282,6 +315,7 @@ let command_maps = {
             \ 'al' : 'overline{',
             \ 'at' : 'widetilde{',
             \ 'ah' : 'widehat{',
+            \ 'ac' : 'widecheck{',
             \ 'ab' : 'overbrace{',
             \ 'aa' : 'overrightarrow{',
             \ 'ul' : 'underline{',
@@ -341,6 +375,7 @@ let letter_maps = {
             \ 'X': 'Xi ',
             \ 'Y': 'Psi ',
             \ ';': 'aleph ',
+            \ '^': 'nabla '
             \ }
 for [key, mapping] in items(letter_maps)
     execute printf('inoremap <buffer> %s \%s', letter_leader . key, mapping)

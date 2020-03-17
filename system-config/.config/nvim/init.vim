@@ -2,10 +2,13 @@
 " Mappings and functions are allowed to clobber the z mark or register.
 "
 
+" TODO: maybe disable tbufferline by default?
+" TODO: use guicursor
 " TODO: async grep
 " TODO: set up an autocmd that checks the current mode and sets StatusLine and
 "       StatusLineNC accordingly
 " TODO: vim-surround appears to be disabling some <leader> operator mappings
+" TODO: why did my cursor stop working?
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -18,7 +21,6 @@ Plug 'cdchawthorne/nvim-tbufferline'
 Plug 'ciaranm/inkpot'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'majutsushi/tagbar', {'on' : 'TagbarToggle'}
 Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
 Plug 'neovimhaskell/haskell-vim', {'for': 'haskell'}
 Plug 'tpope/vim-commentary'
@@ -29,6 +31,14 @@ Plug 'AndrewRadev/sideways.vim'
 Plug 'justinmk/vim-dirvish'
 Plug 'justinmk/vim-sneak'
 
+" Plug 'bluz71/vim-nightfly-guicolors'
+" Plug 'bluz71/vim-moonfly-colors'
+" Plug 'haishanh/night-owl.vim'
+" Plug 'neg-serg/neg'
+" Plug 'tomasr/molokai'
+" Plug 'chriskempson/base16-vim'
+
+" Plug 'majutsushi/tagbar', {'on' : 'TagbarToggle'}
 " Plug 'benekastah/neomake'
 " Plug 'jalvesaq/vimcmdline'
 " Plug 'junegunn/vim-easy-align'
@@ -55,10 +65,11 @@ endif
 " Builtin options
 set backup
 set backupdir=$XDG_DATA_HOME/nvim/backup
+set breakat=\ 
 set colorcolumn=80
-set cursorline
 set expandtab
 set nofoldenable
+set guicursor=n-v-c-sm:block,i-ci-ve-r-cr-o:hor20,a:blinkon500-blinkoff500
 set hidden
 set ignorecase
 set inccommand=split
@@ -151,17 +162,8 @@ augroup END
 augroup terminal_autocmds
   autocmd!
 
-  autocmd TermOpen * setlocal nocursorline
+  autocmd TermOpen * setlocal nonumber norelativenumber
   autocmd TermClose * execute 'bdelete! ' . expand('<abuf>')
-augroup END
-
-augroup cursorline
-  autocmd!
-
-  autocmd WinEnter * set cursorline
-  autocmd WinLeave * set nocursorline
-  autocmd InsertEnter * set nocursorline
-  autocmd InsertLeave * set cursorline
 augroup END
 
 
@@ -205,6 +207,8 @@ noremap <Tab> %
 nmap <Space> <Plug>tbufferline#Buffer
 nnoremap S m
 nnoremap <silent> x :write<CR>
+nnoremap q xp
+nnoremap Q q
 nmap t <Plug>Sneak_s
 nmap T <Plug>Sneak_S
 vmap t <Plug>Sneak_s
@@ -248,6 +252,7 @@ inoremap Jf <C-]><Esc>
 inoremap jF <C-]><Esc>
 inoremap JF <C-]><Esc>
 inoremap <C-u> <C-g>u<C-u>
+inoremap <C-w> NO
 
 inoremap fdo <C-o>
 inoremap fdn <C-n>
@@ -257,6 +262,7 @@ inoremap fd. <C-]><Esc>>>A
 inoremap fd, <C-]><Esc><<A
 inoremap fdh <C-]><Cmd>nohlsearch<CR>
 inoremap fdd <C-g>u<C-R>=strftime("%Y-%m-%d")<CR>
+inoremap fds <C-g>u<C-]><Esc>gqgqA<Space>
 
 " Leader mappings
 let mapleader = "s"
@@ -274,8 +280,8 @@ nnoremap <Leader>fi :Files
 nnoremap <silent> <Leader>fb <Cmd>Buffers<CR>
 nnoremap <silent> <Leader>fl <Cmd>Lines<CR>
 nnoremap <silent> <Leader>fo <Cmd>execute 'Files ' . GetBufCwd()<CR>
-nnoremap <silent> <Leader>ff <Cmd>History<CR>
-nnoremap <silent> <Leader>fh <Cmd>Helptags<CR>
+nnoremap <silent> <Leader>fh <Cmd>History<CR>
+nnoremap <silent> <Leader>fm <Cmd>Helptags<CR>
 nnoremap <silent> <Leader>f; <Cmd>History:<CR>
 nnoremap <silent> <Leader>f/ <Cmd>History/<CR>
 nnoremap <silent> <Leader>f? <Cmd>History?<CR>

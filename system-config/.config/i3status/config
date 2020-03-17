@@ -5,28 +5,49 @@
 # The following line should contain a sharp s:
 # ß
 # If the above line is not correctly displayed, fix your editor first!
+# TODO: put delimiters in static_string, use separator_block_width = 0
+# everywhere, maybe use external_script instead of async_script
 
 general {
+        output_format = 'i3bar'
         colors = true
         interval = 5
-        separator = ""
+        # separator = ""
 }
 
 order += "volume master"
 order += "wireless _first_"
+order += "battery 0"
 order += "time"
 
 wireless _first_ {
         format_up = "| W: %essid |"
         format_down = "| W: down |"
         color_good = "#FFFFFF"
+        separator_block_width = 0
+}
+
+battery 0 {
+        format = " %status %percentage %remaining | "
+        format_down = " No battery | "
+        status_chr = "⚇"
+        status_bat = "⚡"
+        status_full = "☻"
+        low_threshold = 10
+        threshold_type = "time"
+        last_full_capacity = true
+        hide_seconds = true
+        integer_battery_capacity = true
+        separator_block_width = 0
 }
 
 time {
         format = "%Y-%m-%d %H:%M"
+        separator_block_width = 0
 }
 
 volume master {
         format = "♪: %volume"
         format_muted = "♪: %volume"
+        separator_block_width = 0
 }

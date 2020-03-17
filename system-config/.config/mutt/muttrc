@@ -27,13 +27,13 @@ set pager_context=3
 set wait_key='no'
 # set uncollapse_new='yes'?
 
-source "~/.config/mutt/sidebar"
+# source "~/.config/mutt/sidebar"
 
 # See https://pbrisbin.com/posts/faster_mail/ for colouring, etc.
 folder-hook .* 'exec collapse-all'
 
-macro attach 'V' "<pipe-entry>cat >~/.cache/mutt/mail.html && firefox ~/.cache/mutt/mail.html<enter>"
-macro index '$' '<sync-mailbox><shell-escape>mbsync -a &>/dev/null &<enter>'
+macro attach 'V' "<pipe-entry>cat >~/.cache/mutt/mail.html<enter><shell-escape>firefox --new-window ~/.cache/mutt/mail.html &> /dev/null &<enter>"
+macro index,pager '`' "<pipe-message>sed -rne '/^^Message-I[Dd]: <(.*)>$/{s__mid:\\1_p;q}' | xargs -r -n 1 notmuch search --output=files | sed -rne '/INBOX|Inbox/s_(.*[^^S])S?$_mv \\1S \\1_p' | at now + 8 hours<enter>"
 
 alternates cdchawthorne@gmail.com|the.sesquipedalian.polyglot@gmail.com
 alternates cdchawthorne@protonmail.com|anzweldt@protonmail.com

@@ -50,7 +50,7 @@ alias man='man -i'
 alias less='less -i'
 
 alias rh='rehash'
-alias u='pacaur -Syu; sudo zsh -c ''ntpd -q; hwclock -w'''
+alias settime='sudo zsh -c ''ntpd -q; hwclock -w'''
 alias gpg='DISPLAY= gpg'
 
 function timestamp {
@@ -106,7 +106,7 @@ function backup {
 function x {
     if ! pgrep X &> /dev/null; then
         builtin cd
-        command startx #-- -keeptty &> "${HOME}/.xsession-errors"
+        command startx
     fi
 }
 
@@ -134,18 +134,24 @@ function usb-backup {
 }
 
 function a {
-    cd ~/documents/education/undergrad/courses/$1
+  cd ~/documents/education/undergrad/courses/$1
 }
 function b {
-    cd ~/documents/education/masters/courses/$1
+  cd ~/documents/education/masters/courses/$1
+}
+function f {
+  cd ~/documents/education/phd/courses/$1
+}
+function t {
+  cd ~/documents/education/phd/ta/$1
 }
 function m {
-    pdf ~/documents/education/books/$1
+  pdf ~/documents/education/books/$1
 }
 
 function ruw {
     target='cdchawth@taurine.csclub.uwaterloo.ca:~/utilities/rsync_backups'
-    rsync -avz --delete ~/documents/education/masters ${target}
+    # rsync -avz --delete ~/documents/education/masters ${target}
     rsync -avz --delete ~/documents/education/phd ${target}
 }
 function rbooks {

@@ -12,3 +12,4 @@ set show-scrollbars false
 set recolor-keephue true
 set recolor-darkcolor "#ffffff"
 set incremental-search false
+#set recolor true

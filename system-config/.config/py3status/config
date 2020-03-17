@@ -1,0 +1,71 @@
+# i3status configuration file.
+# see "man i3status" for documentation.
+
+# It is important that this file is edited as UTF-8.
+# The following line should contain a sharp s:
+# ß
+# If the above line is not correctly displayed, fix your editor first!
+
+# TODO: limit mpd line width
+#       Apparently SIGUSR1 refreshes all modules? Maybe have mutt send this
+#       Apparently we can use pango in format strings
+
+
+order += "mpd_status"
+order += "external_script pm"
+order += "external_script uw"
+order += "wireless wlp1s0"
+order += "battery 0"
+order += "volume master"
+order += "time"
+
+mpd_status {
+  host = "/home/cdchawthorne/.mpd/socket"
+  format = "[[[{artist}] - {title}]|[{file}]]"
+  hide_on_error = true
+  separator_block_width = 30
+}
+
+wireless wlp1s0 {
+  format_up = "y(φ): %essid"
+  color_good = "#009900"
+  format_down = "y(φ): down"
+  separator_block_width = 30
+}
+
+time {
+  format = "%a %b %d %H:%M"
+  separator_block_width = 30
+}
+
+volume master {
+  format = "♪ %volume"
+  format_muted = "♪ %volume"
+  separator_block_width = 30
+}
+
+external_script pm {
+  cache_timeout = 5
+  script_path = "/home/cdchawthorne/bin/unread-count-pm"
+  separator_block_width = 30
+}
+
+external_script uw {
+  cache_timeout = 5
+  script_path = "/home/cdchawthorne/bin/unread-count-uw"
+  separator_block_width = 30
+}
+
+battery 0 {
+        format = "%status %percentage %remaining"
+        format_down = "No battery"
+        status_chr = "⚇"
+        status_bat = "⚡"
+        status_full = "☻"
+        low_threshold = 10
+        threshold_type = "time"
+        last_full_capacity = true
+        hide_seconds = true
+        integer_battery_capacity = true
+        separator_block_width = 30
+}

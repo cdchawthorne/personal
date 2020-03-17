@@ -28,9 +28,9 @@
 
   \NewDocumentEnvironment{#1}{o}{
     \IfNoValueTF{##1}{\begin{hidden#1}}{\begin{hidden#1}[{##1}]}
+  }{
       \stepcounter{smarttheorem:smarttheoremcounter}
       \label{\smarttheoremlabel}
-  }{
       \end{hidden#1}
   }
 }
@@ -127,6 +127,7 @@
 \theoremstyle{remark}
 \newsmarttheorem{question}[theoremcounter]{Question}
 \newsmarttheorem{remark}[theoremcounter]{Remark}
+\newsmarttheorem{scratch}[theoremcounter]{Rough work}
 \newsmarttheorem{aside}[theoremcounter]{Aside}
 \newsmarttheorem{conjecture}[theoremcounter]{Conjecture}
 \newsmarttheorem{exercise}[theoremcounter]{Exercise}
@@ -154,17 +155,17 @@
 
 % Independence symbol
 % From http://tex.stackexchange.com/a/229826/106594
-\def\Ind#1#2{#1\setbox0=\hbox{$#1x$}\kern\wd0\hbox to 0pt{\hss$#1\mid$\hss}
+\def\Indep#1#2{#1\setbox0=\hbox{$#1x$}\kern\wd0\hbox to 0pt{\hss$#1\mid$\hss}
 \lower.9\ht0\hbox to 0pt{\hss$#1\smile$\hss}\kern\wd0}
 
-\def\ind{\mathbin{\mathpalette\Ind{}}}
+\def\ndp{\mathbin{\mathpalette\Indep{}}}
 
-\def\notind#1#2{#1\setbox0=\hbox{$#1x$}\kern\wd0
+\def\notindep#1#2{#1\setbox0=\hbox{$#1x$}\kern\wd0
 \hbox to 0pt{\mathchardef\nn=12854\hss$#1\nn$\kern1.4\wd0\hss}
 \hbox to
 0pt{\hss$#1\mid$\hss}\lower.9\ht0 \hbox to 0pt{\hss$#1\smile$\hss}\kern\wd0}
 
-\def\nind{\mathbin{\mathpalette\notind{}}}
+\def\nndp{\mathbin{\mathpalette\notindep{}}}
 
 \newcommand \tfdc {the following diagram commutes}
 \newcommand \Tfdc {The following diagram commutes}

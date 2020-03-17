@@ -44,3 +44,6 @@ mod4 + comma; a
 
 mod4 + comma; d
   discord
+
+mod4 + comma; i
+  systemctl --user start get-mail
