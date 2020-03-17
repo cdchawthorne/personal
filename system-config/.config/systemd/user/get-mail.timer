@@ -3,7 +3,7 @@ Description=Timer to fetch mail via IMAP
 
 [Timer]
 OnBootSec=1min
-OnUnitActiveSec=2min
+OnUnitActiveSec=3min
 
 [Install]
 WantedBy=timers.target
