@@ -1,1 +1,1 @@
-set tw=79
+set textwidth=79

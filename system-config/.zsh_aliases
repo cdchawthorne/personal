@@ -2,11 +2,11 @@ alias ls='ls --color=auto --group-directories-first'
 
 alias grep='grep --colour=auto'
 
-alias ll='ls -alF'
+alias ll='ls -Al'
 alias la='ls -A'
-alias l='ls -CF'
 alias lr='ls -lrt'
 alias liesl='ls'
+alias l='ls'
 alias s='ls'
 alias sl='ls'
 
@@ -18,6 +18,8 @@ alias c='cd'
 alias dc='cd'
 
 alias r='cd ~/documents/education/phd/research'
+alias f='cd ~/documents/education/phd/courses'
+alias t='cd ~/documents/education/phd/ta'
 alias rlwrap='rlwrap -s 1000000'
 alias math='rlwrap math'
 alias ocaml='rlwrap ocaml'
@@ -81,7 +83,7 @@ function backup {
         return 1
     fi
     targets=(~/shared/media ~/data/documents ~/data/scratch \
-             ~/.ssh ~/.gnupg /etc/fstab)
+             ~/.ssh ~/.gnupg /etc/fstab ~/.mail)
     include_flags=()
     for dir in ${targets}; do
         include_flags=(${include_flags} --include ${dir})

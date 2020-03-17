@@ -104,10 +104,6 @@ let g:tex_flavor = "latex"
 
 let g:tbufferline_enable_on_startup = 1
 
-let g:tagbar_width = 28
-let g:tagbar_sort = 0
-let g:tagbar_compact = 1
-
 let g:sneak#use_ic_scs = 1
 
 let g:surround_{char2nr('m')} = "\\(\r\\)"
@@ -166,7 +162,6 @@ augroup terminal_autocmds
   autocmd TermClose * execute 'bdelete! ' . expand('<abuf>')
 augroup END
 
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Functions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -201,6 +196,7 @@ endfunction
 
 
 " Non-leader mappings
+
 noremap / /\v
 noremap ? ?\v
 noremap <Tab> %
@@ -276,7 +272,6 @@ noremap <LocalLeader> <NOP>
 noremap <Leader>f <NOP>
 
 nnoremap <silent> <Leader>fk <Cmd>Files<CR>
-nnoremap <Leader>fi :Files 
 nnoremap <silent> <Leader>fb <Cmd>Buffers<CR>
 nnoremap <silent> <Leader>fl <Cmd>Lines<CR>
 nnoremap <silent> <Leader>fo <Cmd>execute 'Files ' . GetBufCwd()<CR>
@@ -304,7 +299,6 @@ nnoremap <silent> <Leader>sh <Cmd>nohlsearch<CR>
 nnoremap <silent> <Leader>sd <Cmd>windo diffoff<CR>:bdelete<CR>
 nnoremap <silent> <Leader>su <Cmd>UndotreeToggle<CR>
 nnoremap <silent> <Leader>sn <Cmd>set number! \| set relativenumber!<CR>
-nnoremap <silent> <Leader>st <Cmd>TagbarToggle<CR>
 nnoremap <silent> <Leader>ss <Cmd>syntax sync fromstart<CR>
 nnoremap <leader>sm :<C-u><C-r><C-r>='let @'. v:register .' = '.
     \ string(getreg(v:register))<CR><C-f><left>
@@ -343,6 +337,7 @@ nnoremap <silent> <Leader>a :qa<CR>
 nnoremap <Leader>. G
 nnoremap <Leader>, gg
 noremap <Leader>v v
+nnoremap <Leader>q q
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

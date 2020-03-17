@@ -1,14 +1,7 @@
-# i3status configuration file.
-# see "man i3status" for documentation.
-
-# It is important that this file is edited as UTF-8.
-# The following line should contain a sharp s:
-# ß
-# If the above line is not correctly displayed, fix your editor first!
-
 # TODO: limit mpd line width
 #       Apparently SIGUSR1 refreshes all modules? Maybe have mutt send this
 #       Apparently we can use pango in format strings
+#       Use inotify-tools or incron to update email
 
 
 order += "mpd_status"
@@ -34,7 +27,7 @@ wireless wlp1s0 {
 }
 
 time {
-  format = "%a %b %d %H:%M"
+  format = "⌚ %a %b %d %H:%M"
   separator_block_width = 30
 }
 

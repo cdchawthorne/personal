@@ -239,6 +239,7 @@ let command_leader = 'vm'
 let letter_leader = 'vl'
 
 " NOTE: DO NOT BIND vkd
+" conflicts with the backslash binding
 let upper_font_maps = {'b' : 'bf', 'c': 'cal', 'l': 'bb', 'f': 'frak',
             \ 's': 'scr'}
 let lower_font_maps = {'t' : 'bf', 'k': 'frak'}
@@ -375,7 +376,7 @@ let letter_maps = {
             \ 'X': 'Xi ',
             \ 'Y': 'Psi ',
             \ ';': 'aleph ',
-            \ '^': 'nabla '
+            \ '^': 'nabla ',
             \ }
 for [key, mapping] in items(letter_maps)
     execute printf('inoremap <buffer> %s \%s', letter_leader . key, mapping)

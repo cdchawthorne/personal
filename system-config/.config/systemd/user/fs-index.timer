@@ -1,0 +1,9 @@
+[Unit]
+Description=Timer to index filesystem for fzf
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=30min
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+
+old="$(ls ~/.mail/protonmail/INBOX/cur | grep -E ',[^S,]*$' | wc -l)"
+new="$(ls ~/.mail/protonmail/INBOX/new | wc -l)"
+total=$((old+new))
+
+if [[ $total -ne 0 ]]; then
+  echo "PM: $total"
+fi
+
+if [[ $new -ne 0 ]]; then
+  echo '#00FFFF'
+elif [[ $old -ne 0 ]]; then
+  echo '#FF00FF'
+fi

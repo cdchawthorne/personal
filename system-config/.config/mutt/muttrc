@@ -1,8 +1,10 @@
 #TODO: keybindings
-#TODO: password hygiene in mbsync
-#TODO: color old unreads differently?
-#TODO: notification for new email?
-#TODO: all mail instead of inbox for protonmail?
+#      password hygiene in mbsync
+#      color old unreads differently?
+#      all mail instead of inbox? Maybe just delete the spoolfile and mailbox
+#      lines in mutt and the inbox line in mbsyncrc
+#      make mbsync a systemd service so can run from mutt
+#      Make it so scrolling past the end doesn't open next mail
 
 set mailcap_path=~/.config/mutt/mailcap
 set header_cache=~/.cache/mutt
@@ -11,8 +13,8 @@ auto_view text/html
 alternative_order text/plain text/html
 set ssl_force_tls="yes"
 set sleep_time=0
-set date_format='%Y-%m-%d %T'
-set index_format='%4C %Z %{%Y-%m-%d} %-15.15L %s'
+set date_format='%b %d'
+set index_format='%Z %d %-15.15L %s'
 # set sort='reverse-date'
 set sort='threads'
 set sort_aux='reverse-last-date-received'
@@ -26,8 +28,6 @@ set uncollapse_jump='yes' #TODO: ?
 set pager_context=3
 set wait_key='no'
 # set uncollapse_new='yes'?
-
-# source "~/.config/mutt/sidebar"
 
 # See https://pbrisbin.com/posts/faster_mail/ for colouring, etc.
 folder-hook .* 'exec collapse-all'
