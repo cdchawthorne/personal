@@ -5,7 +5,8 @@
 
 
 # order += "mpd_status"
-order += "spotify"
+# order += "spotify"
+order += "external_script tidal"
 order += "external_script pm"
 order += "external_script uw"
 order += "volume master"
@@ -19,9 +20,15 @@ order += "time"
 #   separator_block_width = 30
 # }
 
-spotify {
+# spotify {
+#   cache_timeout = 1
+#   format = "[[[{artist}] - {title}]|[{file}]]"
+#   separator_block_width = 30
+# }
+
+external_script tidal {
   cache_timeout = 1
-  format = "[[[{artist}] - {title}]|[{file}]]"
+  script_path = "/home/cdchawthorne/bin/get-tidal-status"
   separator_block_width = 30
 }
 
