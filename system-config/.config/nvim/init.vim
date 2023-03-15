@@ -9,6 +9,8 @@
 "       StatusLineNC accordingly
 " TODO: vim-surround appears to be disabling some <leader> operator mappings
 " TODO: why did my cursor stop working?
+" TODO: change i3 leader?
+" TODO: use tmux c-k to switch buffers?
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -21,6 +23,7 @@ Plug 'cdchawthorne/nvim-tbufferline'
 Plug 'ciaranm/inkpot'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'majutsushi/tagbar', {'on' : 'TagbarToggle'}
 Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
 Plug 'neovimhaskell/haskell-vim', {'for': 'haskell'}
 Plug 'tpope/vim-commentary'
@@ -30,6 +33,11 @@ Plug 'tpope/vim-surround'
 Plug 'AndrewRadev/sideways.vim'
 Plug 'justinmk/vim-dirvish'
 Plug 'justinmk/vim-sneak'
+Plug 'luochen1990/rainbow'
+" Plug 'frazrepo/vim-rainbow'
+Plug 'wlangstroth/vim-racket'
+" Plug 'benknoble/vim-racket'
+Plug '~/.config/nvim/unmanaged_plugins/rparen'
 
 " Plug 'bluz71/vim-nightfly-guicolors'
 " Plug 'bluz71/vim-moonfly-colors'
@@ -38,7 +46,6 @@ Plug 'justinmk/vim-sneak'
 " Plug 'tomasr/molokai'
 " Plug 'chriskempson/base16-vim'
 
-" Plug 'majutsushi/tagbar', {'on' : 'TagbarToggle'}
 " Plug 'benekastah/neomake'
 " Plug 'jalvesaq/vimcmdline'
 " Plug 'junegunn/vim-easy-align'
@@ -126,6 +133,8 @@ let g:tex_itemize_env .= 'caselist'
 let g:undotree_WindowLayout = 3
 let g:undotree_SetFocusWhenToggle = 1
 
+let g:rainbow_active = 1
+
 set grepprg=ag\ --vimgrep\ $*
 set grepformat=%f:%l:%c:%m
 
@@ -196,6 +205,8 @@ endfunction
 
 
 " Non-leader mappings
+
+inoremap <expr> ) FindMatchingParenType()
 
 noremap / /\v
 noremap ? ?\v

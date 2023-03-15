@@ -12,6 +12,7 @@ FZF_DEFAULT_COMMAND='cat ~/.local/share/fzf/fzf_db'
 FZF_ALT_C_COMMAND='find * .* -regextype posix-extended \( -regex '
 FZF_ALT_C_COMMAND+='''.local|builds|.cache'' -o -regex ''.*/\.git'' \) -prune '
 FZF_ALT_C_COMMAND+='-o -type d -print 2>/dev/null'
+WINEPREFIX=~/data/wine
 
 export EDITOR VISUAL CSCOPE_DB TERM TEXMFHOME LC_ALL LANG LANGUAGE \
-    FZF_DEFAULT_COMMAND FZF_ALT_C_COMMAND
+    FZF_DEFAULT_COMMAND FZF_ALT_C_COMMAND WINEPREFIX

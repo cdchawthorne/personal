@@ -1,5 +1,10 @@
 #!/usr/bin/env zsh
 
+if [[ -e ~/.mail/.dnd ]]; then
+  echo ☽
+  exit 0
+fi
+
 old="$(ls ~/.mail/uwaterloo/Inbox/cur | grep -E ',[^S,]*$' | wc -l)"
 new="$(ls ~/.mail/uwaterloo/Inbox/new | wc -l)"
 

@@ -5,7 +5,7 @@
 \usepackage{amsmath, amssymb, tikz-cd, centernot, mathtools, csquotes,
             mathrsfs, hyperref, amsthm, xparse, microtype}
 \usepackage[utf8]{inputenc}
-\usepackage[nameinlink]{cleveref}
+\usepackage[nameinlink,capitalize]{cleveref}
 \usepackage{IEEEtrantools}
 
 \hypersetup{
@@ -18,21 +18,31 @@
 
 % \newtheorem replacement that internally labels all theorems and tracks the
 % last theorem
-\newcounter{smarttheorem:smarttheoremcounter}
-\newcommand{\smarttheoremlabel}{%
-  smarttheorem:\arabic{smarttheorem:smarttheoremcounter}%
-}
-\NewDocumentCommand{\newsmarttheorem}{m o m}{
+
+\newcounter{smarttheorem:current} % the theorem most recently ended
+\newcounter{smarttheorem:next} % the number to use for the next theorem we see
+
+% The logic is a bit more complex than it should be:
+% ideally we'd just have one counter and we'd both increment it and label the
+% theorem in the end-code, rather than labelling in the start code and using
+% scope shenanigans to remember what the label was (in case we do nested smart
+% theorems). Unfortunately it looks like if an AMS theorem environment ends in
+% an enumerate or a \[\] followed by a label it puts an extra newline between
+% the theorem and the text that follows. So here we are.
+\NewDocumentCommand{\newsmarttheorem}{m o m o}{
   \IfNoValueTF{#2}{\newcounter{#1}}{}
   \newtheorem{hidden#1}[\IfValueTF{#2}{#2}{#1}]{#3}
 
   \NewDocumentEnvironment{#1}{o}{
     \IfNoValueTF{##1}{\begin{hidden#1}}{\begin{hidden#1}[{##1}]}
+      \label{smarttheorem:\arabic{smarttheorem:next}}
+      \edef\currentlabel{\arabic{smarttheorem:next}}
+      \stepcounter{smarttheorem:next}
   }{
-      \stepcounter{smarttheorem:smarttheoremcounter}
-      \label{\smarttheoremlabel}
-      \end{hidden#1}
+      \setcounter{smarttheorem:current}{\currentlabel}
+    \end{hidden#1}
   }
+  \Crefname{hidden#1}{#3}{\IfNoValueTF{#4}{#3s}{#4}}
 }
 
 % Enriched proof environments
@@ -60,7 +70,8 @@
 
 % Reference proof: tags the proof using Cref on either the label provided or
 % the last smarttheorem
-\NewDocumentEnvironment{rpf}{O{\proofname} O{\smarttheoremlabel}}{
+\NewDocumentEnvironment{rpf}{O{\proofname}
+O{smarttheorem:\arabic{smarttheorem:current}}}{
   \begin{pf}[#1][\noexpand\Cref{#2}]
 }{
   \end{pf}
@@ -68,7 +79,7 @@
 
 % Convenience environment for labelling the proof of a specific result
 \NewDocumentEnvironment{lrpf}{m}{
-  \begin{rpf}[Proof of \Cref{#1}][#1]
+  \begin{rpf}[Proof of \cref{#1}][#1]
 }{
   \end{rpf}
 }
@@ -96,8 +107,6 @@
   \ignorespacesafterend
 }
 
-\theoremstyle{definition}
-
 \newcounter{case}
 \newenvironment{caselist}{
   \setcounter{case}{0}\begin{description}
@@ -115,9 +124,9 @@
 \newsmarttheorem{proposition}[theoremcounter]{Proposition}
 \newsmarttheorem{claim}[theoremcounter]{Claim}
 \newsmarttheorem{subclaim}[theoremcounter]{Subclaim}
-\newsmarttheorem{corollary}[theoremcounter]{Corollary}
+\newsmarttheorem{corollary}[theoremcounter]{Corollary}[Corollaries]
 \newsmarttheorem{fact}[theoremcounter]{Fact}
-\newsmarttheorem{todo}{TODO}
+\newtheorem{todo}{TODO}
 \newtheorem{assignment}{Assignment}
 
 \theoremstyle{definition}
@@ -133,7 +142,6 @@
 \newsmarttheorem{exercise}[theoremcounter]{Exercise}
 \newsmarttheorem{example}[theoremcounter]{Example}
 \newsmarttheorem{ednote}[theoremcounter]{Editor's note}
-\newsmarttheorem{scratch}[theoremcounter]{Rough work}
 
 % Aliases
 \let \weirdepsilon \epsilon

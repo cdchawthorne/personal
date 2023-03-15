@@ -17,9 +17,7 @@ alias d='cd'
 alias c='cd'
 alias dc='cd'
 
-alias r='cd ~/documents/education/phd/research'
-alias f='cd ~/documents/education/phd/courses'
-alias t='cd ~/documents/education/phd/ta'
+alias r='cd ~/documents/recreation/coding/euler'
 alias rlwrap='rlwrap -s 1000000'
 alias math='rlwrap math'
 alias ocaml='rlwrap ocaml'
@@ -27,13 +25,7 @@ alias sbcl='rlwrap sbcl'
 alias sudo='sudo '
 alias xargs='xargs '
 
-function e {
-    if [[ -n ${NVIM_LISTEN_ADDRESS} ]]; then
-        ~/.local/bin/nvr $@
-    else
-        nvim $@
-    fi
-}
+alias e=~/.local/bin/nvr
 alias er='e -c ''edit $MYVIMRC'''
 alias ez='e ~/.zsh_aliases'
 alias sz='source ~/.zsh_aliases'
@@ -83,11 +75,12 @@ function backup {
         return 1
     fi
     targets=(~/shared/media ~/data/documents ~/data/scratch \
-             ~/.ssh ~/.gnupg /etc/fstab ~/.mail)
+             ~/.ssh ~/.gnupg ~/.mail)
     include_flags=()
     for dir in ${targets}; do
         include_flags=(${include_flags} --include ${dir})
     done
+    exclude_flags=(--exclude ~/shared/media/music/local/ocremix)
 
     remote_machine=backups@cdchawthorne.com
     remote_path=backups/"$(hostname)"
@@ -100,8 +93,8 @@ function backup {
     # duplicity ${mode} --ssh-askpass --progress \
     #     ${include_flags} --exclude '**' / \
     #     sftp://${remote_machine}/${remote_path}/duplicity
-    duplicity ${mode} --progress ${include_flags} --exclude '**' / \
-      file://${staging_path}
+    duplicity ${mode} --progress ${exclude_flags} ${include_flags} \
+      --exclude '**' / file://${staging_path}
     rsync -avP ${staging_path}/ ${remote_machine}:${remote_path}/duplicity
 }
 
@@ -159,4 +152,12 @@ function ruw {
 function rbooks {
     target='cdchawth@taurine.csclub.uwaterloo.ca:~/utilities/rsync_backups'
     rsync -avz --delete ~/documents/education/books ${target}
+}
+
+function yay {
+  if [[ $# -eq 0 ]]; then
+    command yay --sudoloop -Syu
+  else
+    command yay $@
+  fi
 }

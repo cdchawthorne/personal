@@ -1,5 +1,9 @@
 #!/usr/bin/env zsh
 
+if [[ -e ~/.mail/.dnd ]]; then
+  exit 0
+fi
+
 old="$(ls ~/.mail/protonmail/INBOX/cur | grep -E ',[^S,]*$' | wc -l)"
 new="$(ls ~/.mail/protonmail/INBOX/new | wc -l)"
 total=$((old+new))

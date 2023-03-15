@@ -6,20 +6,16 @@ setlocal textwidth=79
 
 function! LaTeXCompileAndView()
     write
-    let is_hidden = &hidden
-    set nohidden
-    silent only
-    let &hidden = is_hidden
     let command = "latexmk -cd " . shellescape(expand("%"))
     let command .= " && (pgrep -f "
     let command .= shellescape('^zathura --fork ' . expand("%:p:r") . '.pdf$')
     let command .= " &> /dev/null || zathura --fork "
     let command .= shellescape(expand("%:p:r") . '.pdf') . " &> /dev/null)"
     "TODO: determine the width automatically?
-    27vnew
+    10new
     call termopen(command)
     setlocal nobuflisted
-    execute "normal \<C-w>h"
+    execute "normal \<C-w>k"
 endfunction
 
 function! LaTeXClean()
@@ -103,7 +99,11 @@ endfunction
 
 function! LaTeXChunkToFormat()
   let break_pattern =  '\m\C^ *\(\\\[\|\\\]\|\\begin\|\\end\|\\item\|\\lit{'
-  let break_pattern .= '\|\\case\|\\label{\|$\)'
+  let break_pattern .= '\|\\case\|\\label{\|\\qedhere\|$\|\\section\*\?{'
+  let break_pattern .= '\|\\subsection\*\?{\|\\subsubsection\*\?{'
+  let break_pattern .= '\|\\printbibliography\|\\pip\|\\plr\|\\prl\|\\piff'
+  let break_pattern .= '\|\\frametitle\|\\pause'
+  let break_pattern .= '\)'
   call search(break_pattern, 'bWc')
   if getline(".") !~# '\m\C^ *\\['
     normal! j
@@ -119,12 +119,12 @@ let g:latex_envs = [
             \ "caselist", "theorem", "lemma", "proposition", "claim",
             \ "corollary", "fact", "todo", "definition", "notation",
             \ "question", "remark", "exercise", "example", "enumerate",
-            \ "itemize", "description", "pmatrix", "vmatrix", "verbatim",
+            \ "itemize", "description", "pmatrix", "bmatrix", "vmatrix", "verbatim",
             \ "tabular", "menumerate", "mitemize", "mdescription",
             \ "cases", "aside", "subclaim", "embedlua", "luacode",
             \ "tikzcd", "center", "figure", "table", "multline",
             \ "align", "split", "conjecture", "ytableau", "ydiagram", "yt",
-            \ "yd", "scratch" ]
+            \ "yd", "scratch", "frame" ]
 call sort(g:latex_envs)
 function! LaTeXEnvironmentComplete(ArgLead, CmdLine, CursorPos)
     return filter(copy(g:latex_envs), 'v:val =~# "^' . a:ArgLead . '"')
@@ -290,6 +290,7 @@ let command_maps = {
             \ 'ss' : 'substack{',
             \ 'sa' : 'forall ',
             \ 'se' : 'exists ',
+            \ 'sb' : 'boldsymbol ',
             \ 'so' : 'operatorname{',
             \ 'sd' : 'mathrm{d}',
             \ 'sr' : 'relax ',

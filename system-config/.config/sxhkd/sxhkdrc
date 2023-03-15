@@ -1,7 +1,9 @@
-mod4 + {u,i,o}
-  amixer set Master {playback 2-,toggle,playback 2+}
+mod4 + {u,o}
+  pamixer --{decrease,increase} 2
 mod4 + shift + {u,o}
-  amixer set Master playback 10{-,+}
+  pamixer --{decrease,increase} 10
+mod4 + i
+  pamixer --toggle-mute
 
 mod4 + z
   slock
@@ -9,14 +11,24 @@ mod4 + z
 mod4 + p
   gmrun
 
-mod4 + {minus,equal,BackSpace}
-  mpc -h ~/.mpd/socket {toggle,next,prev}
+#mod4 + {minus,equal,BackSpace}
+#  mpc -h ~/.mpd/socket {toggle,next,prev}
+
+#mod4 + {braceleft,braceright,backslash}
+mod4 + {BackSpace,equal,minus}
+  dbus-send --dest=org.mpris.MediaPlayer2.spotify --type=method_call /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.{Previous,Next,PlayPause}
+
+mod4 + comma; j
+  spotify
 
 mod4 + comma; {q,w}
-  sudo {poweroff,reboot}
+  sudo {poweroff,reboot-to-windows}
 
-mod4 + comma; {f,g}
-  i3-msg 'workspace 1'; firefox -P {default, foo}
+mod4 + comma; f
+  i3-msg 'workspace 1'; firefox -P default
+
+mod4 + comma; g
+  firefox -P foo
 
 mod4 + comma; b
   pere random
@@ -33,17 +45,24 @@ mod4 + comma; shift + m
 mod4 + comma; c
   i3-msg 'workspace 9'; gnome-terminal --title calendar -- calcurse
 
-mod4 + comma; e
-  i3-msg 'workspace 10'; gnome-terminal --title email -- zsh -c 'cd ~/downloads; mutt'
-
-mod4 + comma; s
-  skypeforlinux
-
-mod4 + comma; a
-  asoundconf-gtk
+mod4 + comma; {e,E}
+  i3-msg 'workspace 10'; gnome-terminal --title email -- zsh -c 'cd ~/downloads; mutt {_,-R}'
 
 mod4 + comma; d
   discord
+# skypeforlinux & ; discord
+
+mod4 + comma; a
+  gnome-terminal --title pulsemixer -- pulsemixer
+
+#mod4 + comma; s
+#  dnd
 
 mod4 + comma; i
   systemctl --user start get-mail
+
+mod4 + comma; p
+  systemctl --user restart pulseaudio
+
+mod4 + comma; s
+  pacmd "set-card-profile alsa_card.pci-0000_01_00.1 output:hdmi-stereo-extra2"; pacmd "set-default-sink alsa_output.pci-0000_01_00.1.hdmi-stereo-extra2"
