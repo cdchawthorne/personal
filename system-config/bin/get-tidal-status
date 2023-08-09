@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh
+
+PORT=47836
+reply="$(curl localhost:$PORT/current 2> /dev/null)"
+artist=${${reply#\{\"*\":\"}%%\"*}
+title=${${reply#\{\"*\"*\"*\"*\"*\"*\"}%%\"*}
+
+echo $artist - $title
+if [[ -z ${reply:#*\"status\":\"playing\"*} ]]; then
+  echo '#00ff00'
+else
+  echo '#ffff00'
+fi

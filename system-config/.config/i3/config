@@ -155,7 +155,7 @@ assign [class="^Skype$"] 6
 assign [class="Microsoft Teams"] 6
 # Use title to allow auto-type window in any desktop
 assign [title="^KeePassXC"] 7
-for_window [class="Spotify"] move to workspace 8
+for_window [class="tidal-hifi"] move to workspace 8
 
 
 # hide_edge_borders smart

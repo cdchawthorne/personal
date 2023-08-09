@@ -10,6 +10,8 @@ alias l='ls'
 alias s='ls'
 alias sl='ls'
 
+alias gw_push='make christa_gw_armv7'
+
 function cd {
     builtin cd $@ && ls
 }
@@ -17,24 +19,32 @@ alias d='cd'
 alias c='cd'
 alias dc='cd'
 
-alias r='cd ~/documents/recreation/coding/euler'
+alias r='cd ~/cyberlucent'
 alias rlwrap='rlwrap -s 1000000'
 alias math='rlwrap math'
 alias ocaml='rlwrap ocaml'
 alias sbcl='rlwrap sbcl'
 alias sudo='sudo '
 alias xargs='xargs '
+alias carbo='cargo build'
 
-alias e=~/.local/bin/nvr
+function rustrun {
+  if [[ $# -ne 1 ]]; then
+    echo "usage: rustrun foo.rs"
+  fi
+  rustc $1 && ./${1%.rs}
+}
+
+alias e=nvr
 alias er='e -c ''edit $MYVIMRC'''
 alias ez='e ~/.zsh_aliases'
 alias sz='source ~/.zsh_aliases'
 function ed {
-    if [[ -n ${NVIM_LISTEN_ADDRESS} ]]; then
-        ~/.local/bin/nvr $1
-        ~/.local/bin/nvr -c diffthis
-        ~/.local/bin/nvr -O $2
-        ~/.local/bin/nvr -c diffthis 
+    if [[ -n $NVIM ]]; then
+        nvr $1
+        nvr -c diffthis
+        nvr -O $2
+        nvr -c diffthis 
     else
         nvim -d $@
     fi

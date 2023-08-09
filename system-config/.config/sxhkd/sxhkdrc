@@ -14,7 +14,6 @@ mod4 + p
 #mod4 + {minus,equal,BackSpace}
 #  mpc -h ~/.mpd/socket {toggle,next,prev}
 
-#mod4 + {braceleft,braceright,backslash}
 mod4 + {BackSpace,equal,minus}
   curl localhost:47836/{previous,next,playpause}
 

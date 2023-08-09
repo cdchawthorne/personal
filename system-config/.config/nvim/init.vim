@@ -30,14 +30,18 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 
+Plug 'scrooloose/nerdtree'
 Plug 'AndrewRadev/sideways.vim'
 Plug 'justinmk/vim-dirvish'
 Plug 'justinmk/vim-sneak'
 Plug 'luochen1990/rainbow'
 " Plug 'frazrepo/vim-rainbow'
-Plug 'wlangstroth/vim-racket'
+Plug 'wlangstroth/vim-racket', {'for': 'racket'}
 " Plug 'benknoble/vim-racket'
 Plug '~/.config/nvim/unmanaged_plugins/rparen'
+Plug 'rust-lang/rust.vim'
+" Plug 'nvim-tree/nvim-web-devicons'
+" Plug 'nvim-tree/nvim-tree.lua'
 
 " Plug 'bluz71/vim-nightfly-guicolors'
 " Plug 'bluz71/vim-moonfly-colors'
@@ -61,9 +65,9 @@ Plug '~/.config/nvim/unmanaged_plugins/rparen'
 call plug#end()
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Options
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 if empty($XDG_DATA_HOME)
   let $XDG_DATA_HOME=$HOME . '/.local/share'
@@ -73,13 +77,14 @@ endif
 set backup
 set backupdir=$XDG_DATA_HOME/nvim/backup
 set breakat=\ 
-set colorcolumn=80
+set colorcolumn=+1
 set expandtab
 set nofoldenable
 set guicursor=n-v-c-sm:block,i-ci-ve-r-cr-o:hor20,a:blinkon500-blinkoff500
 set hidden
 set ignorecase
 set inccommand=split
+set laststatus=3
 set matchtime=1
 set mouse=
 set nomodeline
@@ -135,6 +140,13 @@ let g:undotree_SetFocusWhenToggle = 1
 
 let g:rainbow_active = 1
 
+let g:tagbar_map_hidenonpublic = ''
+let g:tagbar_map_togglesort = 'S'
+let g:tagbar_foldlevel = 0
+let g:tagbar_width = 39
+
+let NERDTreeWinSize = 27
+
 set grepprg=ag\ --vimgrep\ $*
 set grepformat=%f:%l:%c:%m
 
@@ -142,17 +154,33 @@ set diffopt+=iwhite
 set diffopt+=foldcolumn:0
 set diffopt+=context:1000000
 
+" nvim-tree shenanigans
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" lua << EOF
+  " -- disable netrw at the very start of your init.lua
+  " vim.g.loaded_netrw = 1
+  " vim.g.loaded_netrwPlugin = 1
+
+  " -- set termguicolors to enable highlight groups
+  " -- vim.opt.termguicolors = true
+
+  " -- empty setup using defaults
+  " require("nvim-tree").setup()
+" EOF
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Autocommands
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
 augroup skeleton_files
   autocmd!
 
   autocmd BufNewFile *.tex
-      \ 0r ${HOME}/.config/nvim/skeleton.tex | normal! Gdd6k$
+      \ 0read ${HOME}/.config/nvim/skeleton.tex | normal! Gdd6k$
+  autocmd BufNewFile *.js
+      \ 0read ${HOME}/.config/nvim/skeleton.js | normal! G
 augroup END
 
 augroup restore_cursor_pos
@@ -169,11 +197,12 @@ augroup terminal_autocmds
 
   autocmd TermOpen * setlocal nonumber norelativenumber
   autocmd TermClose * execute 'bdelete! ' . expand('<abuf>')
+  " autocmd TermClose * call DeleteCurrentBuffer()
 augroup END
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Functions
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
 function! GetBufCwd() abort
@@ -198,10 +227,31 @@ function! SelectedLines() abort
   return join(getline(line("'<"), line("'>")), "\n")
 endfunction
 
+function! DeleteCurrentBuffer() abort
+  if len(tbufferline#BufNumMap()) == 1
+    bdelete
+    return
+  endif
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+  let prevbuf = bufnr('#')
+  if bufexists(prevbuf) && buflisted(prevbuf)
+    " Apparently there's a bug in terminal buffers? May want the following
+    " call feedkeys("\<C-^>")
+    " Or probably just special case the terminal since changing away from it
+    " seems to delete the buffer anyway
+    execute "normal! \<C-^>"
+  else
+    " call feedkeys("\<Plug>tbufferline#StepForward")
+    execute "normal! \<Plug>tbufferline#StepForward"
+  endif
+  bdelete #
+  call tbufferline#Update()
+endfunction
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Mappings
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
 " Non-leader mappings
@@ -307,10 +357,12 @@ nnoremap <silent> <Leader>ra
 noremap <Leader>s <NOP>
 
 nnoremap <silent> <Leader>sh <Cmd>nohlsearch<CR>
-nnoremap <silent> <Leader>sd <Cmd>windo diffoff<CR>:bdelete<CR>
+nnoremap <silent> <Leader>sd <Cmd>diffoff!<CR>:bdelete<CR>:bdelete<CR>
 nnoremap <silent> <Leader>su <Cmd>UndotreeToggle<CR>
 nnoremap <silent> <Leader>sn <Cmd>set number! \| set relativenumber!<CR>
 nnoremap <silent> <Leader>ss <Cmd>syntax sync fromstart<CR>
+nnoremap <silent> <Leader>st <Cmd>TagbarToggle<CR>
+nnoremap <silent> <Leader>sf <Cmd>NERDTreeToggle mediary-system<CR>
 nnoremap <leader>sm :<C-u><C-r><C-r>='let @'. v:register .' = '.
     \ string(getreg(v:register))<CR><C-f><left>
 
@@ -328,6 +380,9 @@ nmap <silent> <Leader>kvl <Plug>tbufferline#VSplitBuffer
 nnoremap <silent> <Leader>kvc <Cmd>call SpawnShell('vnew')<CR>
 nnoremap <silent> <Leader>kvf <Cmd>vertical sbuffer #<CR>
 nnoremap <silent> <Leader>kd <Cmd>bdelete<CR>
+" Can also try bp | sp | bn | bd
+" nnoremap <silent> <Leader>kd <Plug>tbufferline#StepForward<Cmd>bdelete # \| call tbufferline#Update()<CR>
+" nnoremap <silent> <Leader>kd <Cmd>call DeleteCurrentBuffer()<CR>
 nmap <silent> <Leader>kj <Plug>tbufferline#StepForward
 nmap <silent> <Leader>kk <Plug>tbufferline#StepBack
 nnoremap <Leader>ko :edit <C-r>=GetBufCwd()<CR>/<C-f>a
@@ -351,9 +406,9 @@ noremap <Leader>v v
 nnoremap <Leader>q q
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Commands
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
 command! DiffOrig vertical new | set buftype=nofile | read # | 0delete_
