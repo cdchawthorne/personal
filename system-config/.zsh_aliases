@@ -11,6 +11,7 @@ alias s='ls'
 alias sl='ls'
 
 alias gw_push='make christa_gw_armv7'
+alias lhal_push='cp -f ~/cyberlucent/antares/mediary-system/target/armv7-unknown-linux-musleabihf/release/lucid-hal ~/cyberlucent/slate/srv/lxc/christa-gw/scripts/'
 
 function cd {
     builtin cd $@ && ls
@@ -27,6 +28,7 @@ alias sbcl='rlwrap sbcl'
 alias sudo='sudo '
 alias xargs='xargs '
 alias carbo='cargo build'
+alias slate='ssh -t root@slate zsh'
 
 function rustrun {
   if [[ $# -ne 1 ]]; then
