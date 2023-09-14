@@ -20,6 +20,9 @@ mod4 + {BackSpace,equal,minus}
 mod4 + comma; j
   tidal-hifi
 
+mod4 + comma; n
+  toggle-music
+
 mod4 + comma; {q,w}
   sudo {poweroff,reboot-to-windows}
 
@@ -42,7 +45,7 @@ mod4 + comma; shift + m
   i3-msg 'workspace 8'; gnome-terminal --title music -- mosh cdchawth@nullsleep.csclub.uwaterloo.ca -- screen -DR
 
 mod4 + comma; c
-  i3-msg 'workspace 3'; gnome-terminal --title antares -- ssh -t antares nvim
+  i3-msg 'workspace 3'; gnome-terminal --title antares -- ssh -t antares dtach -A .dtach_socket nvim
 
 mod4 + comma; k
   ssh root@slate lxc-stop -k christa-gw

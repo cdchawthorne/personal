@@ -5,20 +5,20 @@
 
 
 # order += "mpd_status"
-# order += "spotify"
 order += "external_script tidal"
+# order += "spotify"
 order += "external_script pm"
 order += "external_script uw"
 order += "volume master"
 order += "time"
 
-# mpd_status {
-#   cache_timeout = 1
-#   host = "/home/cdchawthorne/.mpd/socket"
-#   format = "[[[{artist}] - {title}]|[{file}]]"
-#   hide_on_error = true
-#   separator_block_width = 30
-# }
+mpd_status {
+  cache_timeout = 1
+  host = "/home/cdchawthorne/.mpd/socket"
+  format = "[[[{artist}] - {title}]|[{file}]]"
+  hide_on_error = true
+  separator_block_width = 30
+}
 
 # spotify {
 #   cache_timeout = 1

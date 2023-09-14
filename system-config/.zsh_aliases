@@ -11,7 +11,18 @@ alias s='ls'
 alias sl='ls'
 
 alias gw_push='make christa_gw_armv7'
-alias lhal_push='cp -f ~/cyberlucent/antares/mediary-system/target/armv7-unknown-linux-musleabihf/release/lucid-hal ~/cyberlucent/slate/srv/lxc/christa-gw/scripts/'
+alias slate='ssh -t root@slate zsh'
+alias rslate='ssh -t root@slate lxc-start -F christa-gw'
+alias islate='ssh -t root@10.16.16.1 lxc-start -F christa-gw'
+
+function lhal_push {
+  src_dir=$HOME/cyberlucent/antares/builds/hals
+  dst_dir=$HOME/cyberlucent/slate/srv/lxc/christa-gw/scripts
+  hal="$(ls $src_dir/lucid-hal-lucid-gw-christa-armv7-lxc-* | tail -1)"
+  rm $dst_dir/lucid-hal-lucid-gw-christa*
+  cp $hal $dst_dir
+  ln -sfr "$dst_dir/$(basename $hal)" $dst_dir/lucid-hal
+}
 
 function cd {
     builtin cd $@ && ls
@@ -21,6 +32,7 @@ alias c='cd'
 alias dc='cd'
 
 alias r='cd ~/cyberlucent'
+alias t='cd ~/cyberlucent/slate/srv/lxc/christa-gw'
 alias rlwrap='rlwrap -s 1000000'
 alias math='rlwrap math'
 alias ocaml='rlwrap ocaml'
@@ -28,7 +40,6 @@ alias sbcl='rlwrap sbcl'
 alias sudo='sudo '
 alias xargs='xargs '
 alias carbo='cargo build'
-alias slate='ssh -t root@slate zsh'
 
 function rustrun {
   if [[ $# -ne 1 ]]; then
@@ -60,7 +71,7 @@ alias settime='sudo zsh -c ''ntpd -q; hwclock -w'''
 alias gpg='DISPLAY= gpg'
 
 function timestamp {
-    date +'%Y-%m-%d__%H-%M-%S'
+    date +'%Y%m%d-%H%M%S'
 }
 
 function pa {
@@ -113,7 +124,7 @@ function backup {
 function x {
     if ! pgrep X &> /dev/null; then
         builtin cd
-        command startx
+        command ssh-agent startx
     fi
 }
 
@@ -149,9 +160,9 @@ function b {
 function f {
   cd ~/documents/education/phd/courses/$1
 }
-function t {
-  cd ~/documents/education/phd/ta/$1
-}
+# function t {
+#   cd ~/documents/education/phd/ta/$1
+# }
 function m {
   pdf ~/documents/education/books/$1
 }
