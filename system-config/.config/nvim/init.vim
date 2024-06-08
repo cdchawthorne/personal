@@ -26,19 +26,17 @@ Plug 'junegunn/fzf.vim'
 Plug 'majutsushi/tagbar', {'on' : 'TagbarToggle'}
 Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
 Plug 'neovimhaskell/haskell-vim', {'for': 'haskell'}
-Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 
-Plug 'scrooloose/nerdtree'
+"Plug 'scrooloose/nerdtree'
 Plug 'AndrewRadev/sideways.vim'
-Plug 'justinmk/vim-dirvish'
+"Plug 'justinmk/vim-dirvish'
 Plug 'justinmk/vim-sneak'
 Plug 'luochen1990/rainbow'
 " Plug 'frazrepo/vim-rainbow'
 Plug 'wlangstroth/vim-racket', {'for': 'racket'}
 " Plug 'benknoble/vim-racket'
-Plug '~/.config/nvim/unmanaged_plugins/rparen'
 Plug 'rust-lang/rust.vim'
 " Plug 'nvim-tree/nvim-web-devicons'
 " Plug 'nvim-tree/nvim-tree.lua'
@@ -109,6 +107,7 @@ set undodir=$XDG_DATA_HOME/nvim/undo
 let g:terminal_scrollback_buffer_size = 100000
 
 let g:inkpot_black_background=1
+set notermguicolors
 colorscheme inkpot
 highlight ColorColumn ctermbg=60
 
@@ -196,14 +195,11 @@ augroup terminal_autocmds
   autocmd!
 
   autocmd TermOpen * setlocal nonumber norelativenumber
-  autocmd TermClose * execute 'bdelete! ' . expand('<abuf>')
-  " autocmd TermClose * call DeleteCurrentBuffer()
 augroup END
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Functions
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
 
 function! GetBufCwd() abort
   if exists("b:terminal_job_pid")
@@ -227,36 +223,12 @@ function! SelectedLines() abort
   return join(getline(line("'<"), line("'>")), "\n")
 endfunction
 
-function! DeleteCurrentBuffer() abort
-  if len(tbufferline#BufNumMap()) == 1
-    bdelete
-    return
-  endif
-
-  let prevbuf = bufnr('#')
-  if bufexists(prevbuf) && buflisted(prevbuf)
-    " Apparently there's a bug in terminal buffers? May want the following
-    " call feedkeys("\<C-^>")
-    " Or probably just special case the terminal since changing away from it
-    " seems to delete the buffer anyway
-    execute "normal! \<C-^>"
-  else
-    " call feedkeys("\<Plug>tbufferline#StepForward")
-    execute "normal! \<Plug>tbufferline#StepForward"
-  endif
-  bdelete #
-  call tbufferline#Update()
-endfunction
-
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Mappings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
 " Non-leader mappings
-
-inoremap <expr> ) FindMatchingParenType()
 
 noremap / /\v
 noremap ? ?\v
@@ -380,9 +352,6 @@ nmap <silent> <Leader>kvl <Plug>tbufferline#VSplitBuffer
 nnoremap <silent> <Leader>kvc <Cmd>call SpawnShell('vnew')<CR>
 nnoremap <silent> <Leader>kvf <Cmd>vertical sbuffer #<CR>
 nnoremap <silent> <Leader>kd <Cmd>bdelete<CR>
-" Can also try bp | sp | bn | bd
-" nnoremap <silent> <Leader>kd <Plug>tbufferline#StepForward<Cmd>bdelete # \| call tbufferline#Update()<CR>
-" nnoremap <silent> <Leader>kd <Cmd>call DeleteCurrentBuffer()<CR>
 nmap <silent> <Leader>kj <Plug>tbufferline#StepForward
 nmap <silent> <Leader>kk <Plug>tbufferline#StepBack
 nnoremap <Leader>ko :edit <C-r>=GetBufCwd()<CR>/<C-f>a

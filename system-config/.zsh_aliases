@@ -48,16 +48,18 @@ function rustrun {
   rustc $1 && ./${1%.rs}
 }
 
-alias e=nvr
-alias er='e -c ''edit $MYVIMRC'''
+function e {
+  for filename in $@; do
+    nvim --server $NVIM --remote "$(realpath --relative-base=$HOME $filename)"
+  done
+}
 alias ez='e ~/.zsh_aliases'
 alias sz='source ~/.zsh_aliases'
 function ed {
     if [[ -n $NVIM ]]; then
-        nvr $1
-        nvr -c diffthis
-        nvr -O $2
-        nvr -c diffthis 
+        nvim --server $NVIM --remote-tab "$(realpath --relative-base=$HOME $1)"
+        nvim --server $NVIM --remote-send ':diffthis<CR>'
+        nvim --server $NVIM --remote-send ":vert diffsplit $(realpath --relative-base=$HOME $2)<CR>"
     else
         nvim -d $@
     fi
