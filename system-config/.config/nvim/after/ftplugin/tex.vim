@@ -2,6 +2,12 @@
 
 setlocal textwidth=79
 
+let g:tex_items = '\\bibitem\|\\item\|\\plr\|\\prl\|\\case\|\\lit\|\\pss\|'
+let g:tex_items .= '\\psps\|\\pip\|\\piff'
+let g:tex_itemize_env = 'itemize\|description\|enumerate\|thebibliography\|'
+let g:tex_itemize_env .= 'caselist'
+let g:tex_flavor = "latex"
+
 " Functions
 
 function! LaTeXCompileAndView()
