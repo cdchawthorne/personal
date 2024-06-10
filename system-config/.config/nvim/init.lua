@@ -40,15 +40,6 @@ opt.timeoutlen = 1000
 opt.undofile = true
 opt.undodir = fn.stdpath("data") .. "/undo"
 
--- colour scheme
-g.inkpot_black_background = true
-opt.termguicolors = false
-cmd.colorscheme("inkpot")
-api.nvim_set_hl(0, 'ColorColumn', { ctermbg = 60 })
-
--- tbufferline
-g.tbufferline_enable_on_startup = 1
-
 -- automcds
 local skeleton_au_group = vim.api.nvim_create_augroup("skeleton_files", {})
 api.nvim_create_autocmd("BufNewFile", {
@@ -71,6 +62,17 @@ api.nvim_create_autocmd("TermOpen", {
   end,
 })
 
+api.nvim_exec2([[
+  augroup restore_cursor_pos
+    autocmd!
+
+    autocmd BufReadPost *
+        \ if line("'\"") > 1 && line("'\"") <= line("$")
+        \|  execute "normal! g`\""
+        \|endif
+  augroup END
+]], {})
+
 -- Utility functions
 local function get_buf_cwd()
   if b.terminal_job_pid == nil then
@@ -79,7 +81,7 @@ local function get_buf_cwd()
   else
     -- Doing this using nvim's system() since apparently lua only lets you execute
     -- external processes as strings and I really don't want to worry about escaping.
-    local dir = fn.system({ "realpath", "/proc" .. b.terminal_job_pid .. "/cwd" })
+    local dir = fn.system({ "realpath", "/proc/" .. b.terminal_job_pid .. "/cwd" })
     return dir:sub(1, -2)
   end
 end
@@ -101,7 +103,6 @@ map(basic_modes, '<Tab>', '%')
 map(basic_modes, 'v', '<C-b>')
 map(basic_modes, 'm', '<C-f>')
 
-map('n', '<Space>', '<Plug>tbufferline#Buffer')
 map('n', 'S', 'm')
 map('n', 'x', ':write<CR>', silent)
 map('n', '<Up>', '<Cmd>.m-2<CR>', silent)
@@ -140,7 +141,6 @@ map(basic_modes, '<LocalLeader>', '<NOP>')
 -- Config files
 map(basic_modes, '<Leader>r', '<NOP>')
 map('n', '<Leader>re', '<Cmd>edit $MYVIMRC<CR>', silent)
-map('n', '<Leader>rs', [[<Cmd>source $MYVIMRC \| filetype detect<CR>]], silent)
 map('n', '<Leader>rk', '<Cmd>edit stdpath("config") . "/skeleton.%:e"<CR>', silent)
 function edit_ftplugin()
   cmd.edit(stdpath("config") .. "/after/ftplugin/" .. opt.filetype:get() .. ".vim")
@@ -159,15 +159,11 @@ map(basic_modes, '<Leader>kv', '<NOP>')
 
 map('n', '<Leader>kf', '<C-^>')
 map('n', '<Leader>kc', function() spawn_shell(cmd.enew) end, { silent = true })
-map('n', '<Leader>ksl', '<Plug>tbufferline#SplitBuffer', silent)
 map('n', '<Leader>ksc', function() spawn_shell(cmd.new) end, silent)
 map('n', '<Leader>ksf', '<Cmd>sbuffer #<CR>', silent)
-map('n', '<Leader>kvl', '<Plug>tbufferline#VSplitBuffer', silent)
 map('n', '<Leader>kvc', function() spawn_shell(cmd.vnew) end, silent)
 map('n', '<Leader>kvf', '<Cmd>vertical sbuffer #<CR>', silent)
 map('n', '<Leader>kd', '<Cmd>bdelete<CR>', silent)
-map('n', '<Leader>kj', '<Plug>tbufferline#StepForward', silent)
-map('n', '<Leader>kk', '<Plug>tbufferline#StepBack', silent)
 map('n', '<Leader>ko', function() return 'q:aedit ' .. get_buf_cwd() .. "/" end, { expr = true })
 
 map(basic_modes, '<Leader>d', '<C-w>')
@@ -187,3 +183,133 @@ api.nvim_create_user_command(
   'vertical new | set buftype=nofile | read # | 0delete_ | diffthis | wincmd p | diffthis',
   {}
 )
+
+-- Plugins
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
+
+require("lazy").setup({
+  {
+    "cdchawthorne/inkpot",
+    init = function()
+      g.inkpot_black_background = true
+    end,
+    config = function()
+      opt.termguicolors = false
+      cmd.colorscheme("inkpot")
+    end,
+  },
+  {
+    "cdchawthorne/nvim-tbufferline",
+    lazy = false,
+    -- dev = true,
+    init = function()
+      g.tbufferline_enable_on_startup = 1
+    end,
+    keys = {
+      { '<Space>', '<Plug>tbufferline#Buffer' },
+      { '<Leader>ksl', '<Plug>tbufferline#SplitBuffer', silent = true },
+      { '<Leader>kvl', '<Plug>tbufferline#VSplitBuffer', silent = true },
+      { '<Leader>kj', '<Plug>tbufferline#StepForward', silent = true },
+      { '<Leader>kk', '<Plug>tbufferline#StepBack', silent = true },
+    },
+  },
+  {
+    "kylechui/nvim-surround",
+    config = true,
+  },
+  {
+    "ggandor/leap.nvim",
+    keys = {
+      { 'f', '<Plug>(leap-forward)', mode = { 'n', 'x' }, },
+      { 'F', '<Plug>(leap-backward)', mode = { 'n', 'x' }, },
+      { 'gf', '<Plug>(leap-from-window)', mode = { 'n', 'x' }, },
+    },
+    config = function()
+      require('leap.user').set_repeat_keys('<enter>', '<backspace>')
+    end,
+  },
+  {
+    "AndrewRadev/sideways.vim",
+    keys = {
+      { "<Left>", "<Cmd>SidewaysLeft<CR>", silent = true },
+      { "<Right>", "<Cmd>SidewaysRight<CR>", silent = true },
+      { "aa", "<Plug>SidewaysArgumentTextobjA", mode = { 'o', 'x' }, silent = true },
+      { "ia", "<Plug>SidewaysArgumentTextobjI", mode = { 'o', 'x' }, silent = true },
+    },
+  },
+  {
+    'nvim-telescope/telescope.nvim',
+    branch = '0.1.x',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'debugloop/telescope-undo.nvim',
+    },
+    opts = {
+      defaults = {
+        layout_config = {
+          preview_cutoff = 0,
+          width = 0.95,
+          height = 0.95,
+        },
+      },
+      extensions = {
+        undo = {
+          side_by_side = true,
+          layout_strategy = 'horizontal',
+          layout_config = {
+            preview_width = { padding = 15 },
+            -- width = { padding = 0 },
+            -- height = { padding = 0 },
+          },
+          entry_format = "#$ID, $TIME",
+        },
+      },
+    },
+    config = function(_, opts)
+      require("telescope").setup(opts)
+      require("telescope").load_extension("undo")
+    end,
+    keys = {
+      { "<Leader>fa", "<Cmd>Telescope find_files<CR>" },
+      { "<Leader>fk", "<Cmd>Telescope find_files cwd=~/cyberlucent<CR>" },
+      { "<Leader>fh", "<Cmd>Telescope oldfiles<CR>" },
+      { "<Leader>fb", "<Cmd>Telescope buffers<CR>" },
+      { "<Leader>fm", "<Cmd>Telescope man_pages<CR>" },
+      { "<Leader>ft", function() 
+          require('telescope.builtin').tags({ ctags_file = opt.tags:get()[1] })
+        end
+      },
+      { "<Leader>fl", "<Cmd>Telescope current_buffer_fuzzy_find<CR>" },
+      { "<Leader>fT", "<Cmd>Telescope treesitter<CR>" },
+      -- Extensions
+      { "<Leader>fu", "<Cmd>Telescope undo<CR>" },
+    },
+  },
+  {
+    'mbbill/undotree',
+    init = function()
+      g.undotree_WindowLayout = 3
+      g.undotree_SetFocusWhenToggle = 1
+    end,
+    keys = {
+      { "<Leader>su", "<Cmd>UndotreeToggle<CR>" },
+    },
+  },
+  -- {
+  --   "nvim-treesitter/nvim-treesitter",
+  --   build = ":TSUpdate",
+  -- },
+}, {
+  dev = { path = "~/repos" },
+})
