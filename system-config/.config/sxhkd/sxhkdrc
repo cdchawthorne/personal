@@ -41,17 +41,8 @@ mod4 + comma; t
 mod4 + comma; m
   i3-msg 'workspace 8'; gnome-terminal --title music -- ncmpcpp
 
-mod4 + comma; shift + m
-  i3-msg 'workspace 8'; gnome-terminal --title music -- mosh cdchawth@nullsleep.csclub.uwaterloo.ca -- screen -DR
-
 mod4 + comma; c
   i3-msg 'workspace 3'; gnome-terminal --title antares -- ssh -t antares dtach -A .dtach_socket nvim
-
-mod4 + comma; k
-  ssh root@slate lxc-stop -k christa-gw
-
-mod4 + comma; {e,E}
-  i3-msg 'workspace 10'; gnome-terminal --title email -- zsh -c 'cd ~/downloads; mutt {_,-R}'
 
 mod4 + comma; d
   discord

@@ -24,9 +24,6 @@ alias gd='git difftool --extcmd nvim-rdiff'
 alias gds='git diff'
 
 alias rlwrap='rlwrap -s 1000000'
-alias math='rlwrap math'
-alias ocaml='rlwrap ocaml'
-alias sbcl='rlwrap sbcl'
 alias sudo='sudo '
 alias xargs='xargs '
 alias cck='cargo check'
@@ -89,8 +86,7 @@ function backup {
         echo "USAGE: backup [full|incremental]" 1>&2
         return 1
     fi
-    targets=(~/shared/media ~/data/documents ~/data/scratch \
-             ~/.ssh ~/.gnupg ~/.mail)
+    targets=(~/shared/media ~/data/documents ~/data/scratch ~/.ssh ~/.gnupg)
     include_flags=()
     for dir in ${targets}; do
         include_flags=(${include_flags} --include ${dir})
@@ -143,36 +139,9 @@ function usb-backup {
     fi
 }
 
-function a {
-  cd ~/documents/education/undergrad/courses/$1
-}
-function b {
-  cd ~/documents/education/masters/courses/$1
-}
-function f {
-  cd ~/documents/education/phd/courses/$1
-}
 # function t {
 #   cd ~/documents/education/phd/ta/$1
 # }
 function m {
   pdf ~/documents/education/books/$1
-}
-
-function ruw {
-    target='cdchawth@taurine.csclub.uwaterloo.ca:~/utilities/rsync_backups'
-    # rsync -avz --delete ~/documents/education/masters ${target}
-    rsync -avz --delete ~/documents/education/phd ${target}
-}
-function rbooks {
-    target='cdchawth@taurine.csclub.uwaterloo.ca:~/utilities/rsync_backups'
-    rsync -avz --delete ~/documents/education/books ${target}
-}
-
-function yay {
-  if [[ $# -eq 0 ]]; then
-    command yay --sudoloop -Syu
-  else
-    command yay $@
-  fi
 }

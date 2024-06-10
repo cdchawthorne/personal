@@ -163,5 +163,9 @@ default_border pixel 10
 # client.focused #4c7899 #285577 #ffffff #2e9ef4 #ff6600
 client.focused #4c7899 #285577 #ffffff #2e9ef4 #1c76b4
 
+# Temp fix for firefox's desktop notifications being fullscreen; see
+# https://github.com/i3/i3/discussions/5966
+for_window [window_role="alert"] floating enable
+no_focus [window_role="alert"]
 
 workspace_layout tabbed
