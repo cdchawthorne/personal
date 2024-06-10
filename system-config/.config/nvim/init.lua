@@ -6,7 +6,10 @@ local g = vim.g
 local b = vim.b
 local map = vim.keymap.set
 
--- builtin options
+--------------
+-- Settings --
+--------------
+
 opt.backup = true
 opt.backupdir = fn.stdpath("data") .. "/backup"
 opt.breakat = " "
@@ -42,7 +45,10 @@ opt.undodir = fn.stdpath("data") .. "/undo"
 
 cmd.language("en_US.utf8")
 
--- automcds
+--------------
+-- autocmds --
+--------------
+
 local skeleton_au_group = vim.api.nvim_create_augroup("skeleton_files", {})
 api.nvim_create_autocmd("BufNewFile", {
   pattern = "*.tex",
@@ -75,7 +81,10 @@ api.nvim_exec2([[
   augroup END
 ]], {})
 
--- Utility functions
+-----------------------
+-- Utility functions --
+-----------------------
+
 local function get_buf_cwd()
   if b.terminal_job_pid == nil then
     -- TODO: why does this need "vim." in front?
@@ -134,6 +143,7 @@ map('i', 'fdp', '<C-p>')
 map('i', 'fdh', '<C-]><Cmd>nohlsearch<CR>')
 map('i', 'fdd', '<C-g>u<C-R>=strftime("%Y-%m-%d")<CR>')
 
+-- Leader mappings
 g.mapleader = 's'
 g.maplocalleader = g.mapleader .. 'l'
 
@@ -149,6 +159,7 @@ function edit_ftplugin()
 end
 map('n', '<Leader>ra', edit_ftplugin, silent)
 
+-- Settings
 map(basic_modes, '<Leader>s', '<NOP>')
 map('n', '<Leader>sh', '<Cmd>nohlsearch<CR>', silent)
 map('n', '<Leader>sd', '<Cmd>diffoff!<CR>:bdelete<CR>:bdelete<CR>', silent)
@@ -156,6 +167,7 @@ map('n', '<Leader>so', '<Cmd>windo diffthis<CR>', silent)
 map('n', '<Leader>sn', [[<Cmd>set number! \| set relativenumber!<CR>]], silent)
 map('n', '<Leader>ss', '<Cmd>syntax sync fromstart<CR>', silent)
 
+-- Buffers
 map(basic_modes, '<Leader>k', '<NOP>')
 map(basic_modes, '<Leader>ks', '<NOP>')
 map(basic_modes, '<Leader>kv', '<NOP>')
@@ -169,26 +181,35 @@ map('n', '<Leader>kvf', '<Cmd>vertical sbuffer #<CR>', silent)
 map('n', '<Leader>kd', '<Cmd>bdelete<CR>', silent)
 map('n', '<Leader>ko', function() return 'q:aedit ' .. get_buf_cwd() .. "/" end, { expr = true })
 
+-- Windows
 map(basic_modes, '<Leader>d', '<C-w>')
 map(basic_modes, '<Leader>dd', '<C-w><C-w>')
 
+-- Leader miscellany
 map({ 'n', 'v', 's' }, '<Leader>j', 'gq')
-
 map({ 'n', 'v', 's' }, '<Leader>;', 'q:i')
-
 map({ 'n', 'v' }, '<Leader>.', 'G')
 map({ 'n', 'v' }, '<Leader>,', 'gg')
 map(basic_modes, '<Leader>v', 'v')
 map('n', '<Leader>c', '0D')
+map('n', '<Leader>a', '<Cmd>qa<CR>')
+map('n', '<Leader>o', 'o<C-u>')
+map('n', '<Leader>O', 'O<C-u>')
 
--- Commands
+--------------
+-- Commands --
+--------------
+
 api.nvim_create_user_command(
   'DiffOrig',
   'vertical new | set buftype=nofile | read # | 0delete_ | diffthis | wincmd p | diffthis',
   {}
 )
 
--- Plugins
+-------------
+-- Plugins --
+-------------
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
   vim.fn.system({
@@ -286,7 +307,7 @@ require("lazy").setup({
     end,
     keys = {
       { "<Leader>fa", "<Cmd>Telescope find_files<CR>" },
-      { "<Leader>fk", "<Cmd>Telescope find_files cwd=~/cyberlucent<CR>" },
+      { "<Leader>fk", "<Cmd>Telescope find_files cwd=~/mediary-system<CR>" },
       { "<Leader>fh", "<Cmd>Telescope oldfiles<CR>" },
       { "<Leader>fb", "<Cmd>Telescope buffers<CR>" },
       { "<Leader>fm", "<Cmd>Telescope man_pages<CR>" },

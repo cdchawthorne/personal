@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+
+if [[ -n $NVIM ]]; then
+    nvim --server $NVIM --remote-tab "$(realpath --relative-base=$HOME $1)"
+    nvim --server $NVIM --remote-send ':diffthis<CR>'
+    nvim --server $NVIM --remote-send ":vert diffsplit $(realpath --relative-base=$HOME $2)<CR>"
+else
+    nvim -d $@
+fi

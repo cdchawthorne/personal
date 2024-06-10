@@ -20,7 +20,7 @@ alias dc='cd'
 alias gl='git log --branches --oneline --graph'
 alias gls='git log --oneline --graph --first-parent'
 alias gs='git status'
-alias gd='git difftool --extcmd "nvr --servername $NVIM -d"'
+alias gd='git difftool --extcmd nvim-rdiff'
 alias gds='git diff'
 
 alias rlwrap='rlwrap -s 1000000'
