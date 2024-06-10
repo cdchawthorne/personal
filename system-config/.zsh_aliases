@@ -10,20 +10,6 @@ alias l='ls'
 alias s='ls'
 alias sl='ls'
 
-alias gw_push='make christa_gw_armv7'
-alias slate='ssh -t root@slate zsh'
-alias rslate='ssh -t root@slate lxc-start -F christa-gw'
-alias islate='ssh -t root@10.16.16.1 lxc-start -F christa-gw'
-
-function lhal_push {
-  src_dir=$HOME/cyberlucent/antares/builds/hals
-  dst_dir=$HOME/cyberlucent/slate/srv/lxc/christa-gw/scripts
-  hal="$(ls $src_dir/lucid-hal-lucid-gw-christa-armv7-lxc-* | tail -1)"
-  rm $dst_dir/lucid-hal-lucid-gw-christa*
-  cp $hal $dst_dir
-  ln -sfr "$dst_dir/$(basename $hal)" $dst_dir/lucid-hal
-}
-
 function cd {
     builtin cd $@ && ls
 }
@@ -31,15 +17,19 @@ alias d='cd'
 alias c='cd'
 alias dc='cd'
 
-alias r='cd ~/cyberlucent'
-alias t='cd ~/cyberlucent/slate/srv/lxc/christa-gw'
+alias gl='git log --branches --oneline --graph'
+alias gls='git log --oneline --graph --first-parent'
+alias gs='git status'
+alias gd='git difftool --extcmd "nvr --servername $NVIM -d"'
+alias gds='git diff'
+
 alias rlwrap='rlwrap -s 1000000'
 alias math='rlwrap math'
 alias ocaml='rlwrap ocaml'
 alias sbcl='rlwrap sbcl'
 alias sudo='sudo '
 alias xargs='xargs '
-alias carbo='cargo build'
+alias cck='cargo check'
 
 function rustrun {
   if [[ $# -ne 1 ]]; then
