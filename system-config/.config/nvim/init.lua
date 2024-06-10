@@ -40,6 +40,8 @@ opt.timeoutlen = 1000
 opt.undofile = true
 opt.undodir = fn.stdpath("data") .. "/undo"
 
+cmd.language("en_US.utf8")
+
 -- automcds
 local skeleton_au_group = vim.api.nvim_create_augroup("skeleton_files", {})
 api.nvim_create_autocmd("BufNewFile", {
@@ -150,6 +152,7 @@ map('n', '<Leader>ra', edit_ftplugin, silent)
 map(basic_modes, '<Leader>s', '<NOP>')
 map('n', '<Leader>sh', '<Cmd>nohlsearch<CR>', silent)
 map('n', '<Leader>sd', '<Cmd>diffoff!<CR>:bdelete<CR>:bdelete<CR>', silent)
+map('n', '<Leader>so', '<Cmd>windo diffthis<CR>', silent)
 map('n', '<Leader>sn', [[<Cmd>set number! \| set relativenumber!<CR>]], silent)
 map('n', '<Leader>ss', '<Cmd>syntax sync fromstart<CR>', silent)
 
@@ -173,9 +176,10 @@ map({ 'n', 'v', 's' }, '<Leader>j', 'gq')
 
 map({ 'n', 'v', 's' }, '<Leader>;', 'q:i')
 
-map('n', '<Leader>.', 'G')
-map('n', '<Leader>,', 'gg')
+map({ 'n', 'v' }, '<Leader>.', 'G')
+map({ 'n', 'v' }, '<Leader>,', 'gg')
 map(basic_modes, '<Leader>v', 'v')
+map('n', '<Leader>c', '0D')
 
 -- Commands
 api.nvim_create_user_command(
@@ -306,10 +310,12 @@ require("lazy").setup({
       { "<Leader>su", "<Cmd>UndotreeToggle<CR>" },
     },
   },
-  -- {
-  --   "nvim-treesitter/nvim-treesitter",
-  --   build = ":TSUpdate",
-  -- },
+  -- WARNING: see https://github.com/nvim-treesitter/nvim-treesitter/issues/3092
+  -- Basically if it chokes on vimdocs run :TSInstall! vimdoc
+  {
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
+  },
 }, {
   dev = { path = "~/repos" },
 })
