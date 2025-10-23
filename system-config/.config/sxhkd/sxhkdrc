@@ -36,7 +36,7 @@ mod4 + comma; b
   pere random
 
 mod4 + comma; t
-  i3-msg 'workspace 2'; gnome-terminal -- nvim
+  gnome-terminal -- nvim
 
 mod4 + comma; m
   i3-msg 'workspace 8'; gnome-terminal --title music -- ncmpcpp
@@ -46,19 +46,9 @@ mod4 + comma; c
 
 mod4 + comma; d
   discord
-# skypeforlinux & ; discord
 
 mod4 + comma; a
   gnome-terminal --title pulsemixer -- pulsemixer
 
-#mod4 + comma; s
-#  dnd
-
-mod4 + comma; i
-  systemctl --user start get-mail
-
 mod4 + comma; p
   systemctl --user restart pulseaudio
-
-mod4 + comma; s
-  pacmd "set-card-profile alsa_card.pci-0000_01_00.1 output:hdmi-stereo-extra2"; pacmd "set-default-sink alsa_output.pci-0000_01_00.1.hdmi-stereo-extra2"

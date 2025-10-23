@@ -17,7 +17,6 @@ pere random
 
 sxhkd &
 keepassxc shared/passwords/passwords.kdbx &
-protonmail-bridge --no-window &
 xinput set-prop 10 250 1
 xset s off
 

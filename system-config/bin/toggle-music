@@ -1,0 +1,33 @@
+#!/usr/bin/env zsh
+
+CONFIG_FILE=$HOME/repos/personal/system-config/.config/py3status/config
+HOTKEY_FILE=$HOME/repos/personal/system-config/.config/sxhkd/sxhkdrc
+
+if grep -E '^order \+= "mpd_status"$' $CONFIG_FILE &> /dev/null; then
+  conf_active=mpd_status
+  conf_inactive='external_script tidal'
+  hotkey_active1='mod4 \+ \{minus,equal,BackSpace\}'
+  hotkey_active2='  mpc -h ~/.mpd/socket \{toggle,next,prev\}'
+  hotkey_inactive1='mod4 \+ \{BackSpace,equal,minus\}'
+  hotkey_inactive2='  curl localhost:47836/\{previous,next,playpause\}'
+else
+  conf_active='external_script tidal'
+  conf_inactive=mpd_status
+  hotkey_active1='mod4 \+ \{BackSpace,equal,minus\}'
+  hotkey_active2='  curl localhost:47836/\{previous,next,playpause\}'
+  hotkey_inactive1='mod4 \+ \{minus,equal,BackSpace\}'
+  hotkey_inactive2='  mpc -h ~/.mpd/socket \{toggle,next,prev\}'
+fi
+
+sed -r -i.bak -e "s/^(order \\+= \"$conf_active\")$/# \\1/" \
+  -e "s/^# *(order \\+= \"$conf_inactive\")$/\\1/" $CONFIG_FILE
+
+sed -r -i.bak -e "s_^($hotkey_active1)\$_#\\1_" \
+  -e "s_^($hotkey_active2)\$_#\\1_" \
+  -e "s_^#($hotkey_inactive1)\$_\\1_" \
+  -e "s_^#($hotkey_inactive2)\$_\\1_" $HOTKEY_FILE
+
+i3-msg restart
+
+pkill sxhkd
+sxhkd &> /dev/null &|

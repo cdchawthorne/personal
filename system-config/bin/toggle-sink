@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+
+if [[ $# -ne 2 ]]; then
+  echo "USAGE: $0 DEVICE1 DEVICE2" >&2
+  exit 1
+fi
+
+sink="$(pactl get-default-sink)"
+if [[ $sink == $1 ]]; then
+  pactl set-default-sink $2
+elif [[ $sink == $2 ]]; then
+  pactl set-default-sink $1
+else;
+  echo "other sink: $sink" >&2
+fi
