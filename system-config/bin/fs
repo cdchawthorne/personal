@@ -1,3 +1,0 @@
-#!/usr/bin/env zsh
-
-find * .* -regextype posix-extended \( -regex '.local|builds|.cache' -o -regex '.*/\.git' \) -prune -o \( -type f -o -type l \) -a \! -regex '.*\.(pdf|mp3|m4a|flac|png|jpg|gif|class|o|hi|localstorage|localstorage-journal|svn-base|dyn_hi)$' -print > /home/cdchawthorne/.local/share/fzf/fzf_db

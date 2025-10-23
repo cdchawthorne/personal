@@ -1,6 +1,0 @@
-[Unit]
-Description=Index filesystem for fzf
-
-[Service]
-Type=simple
-ExecStart=/home/cdchawthorne/bin/fs

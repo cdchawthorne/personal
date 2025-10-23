@@ -1,7 +1,0 @@
-[Unit]
-Description=Fetch mail via IMAP
-
-[Service]
-Type=oneshot
-ExecStart=mbsync -a
-ExecStart=notmuch new
