@@ -79,6 +79,10 @@ zle -A .backward-kill-word vi-backward-kill-word
 zle -A .backward-delete-char vi-backward-delete-char
 zle -A .kill-line vi-kill-line
 
+# Complete ssh hostnames from the Host of .ssh/config before the hostnames
+# From https://www.reddit.com/r/zsh/comments/dw3h5n/zsh_ssh_autocomplete_host_instead_of_hostname/
+zstyle ':completion:*:(ssh|scp|sftp):*' hosts $hosts
+
 # Allow <C-q> and <C-s> to work in rtorrent
 stty stop undef
 stty start undef

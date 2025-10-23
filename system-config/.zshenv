@@ -1,7 +1,7 @@
 setopt BAD_PATTERN NO_HUP LOCAL_OPTIONS LOCAL_TRAPS RC_QUOTES
 setopt NO_FUNCTION_ARG_ZERO EXTENDED_GLOB PROMPT_SUBST TRANSIENT_RPROMPT
 typeset -U path fpath
-path=(${path} ${HOME}/bin)
+path=(${HOME}/bin ${path})
 fpath=(${HOME}/.zsh/autoloads ${HOME}/.zsh/completion ${fpath})
 EDITOR=nvim
 VISUAL=nvim
