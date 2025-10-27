@@ -97,12 +97,6 @@ vim.api.nvim_exec2([[
   augroup END
 ]], {})
 
--- disable lsp-based syntax highlighting; see
--- https://www.reddit.com/r/neovim/comments/109vgtl/comment/j40jzjd/ and
--- https://github.com/simrat39/rust-tools.nvim/issues/365#issuecomment-1506286437
--- (and :h lspconfig-setup and :h LspAttach)
-vim.api.nvim_create_autocmd("CompleteDone", { command = "pclose" })
-
 -----------------------
 -- Utility functions --
 -----------------------
@@ -123,6 +117,37 @@ local function spawn_shell(layout_callback)
   layout_callback()
   vim.fn.termopen({ os.getenv("SHELL") }, { cwd = cwd })
   vim.cmd.startinsert()
+end
+
+local function toggle_rust_analyzer_feature(target_feature)
+  local clients = vim.lsp.get_clients({ name = 'rust_analyzer' })
+  local features = vim.tbl_get(clients, 1, 'config', 'settings', 'rust-analyzer', 'cargo', 'features')
+  if features == nil then
+    features = {}
+  end
+
+  local index = vim.iter(ipairs(features)):find(function(_, feature) vim.print(feature); return feature == target_feature end)
+  if index == nil then
+    features[#features+1] = target_feature
+  else
+    table.remove(features, index)
+  end
+
+  vim.lsp.config('rust_analyzer', { settings = { ['rust-analyzer'] = {
+    cargo = { features = features },
+    check = { features = features },
+  }}})
+
+  local cur_buf = vim.api.nvim_get_current_buf()
+  vim.lsp.stop_client(vim.lsp.get_clients({ name = 'rust_analyzer' }))
+  vim.cmd.bufdo("e")
+  vim.api.nvim_set_current_buf(cur_buf)
+
+  if index == nil then
+    print("feature " .. target_feature .. " set")
+  else
+    print("feature " .. target_feature .. " unset")
+  end
 end
 
 --------------
@@ -170,6 +195,7 @@ map('t', ',.', [[<C-\><C-n>]])
 for _, fst in ipairs({ 'f', 'F' }) do
   for _, snd in ipairs({ 'j', 'J' }) do
     map('i', fst .. snd, '<C-]><Esc>')
+    map('i', snd .. fst, '<C-]><Esc>')
   end
 end
 
@@ -178,9 +204,9 @@ map('i', 'fdn', '<C-n>')
 map('i', 'fdp', '<C-p>')
 map('i', 'fdh', '<C-]><Cmd>nohlsearch<CR>')
 map('i', 'fdd', '<C-g>u<C-R>=strftime("%Y-%m-%d")<CR>')
-map('i', 'j', function() return vim.fn.pumvisible() == 1 and "<C-n>" or "j" end, { expr = true })
-map('i', 'k', function() return vim.fn.pumvisible() == 1 and "<C-p>" or "k" end, { expr = true })
-map('i', '<Tab>', function() return vim.fn.pumvisible() == 1 and "<C-x><C-o>" or "<Tab>" end, { expr = true })
+map('i', '<Tab>', function() return vim.fn.pumvisible() == 1 and "<C-n>" or "<Tab>" end, { expr = true })
+map('i', '<S-Tab>', function() return vim.fn.pumvisible() == 1 and "<C-p>" or "<S-tab>" end, { expr = true })
+map('i', '<CR>', function() return vim.fn.pumvisible() == 1 and "<C-x><C-o>" or "<CR>" end, { expr = true })
 
 map(basic_modes, '{h', function() vim.diagnostic.goto_prev { severity = { max = vim.diagnostic.severity.INFO } } end)
 map(basic_modes, '}h', function() vim.diagnostic.goto_next { severity = { max = vim.diagnostic.severity.INFO } } end)
@@ -245,7 +271,6 @@ map(basic_modes, '<Leader>dd', '<C-w><C-w>')
 
 -- LSP
 map('n', '<Leader>jr', function() vim.lsp.buf.rename() end)
--- map('n', '<Leader>jc', function() vim.lsp.buf.incoming_calls() end)
 map('n', '<Leader>jc', function() vim.lsp.buf.references() end)
 map('n', '<Leader>jf', function() vim.lsp.buf.code_action({ apply = true }) end)
 map('n', '<Leader>jj', function() vim.lsp.buf.format() end)
@@ -253,12 +278,15 @@ map('n', '<Leader>jt', function() vim.diagnostic.enable(not vim.diagnostic.is_en
 map('n', '<Leader>jo', function() vim.diagnostic.open_float() end)
 map('n', '<Leader>jR',
   function()
+    local cur_buf = vim.api.nvim_get_current_buf()
     vim.lsp.stop_client(vim.lsp.get_clients())
-    vim.cmd.edit()
+    vim.cmd.bufdo("e")
+    vim.api.nvim_set_current_buf(cur_buf)
   end
 )
 map('n', '<Leader>jl', '<Cmd>cclose<CR>')
 map('n', '<Leader>jh', function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled()) end)
+map('n', '<Leader>jv', function() toggle_rust_analyzer_feature('veea') end)
 
 -- Leader miscellany
 map({ 'n', 'v', 's' }, '<Leader>;', 'q:i')
@@ -288,9 +316,7 @@ vim.api.nvim_create_user_command(
 vim.lsp.config('rust_analyzer', {
   settings = {
     ['rust-analyzer'] = {
-      -- cargo = { features = { 'veea' }, },
       check = {
-        -- features = { 'veea' },
         command = 'clippy',
         ignore = {
           'clippy::too_many_arguments',
