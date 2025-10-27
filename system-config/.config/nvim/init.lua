@@ -61,9 +61,9 @@ vim.api.nvim_create_autocmd("BufNewFile", {
   command = "0read " .. vim.fn.stdpath("config") .. "/skeleton.js | normal! G",
 })
 
-local terminal_au_group = vim.api.nvim_create_augroup("terminal", {})
+
 vim.api.nvim_create_autocmd("TermOpen", {
-  group = terminal_au_group,
+  group = vim.api.nvim_create_augroup("terminal", {}),
   callback = function()
     vim.opt_local.number = false
     vim.opt_local.relativenumber = false
@@ -101,13 +101,6 @@ vim.api.nvim_exec2([[
 -- https://www.reddit.com/r/neovim/comments/109vgtl/comment/j40jzjd/ and
 -- https://github.com/simrat39/rust-tools.nvim/issues/365#issuecomment-1506286437
 -- (and :h lspconfig-setup and :h LspAttach)
-vim.api.nvim_create_autocmd("LspAttach", {
-  callback = function(args)
-    -- local bufnr = args.buf
-    local client = vim.lsp.get_client_by_id(args.data.client_id)
-    client.server_capabilities.semanticTokensProvider = nil
-  end,
-})
 vim.api.nvim_create_autocmd("CompleteDone", { command = "pclose" })
 
 -----------------------
@@ -197,10 +190,9 @@ map('i', 'fdk', '<C-x><C-o>')
 map('n', '<C-k>', function() vim.lsp.buf.type_definition() end)
 
 -- Filetype-specific mappings
-local mappings_quickfix_au_group = vim.api.nvim_create_augroup("mappings_quickfix", {})
 vim.api.nvim_create_autocmd({ 'FileType' }, {
   pattern = "qf",
-  group = mappings_quickfix_au_group,
+  group = vim.api.nvim_create_augroup("mappings_quickfix", {}),
   callback = function()
     map('n', 'o', '<CR><Cmd>copen<CR>', { silent = true, buffer = true })
     map('n', '<CR>', '<CR><Cmd>cclose<CR>', { silent = true, buffer = true })
@@ -255,7 +247,7 @@ map(basic_modes, '<Leader>dd', '<C-w><C-w>')
 map('n', '<Leader>jr', function() vim.lsp.buf.rename() end)
 -- map('n', '<Leader>jc', function() vim.lsp.buf.incoming_calls() end)
 map('n', '<Leader>jc', function() vim.lsp.buf.references() end)
-map('n', '<Leader>jf', function() vim.lsp.buf.code_action() end)
+map('n', '<Leader>jf', function() vim.lsp.buf.code_action({ apply = true }) end)
 map('n', '<Leader>jj', function() vim.lsp.buf.format() end)
 map('n', '<Leader>jt', function() vim.diagnostic.enable(not vim.diagnostic.is_enabled()) end)
 map('n', '<Leader>jo', function() vim.diagnostic.open_float() end)

@@ -1,13 +1,24 @@
 return {
   {
-    "cdchawthorne/inkpot",
-    init = function()
-      vim.g.inkpot_black_background = true
-    end,
-    config = function()
-      vim.opt.termguicolors = false
-      vim.cmd.colorscheme("inkpot")
-    end,
+    "folke/tokyonight.nvim",
+    lazy = false,
+    priority = 1000,
+    opts = {
+      style = "night",
+      terminal_colors = false,
+      on_colors = function(colors)
+        colors.fg = "#ffffff"
+        colors.bg = "#000000"
+      end,
+      on_highlights = function(highlights, colors)
+        highlights.Tbufferline = { bold = true, fg = "#9e9e9e", bg = "#262626" }
+        highlights.TbufferlineNC = { fg = "#9e9e9e", bg = "#262626" }
+      end
+    },
+    config = function(_, opts)
+      require("tokyonight").setup(opts)
+      vim.cmd.colorscheme("tokyonight")
+    end
   },
   {
     "cdchawthorne/nvim-tbufferline",
@@ -34,15 +45,6 @@ return {
     config = function()
       require('leap.user').set_repeat_keys('<enter>', '<backspace>')
     end,
-  },
-  {
-    "AndrewRadev/sideways.vim",
-    keys = {
-      { "<Left>", "<Cmd>SidewaysLeft<CR>", silent = true },
-      { "<Right>", "<Cmd>SidewaysRight<CR>", silent = true },
-      { "aa", "<Plug>SidewaysArgumentTextobjA", mode = { 'o', 'x' }, silent = true },
-      { "ia", "<Plug>SidewaysArgumentTextobjI", mode = { 'o', 'x' }, silent = true },
-    },
   },
   {
     'mbbill/undotree',

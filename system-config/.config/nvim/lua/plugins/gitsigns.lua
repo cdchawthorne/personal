@@ -2,8 +2,7 @@ return {
   {
     'lewis6991/gitsigns.nvim',
     lazy = false,
-    -- opts = { base = "HEAD" },
-    config = true,
+    opts = {},
     keys = {
       { '<Leader>gt', '<Cmd>Gitsigns toggle_signs<CR>', silent = true },
       { '<Leader>gd', '<Cmd>Gitsigns diffthis<CR>', silent = true },
