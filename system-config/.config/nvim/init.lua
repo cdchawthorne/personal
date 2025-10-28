@@ -61,6 +61,21 @@ vim.api.nvim_create_autocmd("BufNewFile", {
   command = "0read " .. vim.fn.stdpath("config") .. "/skeleton.js | normal! G",
 })
 
+local insert_toolbar_au_group = vim.api.nvim_create_augroup("insert_toolbar", {})
+vim.api.nvim_create_autocmd({ "InsertEnter", "TermEnter" }, {
+  group = insert_toolbar_au_group,
+  callback = function()
+    vim.api.nvim_set_hl(0, 'Tbufferline', { fg = '#a9b1d6', bg = '#16161e', bold = true })
+    vim.api.nvim_set_hl(0, 'TbufferlineNC', { fg = '#a9b1d6', bg = '#16161e'})
+  end
+})
+vim.api.nvim_create_autocmd({ "InsertLeave", "TermLeave" }, {
+  group = insert_toolbar_au_group,
+  callback = function()
+    vim.api.nvim_set_hl(0, 'Tbufferline', { fg = "#9e9e9e", bg = "#262626", bold = true })
+    vim.api.nvim_set_hl(0, 'TbufferlineNC', { fg = "#9e9e9e", bg = "#262626" })
+  end
+})
 
 vim.api.nvim_create_autocmd("TermOpen", {
   group = vim.api.nvim_create_augroup("terminal", {}),
