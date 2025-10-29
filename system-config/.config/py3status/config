@@ -1,13 +1,9 @@
 # TODO: limit mpd line width
-#       Apparently SIGUSR1 refreshes all modules? Maybe have mutt send this
-#       Apparently we can use pango in format strings
-#       Use inotify-tools or incron to update email
-
 
 # order += "mpd_status"
 order += "external_script tidal"
-# order += "spotify"
 order += "external_script audio_output"
+order += "sysdata"
 order += "volume master"
 order += "time"
 
@@ -18,12 +14,6 @@ mpd_status {
   hide_on_error = true
   separator_block_width = 30
 }
-
-# spotify {
-#   cache_timeout = 1
-#   format = "[[[{artist}] - {title}]|[{file}]]"
-#   separator_block_width = 30
-# }
 
 external_script tidal {
   cache_timeout = 1
@@ -41,6 +31,12 @@ volume master {
   format = "♪ %volume"
   format_muted = "♪ %volume"
   separator_block_width = 30
+}
+
+sysdata {
+  format = '[\?color=mem_used_percent Mem: {mem_used_percent}%]'
+  separator_block_width = 30
+  thresholds = [(0, "white"), (80, "degraded"), (90, "bad")]
 }
 
 external_script audio_output {
