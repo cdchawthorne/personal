@@ -1,3 +1,4 @@
+local auto_installed = { 'c', 'vim' }
 local ensure_installed = { 'rust' }
 
 local nvim_treesitter = {
@@ -32,4 +33,22 @@ local nvim_treesitter_textobjects = {
   }
 }
 
-return { nvim_treesitter, nvim_treesitter_textobjects }
+local nvim_treesitter_context = {
+  "nvim-treesitter/nvim-treesitter-context",
+  opts = { max_lines = 3 },
+  keys = {
+    { "{t", function() require("treesitter-context").go_to_context(vim.v.count1) end, silent = true },
+  },
+}
+
+vim.api.nvim_create_autocmd('FileType', {
+  group = vim.api.nvim_create_augroup('treesitter', {}),
+  callback = function(ev)
+    if vim.list_contains(ensure_installed, ev.match) or vim.list_contains(auto_installed, ev.match) then
+      vim.treesitter.start()
+      vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+    end
+  end,
+})
+
+return { nvim_treesitter, nvim_treesitter_textobjects, nvim_treesitter_context }

@@ -31,7 +31,6 @@ return {
       require("telescope").load_extension("undo")
     end,
     keys = {
-      { "<Leader>fa", "<Cmd>Telescope find_files<CR>" },
       {
         "<Leader>fd",
         function()
@@ -39,15 +38,16 @@ return {
         end,
       },
       { "<Leader>fk", "<Cmd>Telescope find_files cwd=~/mediary-system<CR>" },
+      { "<Leader>fc", "<Cmd>Telescope find_files cwd=~/.config/nvim follow=true<CR>" },
+      {
+        "<Leader>fw",
+        function()
+          require("telescope.builtin").find_files { cwd = require("config.util").get_buf_cwd(), follow = true }
+        end,
+      },
       { "<Leader>fh", "<Cmd>Telescope oldfiles<CR>" },
       { "<Leader>fb", "<Cmd>Telescope buffers<CR>" },
       { "<Leader>fm", "<Cmd>Telescope man_pages<CR>" },
-      {
-        "<Leader>ft",
-        function() 
-          require('telescope.builtin').tags({ ctags_file = opt.tags:get()[1] })
-        end,
-      },
       { "<Leader>fl", "<Cmd>Telescope current_buffer_fuzzy_find<CR>" },
       { "<Leader>fT", "<Cmd>Telescope treesitter<CR>" },
       -- Extensions

@@ -1,2 +1,1 @@
-lua vim.treesitter.start()
 set textwidth=100
