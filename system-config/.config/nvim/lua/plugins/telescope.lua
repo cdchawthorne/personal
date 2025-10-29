@@ -1,3 +1,5 @@
+local util = require('config.util')
+
 return {
   {
     'nvim-telescope/telescope.nvim',
@@ -40,16 +42,29 @@ return {
       { "<Leader>fk", "<Cmd>Telescope find_files cwd=~/mediary-system<CR>" },
       { "<Leader>fc", "<Cmd>Telescope find_files cwd=~/.config/nvim follow=true<CR>" },
       {
-        "<Leader>fw",
+        "<Leader>fo",
         function()
-          require("telescope.builtin").find_files { cwd = require("config.util").get_buf_cwd(), follow = true }
+          require("telescope.builtin").find_files { cwd = util.get_buf_cwd(), follow = true }
         end,
       },
+      { "<Leader>fg", "<Cmd>Telescope live_grep cwd=~/mediary-system additional_args=-i<CR>" },
       { "<Leader>fh", "<Cmd>Telescope oldfiles<CR>" },
-      { "<Leader>fb", "<Cmd>Telescope buffers<CR>" },
       { "<Leader>fm", "<Cmd>Telescope man_pages<CR>" },
       { "<Leader>fl", "<Cmd>Telescope current_buffer_fuzzy_find<CR>" },
-      { "<Leader>fT", "<Cmd>Telescope treesitter<CR>" },
+      { "<Leader>fr", "<Cmd>Telescope resume<CR>" },
+      { "<Leader>f;", "<Cmd>Telescope command_history<CR>" },
+      { "<Leader>f/", "<Cmd>Telescope search_history<CR>" },
+      -- buffers
+      { "<Leader>kl", "<Cmd>Telescope buffers show_all_buffers=false ignore_current_buffer=true sort_mru=true<CR>" },
+      -- git
+      {
+        "<Leader>gs",
+        function()
+          require("telescope.builtin").git_stash { cwd = util.get_buf_cwd() }
+        end,
+      },
+      { "<Leader>gh", "<Cmd>Telescope git_bcommits use_file_path=true<CR>" },
+      { "<Leader>gh", "<Cmd>Telescope git_bcommits_range use_file_path=true<CR>", mode = 'v' },
       -- Extensions
       { "<Leader>fu", "<Cmd>Telescope undo<CR>" },
     },
