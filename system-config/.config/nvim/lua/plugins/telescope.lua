@@ -40,7 +40,7 @@ return {
         end,
       },
       { "<Leader>fk", "<Cmd>Telescope find_files cwd=~/mediary-system<CR>" },
-      { "<Leader>fc", "<Cmd>Telescope find_files cwd=~/.config/nvim follow=true<CR>" },
+      { "<Leader>fn", "<Cmd>Telescope find_files cwd=~/.config/nvim follow=true<CR>" },
       {
         "<Leader>fo",
         function()
@@ -55,7 +55,7 @@ return {
       { "<Leader>f;", "<Cmd>Telescope command_history<CR>" },
       { "<Leader>f/", "<Cmd>Telescope search_history<CR>" },
       -- buffers
-      { "<Leader>kl", "<Cmd>Telescope buffers show_all_buffers=false ignore_current_buffer=true sort_mru=true<CR>" },
+      { "<Leader>kl", "<Cmd>Telescope buffers show_all_buffers=false ignore_current_buffer=true sort_mru=true cwd=/home/cdchawthorne/mediary-system<CR>" },
       -- git
       {
         "<Leader>gs",

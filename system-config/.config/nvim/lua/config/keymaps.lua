@@ -41,7 +41,6 @@ map('t', ',.', [[<C-\><C-n>]])
 for _, fst in ipairs({ 'f', 'F' }) do
   for _, snd in ipairs({ 'j', 'J' }) do
     map('i', fst .. snd, '<C-]><Esc>')
-    map('i', snd .. fst, '<C-]><Esc>')
   end
 end
 
@@ -50,9 +49,6 @@ map('i', 'fdn', '<C-n>')
 map('i', 'fdp', '<C-p>')
 map('i', 'fdh', '<C-]><Cmd>nohlsearch<CR>')
 map('i', 'fdd', '<C-g>u<C-R>=strftime("%Y-%m-%d")<CR>')
-map('i', '<Tab>', function() return vim.fn.pumvisible() == 1 and "<C-n>" or "<Tab>" end, { expr = true })
-map('i', '<S-Tab>', function() return vim.fn.pumvisible() == 1 and "<C-p>" or "<S-tab>" end, { expr = true })
-map('i', '<CR>', function() return vim.fn.pumvisible() == 1 and "<C-x><C-o>" or "<CR>" end, { expr = true })
 
 map(basic_modes, '{h', function() vim.diagnostic.jump { count = -1, float = true, severity = { max = vim.diagnostic.severity.INFO } } end)
 map(basic_modes, '}h', function() vim.diagnostic.jump { count = 1, float = true, severity = { max = vim.diagnostic.severity.INFO } } end)
@@ -100,7 +96,6 @@ map('n', '<Leader>kvc', function() util.spawn_shell(vim.cmd.vnew) end, silent)
 map('n', '<Leader>kvf', '<Cmd>vertical sbuffer #<CR>', silent)
 map('n', '<Leader>kd', '<Cmd>bdelete<CR>', silent)
 map('n', '<Leader>ko', function() return 'q:aedit ' .. util.get_buf_cwd() .. "/" end, { expr = true })
-map('n', '<Leader>kl', [[i<C-l><C-\><C-n><Cmd>set scrollback=1 | set scrollback=100000<CR>]], silent)
 
 -- Windows
 map(basic_modes, '<Leader>d', '<C-w>')
@@ -132,6 +127,5 @@ map({ 'n', 'v' }, '<Leader>.', 'G')
 map({ 'n', 'v' }, '<Leader>,', 'gg')
 map(basic_modes, '<Leader>v', 'v')
 map('n', '<Leader>c', '0D')
-map('n', '<Leader>a', '<Cmd>qa<CR>')
 map('n', '<Leader>o', 'o<C-u>')
 map('n', '<Leader>O', 'O<C-u>')
