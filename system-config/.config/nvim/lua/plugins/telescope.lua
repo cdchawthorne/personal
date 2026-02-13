@@ -39,7 +39,7 @@ return {
           require("telescope.builtin").diagnostics { severity_limit = vim.diagnostic.severity.WARN }
         end,
       },
-      { "<Leader>fk", "<Cmd>Telescope find_files cwd=~/mediary-system<CR>" },
+      { "<Leader>fk", "<Cmd>Telescope find_files cwd=~/work/mediary-system<CR>" },
       { "<Leader>fn", "<Cmd>Telescope find_files cwd=~/.config/nvim follow=true<CR>" },
       {
         "<Leader>fo",

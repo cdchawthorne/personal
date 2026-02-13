@@ -16,28 +16,14 @@ map('n', 'x', ':write<CR>', silent)
 map('n', '<Up>', '<Cmd>.m-2<CR>', silent)
 map('n', '<Down>', '<Cmd>.m+1<CR>', silent)
 
-map('n', '}f', '<Cmd>cn<CR>', silent)
-map('n', '{f', '<Cmd>cp<CR>', silent)
+map('n', ']f', '<Cmd>cn<CR>', silent)
+map('n', '[f', '<Cmd>cp<CR>', silent)
 
 map({'v', 's'}, '<', '<gv')
 map({'v', 's'}, '>', '>gv')
 
 map('t', '<C-l>', [[<C-l><C-\><C-n><Cmd>set scrollback=1 | set scrollback=100000<CR>a]], silent)
 map('t', '<C-b>', '<CR><CR><CR><CR><CR><CR><CR><CR><CR><CR><CR><CR><CR><CR><CR><CR><CR><CR><C-l>')
-
-local swaps = {
-  ['0'] = ')',
-  ['9'] = '(',
-  ['8'] = '*',
-  ['7'] = '&',
-  ['6'] = '^',
-  ['['] = '{',
-  [']'] = '}',
-}
-for i, v in pairs(swaps) do
-  map(basic_modes, i, v)
-  map(basic_modes, v, i)
-end
 
 map('t', ',.', [[<C-\><C-n>]])
 
@@ -53,10 +39,10 @@ map('i', 'fdp', '<C-p>')
 map('i', 'fdh', '<C-]><Cmd>nohlsearch<CR>')
 map('i', 'fdd', '<C-g>u<C-R>=strftime("%Y-%m-%d")<CR>')
 
-map(basic_modes, '{h', function() vim.diagnostic.jump { count = -1, float = true, severity = { max = vim.diagnostic.severity.INFO } } end)
-map(basic_modes, '}h', function() vim.diagnostic.jump { count = 1, float = true, severity = { max = vim.diagnostic.severity.INFO } } end)
-map(basic_modes, '{d', function() vim.diagnostic.jump { count = -1, float = true, severity = { min = vim.diagnostic.severity.WARN } } end)
-map(basic_modes, '}d', function() vim.diagnostic.jump { count = 1, float = true, severity = { min = vim.diagnostic.severity.WARN } } end)
+map(basic_modes, '[h', function() vim.diagnostic.jump { count = -1, float = true, severity = { max = vim.diagnostic.severity.INFO } } end)
+map(basic_modes, ']h', function() vim.diagnostic.jump { count = 1, float = true, severity = { max = vim.diagnostic.severity.INFO } } end)
+map(basic_modes, '[d', function() vim.diagnostic.jump { count = -1, float = true, severity = { min = vim.diagnostic.severity.WARN } } end)
+map(basic_modes, ']d', function() vim.diagnostic.jump { count = 1, float = true, severity = { min = vim.diagnostic.severity.WARN } } end)
 map('i', 'fdk', '<C-x><C-o>')
 map('n', '<C-k>', function() vim.lsp.buf.type_definition() end)
 

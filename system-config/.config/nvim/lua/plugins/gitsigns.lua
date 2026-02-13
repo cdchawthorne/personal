@@ -21,7 +21,7 @@ return {
         end,
       },
       {
-        '}c',
+        ']c',
         function()
           if vim.wo.diff then
             vim.cmd.normal({']c', bang = true})
@@ -31,7 +31,7 @@ return {
         end,
       },
       {
-        '{c',
+        '[c',
         function()
           if vim.wo.diff then
             vim.cmd.normal({'[c', bang = true})

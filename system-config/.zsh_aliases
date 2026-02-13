@@ -27,6 +27,7 @@ function gdc {
   git diff "$1~1" $1
 }
 alias g='cd $(git rev-parse --show-toplevel)'
+alias r='cd ~/work/mediary-system'
 
 alias rlwrap='rlwrap -s 1000000'
 alias sudo='sudo '
@@ -104,4 +105,25 @@ function python {
         export INPUTRC=${HOME}/.pyinputrc
         command python $@
     )
+}
+
+function umts {
+  for i in ~/mnt/*; do
+    fusermount -u $i
+  done
+}
+
+function mts {
+  umts &> /dev/null
+  ping -c1 -W0.5 altair &> /dev/null && sshfs altair:/home/cdchawthorne ~/mnt/altair && echo altair
+  ping -c1 -W0.5 antares &> /dev/null && sshfs antares:/home/cdchawthorne ~/mnt/antares && echo antares
+  ping -c1 -W0.5 slate &> /dev/null && sshfs root@slate:/ ~/mnt/slate && echo slate
+  ping -c1 -W0.5 b1300 &> /dev/null && sshfs root@b1300:/ ~/mnt/b1300 && echo b1300
+}
+
+function backup {
+  restic -r sftp:zh4398@zh4398.rsync.net:altair backup \
+    ~/documents ~/media ~/archives ~/recreation \
+    --exclude ~/media/music/ocremix
+  scp ~/.passwords/passwords.kdbx zh4398@zh4398.rsync.net:
 }
