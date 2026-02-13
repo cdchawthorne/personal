@@ -123,7 +123,7 @@ function mts {
 
 function backup {
   restic -r sftp:zh4398@zh4398.rsync.net:altair backup \
-    ~/documents ~/media ~/archives ~/recreation \
+    ~/documents ~/media ~/recreation \
     --exclude ~/media/music/ocremix
   scp ~/.passwords/passwords.kdbx zh4398@zh4398.rsync.net:
 }
