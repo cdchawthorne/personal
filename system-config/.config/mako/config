@@ -1,0 +1,7 @@
+default-timeout=3000
+outer-margin=10
+border-radius=10
+background-color=#262626
+
+[mode=do-not-disturb]
+invisible=1
