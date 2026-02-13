@@ -27,12 +27,10 @@ return {
       keymap = {
         preset = 'none',
         ['<CR>'] = { 'select_and_accept', 'fallback' },
-        ['j'] = { 'select_next', 'fallback' },
-        ['k'] = { 'select_prev', 'fallback' },
+        ['<Tab>'] = { 'select_next', 'fallback' },
+        ['<S-tab>'] = { 'select_prev', 'fallback' },
         ['K'] = { 'show_documentation', 'hide_documentation', 'fallback' },
         ['<C-space>'] = { 'show' },
-        ['<Tab>'] = { 'snippet_forward', 'fallback' },
-        ['<S-Tab>'] = { 'snippet_backward', 'fallback' },
       },
 
       appearance = {
