@@ -44,7 +44,7 @@
     },
     "mpris": {
         "format": "{title} - {artist}",
-        "player": "chromium",
+        "player": "tidal-hifi",
         "max-length": 1000 // For some reason this prevents it from taking up the whole bar
     },
     "tray": {

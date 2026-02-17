@@ -94,9 +94,9 @@ function to {
 }
 
 function x {
-    if ! pgrep X &> /dev/null; then
+    if ! pgrep sway &> /dev/null; then
         builtin cd
-        command ssh-agent startx
+        ssh-agent sway
     fi
 }
 
