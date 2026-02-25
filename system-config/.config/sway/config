@@ -69,6 +69,14 @@ bindsym $mod+Shift+u exec wpctl set-volume @DEFAULT_SINK@ 10%-
 bindsym $mod+Shift+o exec wpctl set-volume @DEFAULT_SINK@ 10%+
 bindsym $mod+i exec wpctl set-mute @DEFAULT_SINK@ toggle
 
+bindsym $mod+minus exec curl -X POST localhost:47836/player/playpause
+bindsym $mod+equal exec curl -X POST localhost:47836/player/next
+bindsym $mod+backspace exec curl -X POST localhost:47836/player/previous
+bindsym $mod+Shift+bracketleft exec curl -X PUT "localhost:47836/player/volume?volume=0.1"
+bindsym $mod+Shift+bracketright exec curl -X PUT "localhost:47836/player/volume?volume=1"
+bindsym $mod+bracketleft exec zsh -c 'curl -X PUT "localhost:47836/player/volume?volume=$(($(curl localhost:47836/current | jq .volume)-0.02))"'
+bindsym $mod+bracketright exec zsh -c 'curl -X PUT "localhost:47836/player/volume?volume=$(($(curl localhost:47836/current | jq .volume)+0.02))"'
+
 bindsym Print exec grim -g "$(slurp -o)" - | wl-copy
 
 bindsym XF86AudioPlay exec playerctl play-pause
@@ -128,8 +136,8 @@ bar {
 }
 
 assign [class="^discord$"] 6
-assign [title="KeePassXC"] 7
-for_window [class="tidal-hifi"] move to workspace 8
+assign [app_id="org.keepassxc.KeePassXC"] 7
+assign [app_id="tidal-hifi"] 8
 
 exec keepassxc .passwords/passwords.kdbx
 exec wlsunset -l 43.4 -L -80.5

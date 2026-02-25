@@ -29,7 +29,7 @@ return {
         ['<CR>'] = { 'select_and_accept', 'fallback' },
         ['<Tab>'] = { 'select_next', 'fallback' },
         ['<S-tab>'] = { 'select_prev', 'fallback' },
-        ['K'] = { 'show_documentation', 'hide_documentation', 'fallback' },
+        ['<C-k>'] = { 'show_documentation', 'hide_documentation', 'fallback' },
         ['<C-space>'] = { 'show' },
       },
 
