@@ -7,9 +7,9 @@ fi
 
 sink="$(wpctl inspect @DEFAULT_AUDIO_SINK@ | sed -rne 's_^.*node\.name \= "(.*)"$_\1_p')"
 if [[ $sink == $1 ]]; then
-  echo 🔊
+  echo " "
 elif [[ $sink == $2 ]]; then
-  echo 🎧
+  echo " "
 else
   echo "?"
 fi

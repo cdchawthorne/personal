@@ -72,34 +72,21 @@ bindsym $mod+i exec wpctl set-mute @DEFAULT_SINK@ toggle
 bindsym $mod+minus exec curl -X POST localhost:47836/player/playpause
 bindsym $mod+equal exec curl -X POST localhost:47836/player/next
 bindsym $mod+backspace exec curl -X POST localhost:47836/player/previous
-bindsym $mod+Shift+bracketleft exec curl -X PUT "localhost:47836/player/volume?volume=0.1"
-bindsym $mod+Shift+bracketright exec curl -X PUT "localhost:47836/player/volume?volume=1"
-bindsym $mod+bracketleft exec zsh -c 'curl -X PUT "localhost:47836/player/volume?volume=$(($(curl localhost:47836/current | jq .volume)-0.02))"'
-bindsym $mod+bracketright exec zsh -c 'curl -X PUT "localhost:47836/player/volume?volume=$(($(curl localhost:47836/current | jq .volume)+0.02))"'
 
 bindsym Print exec grim -g "$(slurp -o)" - | wl-copy
-
+bindsym Pause exec exec playerctl play-pause
 bindsym XF86AudioPlay exec playerctl play-pause
 
 bindsym $mod+space mode launcher
 bindsym $mod+comma mode control
 
 mode control {
-  bindsym z exec poweroff; mode default
-  bindsym x exec reboot; mode default
   bindsym q exit; mode default
   bindsym r reload; mode default
 
-  bindsym b exec pere random; mode default
   bindsym n exec toggle-music; mode default
-  bindsym s exec toggle-sink alsa_output.pci-0000_11_00.6.analog-stereo alsa_output.usb-SteelSeries_Arctis_7P_-00.analog-stereo; mode default
-  bindsym k kill; mode default
-
-  bindsym h splith; mode default
-  bindsym v splitv; mode default
-  # bindsym s layout stacking; mode default
-  bindsym w layout tabbed; mode default
-  bindsym e layout toggle split; mode default
+  bindsym s exec toggle-sink alsa_output.pci-0000_75_00.6.analog-stereo alsa_output.usb-SteelSeries_Arctis_7P_-00.analog-stereo; mode default
+  bindsym c kill; mode default
 
   bindsym Escape mode default
 }
@@ -113,7 +100,8 @@ mode launcher {
   bindsym m exec $term --title music -- ncmpcpp; mode default
 
   bindsym c exec $term --title antares -- ssh -t antares dtach -A .dtach_socket nvim; mode default
-  bindsym t exec $term; mode default
+  bindsym v exec start-vm alasia 1921; exec $term --title alasia -- ssh -t alasia dtach -A .dtach_socket nvim; mode default
+  bindsym t exec start-vm tureis 1920; exec $term --title tureis -- ssh -t tureis dtach -A .dtach_socket nvim; mode default
   bindsym Return exec $term -- nvim; mode default
 
   bindsym d exec discord; mode default

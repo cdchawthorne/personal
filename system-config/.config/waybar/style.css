@@ -1,13 +1,20 @@
+/* colours largely taken from https://github.com/soaddevgit/WaybarTheme */
+/* @define-color background #181825; */
+/* @define-color background #1e1e2e; */
+/* @define-color background #313244; */
+@define-color background #282833;
+
 * {
     /* `otf-font-awesome` is required to be installed for icons */
     font-family: Hack Nerd Font;
     font-size: 27px;
+    margin-top: 3px;
+    margin-bottom: 3px;
 }
 
 window#waybar {
     background-color: #000000;
-    border-bottom: 3px solid rgba(100, 114, 125, 0.5);
-    color: #ffffff;
+    /* border-bottom: 3px solid rgba(100, 114, 125, 0.5); */
     transition-property: background-color;
     transition-duration: .5s;
 }
@@ -53,10 +60,17 @@ button:hover {
     box-shadow: inset 0 -3px #ffffff;
 }
 
+#workspaces {
+  border-radius: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
+  background-color: @background;
+}
+
 #workspaces button {
     padding: 0 5px;
     background-color: transparent;
-    color: #ffffff;
+    color: #96CDFB;
 }
 
 #workspaces button:hover {
@@ -64,8 +78,8 @@ button:hover {
 }
 
 #workspaces button.focused {
-    background-color: #64727D;
-    box-shadow: inset 0 -3px #ffffff;
+  /* background-color: #222222; */
+  box-shadow: inset 0 -3px #96CDFB;
 }
 
 #workspaces button.urgent {
@@ -95,7 +109,6 @@ button:hover {
 #power-profiles-daemon,
 #mpd {
     padding: 0 10px;
-    color: #ffffff;
 }
 
 #window,
@@ -104,17 +117,13 @@ button:hover {
 }
 
 /* If workspaces is the leftmost module, omit left margin */
-.modules-left > widget:first-child > #workspaces {
-    margin-left: 0;
-}
+/* .modules-left > widget:first-child > #workspaces { */
+/*     margin-left: 0; */
+/* } */
 
 /* If workspaces is the rightmost module, omit right margin */
 .modules-right > widget:last-child > #workspaces {
     margin-right: 0;
-}
-
-#clock {
-    background-color: #64727D;
 }
 
 @keyframes blink {
@@ -128,21 +137,67 @@ label:focus {
     background-color: #000000;
 }
 
+#wireplumber {
+  color: #96CDFB;
+  background-color: @background;
+  margin-left: 5px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+#custom-audio-sink {
+  color: #96CDFB;
+  background-color: @background;
+  margin-right: 5px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
 #cpu {
-    background-color: #2ecc71;
-    color: #000000;
+  color: #DDB6F2;
+  margin-left: 5px;
+  margin-right: 5px;
+  border-radius: 10px;
+  background-color: @background;
 }
 
 #memory {
-    background-color: #9b59b6;
+  color: #F5C2E7;
+  margin-left: 5px;
+  margin-right: 5px;
+  border-radius: 10px;
+  background-color: @background;
+}
+
+#clock {
+  color: #F8BD96;
+  background-color: @background;
+  margin-left: 5px;
+  border-radius: 10px;
+  margin-right: 5px;
 }
 
 #wireplumber.muted {
-    color: #FFFF00;
+  color: #FDFD96;
+}
+
+#mpris {
+  margin-right: 12;
+}
+
+#mpris.playing {
+  color: #77DD77;
+}
+
+#mpris.paused {
+  color: #FDFD96;
 }
 
 #tray {
-    /* background-color: #2980b9; */
+  background-color: @background;
+  margin-left: 5px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
 }
 
 #tray > .passive {
@@ -153,33 +208,11 @@ label:focus {
     -gtk-icon-effect: highlight;
     background-color: #eb4d4b;
 }
-/*
 
-#scratchpad {
-    background: rgba(0, 0, 0, 0.2);
+#custom-power {
+  color: #cdd6f4;
+  background-color: @background;
+  margin-right: 5px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
-
-#scratchpad.empty {
-	background-color: transparent;
-}
-
-#privacy {
-    padding: 0;
-}
-
-#privacy-item {
-    padding: 0 5px;
-    color: white;
-}
-
-#privacy-item.screenshare {
-    background-color: #cf5700;
-}
-
-#privacy-item.audio-in {
-    background-color: #1ca000;
-}
-
-#privacy-item.audio-out {
-    background-color: #0069d4;
-} */

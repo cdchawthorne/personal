@@ -127,3 +127,31 @@ function backup {
     --exclude ~/media/music/ocremix
   scp ~/.passwords/passwords.kdbx zh4398@zh4398.rsync.net:
 }
+
+function slate_push {
+  builtin cd ~/work/mediary-system
+  make lucid_gw_slate_dev_pack
+  ssh slate 'lxc-stop -k lucid-gw; rm -rf /srv/lxc/lucid-gw; tar -C /srv/lxc/ -xzvf -' < "$(ls -rt1 target/lucid-gw*slate*.tar.gz | tail -1)"
+  scp ../slate-core-config.json slate:/srv/lxc/lucid-gw/rootfs/etc/core_config.json
+}
+
+function b1300_push {
+  builtin cd ~/work/mediary-system
+  make lucid_gw_b1300_dev_pack
+  ssh b1300 'lxc-stop -k lucid-gw; rm -rf /srv/lxc/lucid-gw; tar -C /srv/lxc/ -xzvf -' < "$(ls -rt1 target/lucid-gw*b1300*.tar.gz | tail -1)"
+  scp ../b1300-core-config.json b1300:/srv/lxc/lucid-gw/rootfs/etc/core_config.json
+}
+
+function veea_push {
+  builtin cd ~/work/mediary-system
+
+  make lucid_gw_vhc25_binaries lucid_gw_vhe09_binaries
+
+  scp target/armv7-unknown-linux-musleabihf/release/mediary alasia:veea-container-32-bit/lucid-files/bin
+  scp target/armv7-unknown-linux-musleabihf/release-small/vcc_shell_setup alasia:veea-container-32-bit/lucid-files/bin
+  scp target/armv7-unknown-linux-musleabihf/release-small/init alasia:veea-container-32-bit/lucid-files/sbin
+
+  scp target/aarch64-unknown-linux-musl/release/mediary alasia:veea-container-64-bit/lucid-files/bin
+  scp target/aarch64-unknown-linux-musl/release-small/vcc_shell_setup alasia:veea-container-64-bit/lucid-files/bin
+  scp target/aarch64-unknown-linux-musl/release-small/init alasia:veea-container-64-bit/lucid-files/sbin
+}
