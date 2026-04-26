@@ -39,6 +39,12 @@ return {
           require("telescope.builtin").diagnostics { severity_limit = vim.diagnostic.severity.WARN }
         end,
       },
+      {
+        "<Leader>fw",
+        function()
+          require("telescope.builtin").diagnostics { severity_bound = vim.diagnostic.severity.HINT }
+        end,
+      },
       { "<Leader>fk", "<Cmd>Telescope find_files cwd=~/work/mediary-system<CR>" },
       { "<Leader>fn", "<Cmd>Telescope find_files cwd=~/.config/nvim follow=true<CR>" },
       {
@@ -64,7 +70,7 @@ return {
         end,
       },
       { "<Leader>gh", "<Cmd>Telescope git_bcommits use_file_path=true<CR>" },
-      { "<Leader>gh", "<Cmd>Telescope git_bcommits_range use_file_path=true<CR>", mode = 'v' },
+      { "<Leader>gh", "<Cmd>Telescope git_bcommits_range use_file_path=true<CR>", mode = 'x' },
       -- Extensions
       { "<Leader>fu", "<Cmd>Telescope undo<CR>" },
     },

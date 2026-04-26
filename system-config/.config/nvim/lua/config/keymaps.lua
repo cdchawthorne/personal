@@ -2,14 +2,17 @@ local util = require('config.util')
 
 local map = vim.keymap.set
 
-local basic_modes = {'n', 'v', 's', 'o'}
+local basic_modes = {'n', 'x', 'o'}
 local silent = { silent = true }
 
 map(basic_modes, '/', [[/\v]])
 map(basic_modes, '?', [[?\v]])
 map(basic_modes, '<Tab>', '%')
 map(basic_modes, 'v', '<C-b>')
-map(basic_modes, 'm', '<C-f>')
+map(basic_modes, 'm', '<C-f>3j')
+
+map('n', 'gp', [[o <BS><C-\><C-n>p]])
+map('n', 'gP', [[O <BS><C-\><C-n>p]])
 
 map('n', 'S', 'm')
 map('n', 'x', ':write<CR>', silent)
@@ -19,8 +22,8 @@ map('n', '<Down>', '<Cmd>.m+1<CR>', silent)
 map('n', ']f', '<Cmd>cn<CR>', silent)
 map('n', '[f', '<Cmd>cp<CR>', silent)
 
-map({'v', 's'}, '<', '<gv')
-map({'v', 's'}, '>', '>gv')
+map('x', '<', '<gv')
+map('x', '>', '>gv')
 
 map('t', '<C-l>', [[<C-l><C-\><C-n><Cmd>set scrollback=1 | set scrollback=100000<CR>a]], silent)
 map('t', '<C-b>', '<CR><CR><CR><CR><CR><CR><CR><CR><CR><CR><CR><CR><CR><CR><CR><CR><CR><CR><C-l>')
@@ -110,10 +113,10 @@ map('n', '<Leader>jh', function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hi
 map('n', '<Leader>jv', function() util.toggle_rust_analyzer_feature('veea') end)
 
 -- Leader miscellany
-map({ 'n', 'v', 's' }, '<Leader>;', 'q:i')
-map({ 'n', 'v', 's' }, '<Leader>/', ':tag ')
-map({ 'n', 'v' }, '<Leader>.', 'G')
-map({ 'n', 'v' }, '<Leader>,', 'gg')
+map({ 'n', 'x' }, '<Leader>;', 'q:i')
+map({ 'n', 'x' }, '<Leader>/', ':tag ')
+map({ 'n', 'x' }, '<Leader>.', 'G')
+map({ 'n', 'x' }, '<Leader>,', 'gg')
 map(basic_modes, '<Leader>v', 'v')
 map('n', '<Leader>c', '0D')
 map('n', '<Leader>o', 'o<C-u>')

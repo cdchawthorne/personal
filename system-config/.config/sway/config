@@ -88,6 +88,8 @@ mode control {
   bindsym s exec toggle-sink alsa_output.pci-0000_75_00.6.analog-stereo alsa_output.usb-SteelSeries_Arctis_7P_-00.analog-stereo; mode default
   bindsym c kill; mode default
 
+  bindsym k exec stop-vm tureis; exec stop-vm alasia; mode default
+
   bindsym Escape mode default
 }
 

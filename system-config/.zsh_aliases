@@ -40,6 +40,10 @@ function wping {
   done
 }
 
+function n {
+  $@; notify-send "Command completed: $1"
+}
+
 function rustrun {
   if [[ $# -ne 1 ]]; then
     echo "usage: rustrun foo.rs"
@@ -89,6 +93,16 @@ function pa {
     cd ${dest}
 }
 
+function gpa {
+    if [[ $# -eq 0 ]]; then
+        num=1
+    else
+        num=$1
+    fi
+
+    git switch -d HEAD~$num
+}
+
 function to {
     cd "$(dirname $1)"
 }
@@ -128,29 +142,113 @@ function backup {
   scp ~/.passwords/passwords.kdbx zh4398@zh4398.rsync.net:
 }
 
+alias ccl='(builtin cd "$(git rev-parse --show-toplevel)"; make cargo_clippy cargo_test)'
+
 function slate_push {
+  setopt err_return
   builtin cd ~/work/mediary-system
   make lucid_gw_slate_dev_pack
   ssh slate 'lxc-stop -k lucid-gw; rm -rf /srv/lxc/lucid-gw; tar -C /srv/lxc/ -xzvf -' < "$(ls -rt1 target/lucid-gw*slate*.tar.gz | tail -1)"
-  scp ../slate-core-config.json slate:/srv/lxc/lucid-gw/rootfs/etc/core_config.json
+  scp ../slate-saved-state.json slate:/srv/lxc/lucid-gw/rootfs/shared/saved-state.json
+}
+
+function slate_push_old {
+  setopt err_return
+  builtin cd ~/work/mediary-system
+  make mediary_armv7_release init_armv7_release lucid-hal_armv7_release
+  ssh slate 'lxc-stop -k lucid-gw; killall lucid-hal' || true
+  scp target/armv7-unknown-linux-musleabihf/release/mediary slate:/srv/lxc/lucid-gw/rootfs/bin/mediary
+  scp target/armv7-unknown-linux-musleabihf/release/lucid-hal slate:/srv/lxc/lucid-gw/scripts/lucid-hal
+  scp target/armv7-unknown-linux-musleabihf/release-small/init slate:/srv/lxc/lucid-gw/rootfs/sbin/init
+  scp ../slate-saved-state.json slate:/srv/lxc/lucid-gw/rootfs/shared/saved-state.json
 }
 
 function b1300_push {
+  setopt err_return
   builtin cd ~/work/mediary-system
   make lucid_gw_b1300_dev_pack
   ssh b1300 'lxc-stop -k lucid-gw; rm -rf /srv/lxc/lucid-gw; tar -C /srv/lxc/ -xzvf -' < "$(ls -rt1 target/lucid-gw*b1300*.tar.gz | tail -1)"
-  scp ../b1300-core-config.json b1300:/srv/lxc/lucid-gw/rootfs/etc/core_config.json
+  scp ../b1300-saved-state.json b1300:/srv/lxc/lucid-gw/rootfs/shared/saved-state.json
 }
 
-function veea_push {
+function chr2fa_push {
+  setopt err_return
+  builtin cd ~/work/mediary-system
+  make lucid_gw_chr2fa_dev_pack
+  cmd='lxc-stop -k lucid-gw; rm -rf /data/lxc/lucid-gw; tar -xzvf -;'
+  cmd+='mkdir -p /data/lxc/lucid-gw/rootfs/crsp/api/config/;' 
+  cmd+='cp /data/lxc/Hello1/rootfs/crsp/api/config/api.conf /data/lxc/lucid-gw/rootfs/crsp/api/config/api.conf;'
+  ssh chr2fa $cmd < "$(ls -rt1 target/lucid-gw*chr2fa*.tar.gz | tail -1)"
+}
+
+function c25_build {
+  setopt err_return
+
+  # start it now so it has time for startup before we use it
+  start-vm alasia 1921
+
+  if [[ -z "$KEYCLOAK_PASSWORD" ]]; then
+    read -s "KEYCLOAK_PASSWORD?Keycloak password: "
+    export KEYCLOAK_PASSWORD
+  fi
+
   builtin cd ~/work/mediary-system
 
-  make lucid_gw_vhc25_binaries lucid_gw_vhe09_binaries
+  make lucid_gw_vhc25_binaries lucid_vers_dev
 
   scp target/armv7-unknown-linux-musleabihf/release/mediary alasia:veea-container-32-bit/lucid-files/bin
   scp target/armv7-unknown-linux-musleabihf/release-small/vcc_shell_setup alasia:veea-container-32-bit/lucid-files/bin
   scp target/armv7-unknown-linux-musleabihf/release-small/init alasia:veea-container-32-bit/lucid-files/sbin
 
+  alasia_cmd="cd veea-container-32-bit; echo | ./build.py sideload C25 --version '$(cat target/LUCID_VERS)'"
+  image_id="$(ssh alasia "$alasia_cmd" | tee /dev/tty | tail -1 | jq .image_id)"
+
+  echo "docker image create $image_id --detach" | ssh veea 
+
+  notify-send "VHC25 build loaded"
+}
+
+function c25_build_old {
+  setopt err_return
+
+  # start it now so it has time for startup before we use it
+  start-vm alasia 1921
+
+  if [[ -z "$KEYCLOAK_PASSWORD" ]]; then
+    read -s "KEYCLOAK_PASSWORD?Keycloak password: "
+    export KEYCLOAK_PASSWORD
+  fi
+
+  builtin cd ~/work/mediary-system
+
+  make init_armv7_release mediary_veea_armv7_release veea_vcc_shell_setup_armv7_release
+
+  scp target/armv7-unknown-linux-musleabihf/release/mediary alasia:veea-container-32-bit/lucid-files/bin
+  scp target/armv7-unknown-linux-musleabihf/release-small/vcc_shell_setup alasia:veea-container-32-bit/lucid-files/bin
+  scp target/armv7-unknown-linux-musleabihf/release-small/init alasia:veea-container-32-bit/lucid-files/sbin
+
+  alasia_cmd="cd veea-container-32-bit; echo | ./build.py sideload C25 --version '$(cat target/LUCID_VERS)'"
+  image_id="$(ssh alasia "$alasia_cmd" | tee /dev/tty | tail -1 | jq .image_id)"
+
+  echo "docker image create $image_id --detach" | ssh veea 
+
+  notify-send "VHC25 build loaded"
+}
+
+function c25_push {
+  setopt err_return
+
+  builtin cd ~/work/mediary-system
+
+  make mediary_veea_armv7_release
+
+  cp target/armv7-unknown-linux-musleabihf/release/mediary ~/work/www
+}
+
+function e09_push {
+  make lucid_gw_vhe09_binaries
+
+  # TODO: use johnson for this?
   scp target/aarch64-unknown-linux-musl/release/mediary alasia:veea-container-64-bit/lucid-files/bin
   scp target/aarch64-unknown-linux-musl/release-small/vcc_shell_setup alasia:veea-container-64-bit/lucid-files/bin
   scp target/aarch64-unknown-linux-musl/release-small/init alasia:veea-container-64-bit/lucid-files/sbin

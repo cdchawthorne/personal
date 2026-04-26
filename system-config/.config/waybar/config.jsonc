@@ -40,6 +40,8 @@
         "tooltip-format": "{app}: {title}"
     },
     "wireplumber": {
+        // "on-click": "wpctl set-mute @DEFAULT_SINK@ toggle",
+        "on-click": "toggle-sink alsa_output.pci-0000_75_00.6.analog-stereo alsa_output.usb-SteelSeries_Arctis_7P_-00.analog-stereo",
         "format": "{volume}%"
     },
     "mpris": {
@@ -54,8 +56,14 @@
     },
     "clock": {
         // "timezone": "America/New_York",
+        "interval": 1,
         "format": "{:%a %b %d %H:%M}",
-        "tooltip-format": "<tt><small>{calendar}</small></tt>",
+        "tooltip-format": "<tt>{:%H:%M:%S}\r<small>{calendar}</small></tt>",
+        "calendar": {
+            "format": {
+                "today": "<span color='#ff6699'><b>{}</b></span>"
+            }
+        }
     },
     "cpu": {
         "format": "{usage}% ",

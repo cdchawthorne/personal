@@ -112,6 +112,14 @@ vim.api.nvim_create_user_command(
   {}
 )
 
+vim.api.nvim_create_user_command(
+  'RustFeatureToggle',
+  function(params)
+    require('config.util').toggle_rust_analyzer_feature(params.args)
+  end,
+  { nargs = 1 }
+)
+
 ----------------
 -- Submodules --
 ----------------

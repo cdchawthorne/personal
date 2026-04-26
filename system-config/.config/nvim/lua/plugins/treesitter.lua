@@ -35,6 +35,7 @@ local nvim_treesitter_textobjects = {
 
 local nvim_treesitter_context = {
   "nvim-treesitter/nvim-treesitter-context",
+  lazy = false,
   opts = { max_lines = 3 },
   keys = {
     { "{t", function() require("treesitter-context").go_to_context(vim.v.count1) end, silent = true },
